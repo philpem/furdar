@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cp /vagrant/vagrant/config.test.php /vagrant/config.test.php
+phpunit -c /vagrant/core/tests
+

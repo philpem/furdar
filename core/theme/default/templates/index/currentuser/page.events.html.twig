@@ -1,0 +1,63 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/currentuser/page.html.twig' %}
+
+{% block pageTitle %}Your personal events - {% endblock %}
+
+{% set currentUserPrivateFeedKey = getCurrentUserPrivateFeedKey() %}
+
+
+{% block breadcrumbs %}
+	{%  include 'index/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/me', 'label':'your account' }, { 'url':'/me/agenda','label':'your personal events' } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>Your personal events</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			<li class="action">
+				<a href="/api1/person/{{ currentUser.username }}/private/{{ currentUserPrivateFeedKey.accessKey }}/events.aw.ical" onclick="showExportPopup(); return false;">
+					<div class="fa fa-download"></div> export
+				</a>
+			</li>
+			<li class="tab currentTab"><a href="/me/agenda">Your personal Events</a></li>
+		</ul>
+	</div>
+
+
+	{% include '/index/eventListFilterParams.html.twig' %}
+
+	<div class="contentSwitcher">
+		<div class="switcherWrapper">
+			<div class="switcherList">
+				<div class="switcherAction {% block switcherAgenda %}{% endblock %}">
+					<a href="/me/agenda?{%  if eventListFilterParams is defined and eventListFilterParams %}{{ eventListFilterParams.getGetString() }}{%  endif %}">Agenda</a>
+				</div>
+				<div class="switcherAction {% block switcherCalendar %}{% endblock %}">
+					<a href="/me/calendar?{%  if eventListFilterParams is defined and eventListFilterParams %}{{ eventListFilterParams.getGetString() }}{%  endif %}">Monthly</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% block eventsContent %}{%  endblock %}
+
+
+{% endblock %}
+
+{% block scriptsForState %}
+	<script type="text/javascript">var exportData = {user:'{{ currentUser.username }}', userDisplayname:'{{ currentUser.displayname }}' ,  userAccessKey: '{{ currentUserPrivateFeedKey.accessKey }}'}</script>
+{% endblock %}
+
+{% block scripts %}
+	<script src="/theme/default/js/eventFilterParams.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+{% endblock %}

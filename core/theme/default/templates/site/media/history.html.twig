@@ -1,0 +1,32 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/media/page.html.twig' %}
+
+{% block pageTitle %}History of changes of {% if media.title %}{{ media.title }}{% else %}Media{% endif %} - {% endblock %}
+
+
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+{% block tabHistory %}currentTab{% endblock %}
+
+{% block innerContent %}
+
+	<ul class="history">
+		{% for historyItem in historyItems %}
+			{%  if historyItem.siteWebTemplate %}
+				{%  include historyItem.siteWebTemplate with { 'historyItem':historyItem } %}
+			{% endif %}
+		{% endfor %}
+	</ul>
+
+{% endblock %}
+
+

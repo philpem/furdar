@@ -1,0 +1,42 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block pageTitle %}Admin Areas - {% endblock %} 
+
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/areas', 'label':'areas in a country' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="contentMain">
+
+		<h2>Areas in a country</h2>
+
+		<ul class="mainListCountries">
+			{% for country in countries %}
+				<li class="country">
+					<div class="title"><a href="/admin/areas/{{ country.twoCharCode }}">{{ country.title }} <img src="/theme/default/img/countries/{{ country.twoCharCode|lower }}.png" alt="Flag"></a></div>
+				</li>
+			{% else %}
+				<li>
+					There are no countries.
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,58 @@
+
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}User  Admin - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/usernoteditor', 'label':'users blocked from being editors' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<h2>Users blocked from being editors</h2>
+
+		<h3>Users</h3>
+
+		<table class="data">
+			<tr>
+				<th>Username</th>
+				<th>&nbsp;</th>
+			</tr>
+			{% for user in users %}
+				<tr {% if loop.index is even %}class="alternative"{% endif %}>
+					<td><a href="/admin/user/{{  user.username }}">{{ user.username }}</a></td>
+					<td>
+						<form method="post" action="">
+							<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+							<input type="hidden" name="action" value="remove">
+							<input type="hidden" name="id" value="{{ user.id }}">
+							<input type="submit" value="Remove!">
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+
+		<h3>Add User</h3>
+
+		<form action="" method="post">
+
+			<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+			<input type="hidden" name="action" value="add">
+			<input type="text" name="username" value="">
+			<input type="submit" value="Add Username!">
+		</form>
+
+
+	</div>
+
+{% endblock %}

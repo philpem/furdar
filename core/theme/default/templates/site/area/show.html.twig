@@ -1,0 +1,111 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/area/page.mainTab.html.twig' %}
+
+{% block pageTitle %}{{ area.title }} - {% endblock %} 
+
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed or area.isDeleted or not eventListFilterParams.isDefaultFilters %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{%  else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/area/{{ area.slugForURL }}/" />
+	{% endif %}
+	{% include 'site/common/mapLibrary.css.html.twig' %}
+	{{ parent() }}
+{% endblock %}
+
+{% block actions %}
+	{% if currentUser is not null and not currentUserWatchesSite %}
+		<li class="action">
+			{% if currentUserWatchesArea %}
+				<a href="/area/{{ area.slugForUrl }}/watch/">Watching!</a>
+			{% else %}
+				<a href="/area/{{ area.slugForUrl }}/watch/">Watch?</a>
+			{% endif %}
+		</li>
+	{%  endif %}
+	{%  if currentUserActions.has("org.openacalendar","actionAreaEditDetails") or
+	currentUserActions.has("org.openacalendar","actionAreaEditBounds")  %}
+		<li class="actionWithSubMenu">
+			<a href="/area/{{ area.slugForUrl }}/edit" class="action"><div class="fa fa-pencil"></div> edit</a>
+			<ul class="submenu">
+				{%  if currentUserActions.has("org.openacalendar","actionAreaEditDetails") %}
+					<li><a href="/area/{{ area.slugForURL }}/edit/details">Edit Details</a></li>
+				{%  endif %}
+				{% if currentUserActions.has("org.openacalendar","actionAreaEditBounds") %}
+					<li><a href="/area/{{ area.slugForUrl }}/edit/bounds">Edit Bounds</a></li>
+				{% endif %}
+			</ul>
+		</li>
+	{% endif %}
+	{%  if currentUserActions.has("org.openacalendar","actionAreaNew") %}
+		<li class="action">
+			<a href="/area/{{ area.slugForUrl }}/new"><div class="fa fa-pencil"></div> new</a>
+		</li>
+	{% endif %}
+	{% if currentUserActions.has("org.openacalendar","eventNew") or ( currentUser is null and anyVerifiedUserActions.has("org.openacalendar","eventNew") ) %}
+		<li class="action"><a href="/event/new?area={{  area.slug }}"><div class="fa fa-pencil"></div>Add an event</a></li>
+	{% endif %}
+	<li class="action">
+		<a href="/api1/area/{{ area.slug }}/events.ical" onclick="showExportSharePopup(); return false;">
+			{%  include '/site/common/actionExportShareLabel.html.twig' %}
+		</a>
+	</li>
+{% endblock %}
+
+{% block tabDetails %}currentTab{% endblock %}
+
+{% block switcherAgenda %}current{% endblock %}
+
+{% block eventsContent %}
+
+	<ul class="mainListEvents">
+		{% for event in events %}
+			{% include '/site/common/mainListEvent.html.twig' with {'event':event, 'showCurrentUserOptions':true, 'showVenueAndArea':true}  %}
+		{% else %}
+			<li class="nodata">
+				<p>
+					{%  if not eventListFilterParams.isDefaultFilters %}
+						{%  set eventsDefaultCount = area|futureeventscount %}
+						{%  if eventsDefaultCount == 1 %}
+							No events found with that filter. Do you want to see <a href="/area/{{  area.slugForURL }}">the one future event</a> instead?
+						{%  elseif eventsDefaultCount > 1 %}
+							No events found with that filter. Do you want to see <a href="/area/{{  area.slugForURL }}">the {{ eventsDefaultCount }} future events</a> instead?
+						{%  else %}
+							No events found.
+						{%  endif %}
+					{%  else  %}
+						No events found.
+					{%  endif %}
+				</p>
+
+				{%  if eventListFilterParams.isDefaultFilters %}
+					{%  set eventsPastCount = area|pasteventscount %}
+					{%  if eventsPastCount == 1 %}
+						<p>(Sorry, you've already missed 1 event here.)</p>
+					{% elseif eventsPastCount > 1 %}
+						<p>(Sorry, you've already missed {{ eventsPastCount  }} events here.)</p>
+					{%  endif %}
+				{%  endif %}
+			</li>
+		{% endfor %}
+	</ul>
+
+
+{% endblock %}
+
+{% block scripts %}
+	<script src="/theme/default/js/eventFilterParams.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+	<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+	{% include 'site/common/mapLibrary.js.html.twig' %}
+	<script src="/theme/default/js/areaShow.js?v={{ config.assetsVersion }}" type="text/javascript"></script>	
+{% endblock %}
+
+
+
+

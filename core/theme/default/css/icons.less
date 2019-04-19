@@ -1,0 +1,82 @@
+/**
+ * These are the classes used to hold icons & images used in the templates.
+ * Almost all of these are from Font Awesome and in that case the name of the class is the name of Font Awesome icon.
+ * Small and Large are added; small is 16px and large is 32px.
+ *
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+*/
+
+.icon-background-size-16 () {
+	background-size: 16px 16px;
+	-webkit-background-size: 16px 16px;
+	-moz-background-size: 16px 16px;
+}
+
+.icon-background-size-32 () {
+	background-size: 32px 32px;
+	-webkit-background-size: 32px 32px;
+	-moz-background-size: 32px 32px;
+}
+
+
+.iconUserUnknownAttendingSmall {
+	background-image: url('/theme/default/img/userunknownattending16.png');
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+	.iconUserUnknownAttendingSmall {
+		background-image: url('/theme/default/img/userunknownattending32.png');
+		.icon-background-size-16();
+	}
+}
+
+.iconUserAttendingSmall {
+	background-image: url('/theme/default/img/userattending16.png');
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+	.iconUserAttendingSmall {
+		background-image: url('/theme/default/img/userattending32.png');
+		.icon-background-size-16();
+	}
+}
+
+.iconUserNotAttendingSmall {
+	background-image: url('/theme/default/img/usernotattending16.png');
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+	.iconUserNotAttendingSmall {
+		background-image: url('/theme/default/img/usernotattending32.png');
+		.icon-background-size-16();
+	}
+}
+
+.iconUserMaybeAttendingSmall {
+	background-image: url('/theme/default/img/usermaybeattending16.png');
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+	.iconUserMaybeAttendingSmall {
+		background-image: url('/theme/default/img/usermaybeattending32.png');
+		.icon-background-size-16();
+	}
+}
+
+
+

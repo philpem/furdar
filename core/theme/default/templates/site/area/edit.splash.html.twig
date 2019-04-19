@@ -1,0 +1,37 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/area/page.html.twig' %}
+
+{% block pageTitle %}Edit {{ area.title }} - {% endblock %}
+
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<ul class="actionList">
+
+		{%  if currentUserActions.has("org.openacalendar","actionAreaEditDetails") %}
+			<li><a href="/area/{{ area.slugForURL }}/edit/details"><div class="fa fa-pencil"></div> Edit Details</a></li>
+		{%  endif %}
+
+		{%  if currentUserActions.has("org.openacalendar","actionAreaEditBounds") %}
+			<li><a href="/area/{{ area.slugForURL }}/edit/bounds"><div class="fa fa-pencil"></div> Edit Bounds</a></li>
+		{%  endif %}
+
+	</ul>
+
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+

@@ -1,0 +1,51 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/venuevirtual/page.mainTab.html.twig' %}
+
+{% block pageTitle %}Virtual - {% endblock %} 
+
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed or not eventListFilterParams.isDefaultFilters  %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{%  else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/venue/virtual/" />
+	{% endif %}
+	{% include 'site/common/mapLibrary.css.html.twig' %}
+	{{ parent() }}
+{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block tabDetails %}currentTab{% endblock %}
+
+{% block switcherAgenda %}current{% endblock %}
+
+{% block eventsContent %}
+
+	<ul class="mainListEvents">
+		{% for event in events %}
+			{% include '/site/common/mainListEvent.html.twig' with {'event':event, 'showCurrentUserOptions':true}  %}
+		{% else %}
+			<li class="nodata">
+				No events found.
+			</li>		
+		{% endfor %}
+	</ul>
+
+{% endblock %}
+
+
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+
+
+
+

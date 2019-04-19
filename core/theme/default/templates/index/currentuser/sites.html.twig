@@ -1,0 +1,51 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/currentuser/page.html.twig' %}
+
+{% block pageTitle %}Calendars - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'index/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/me', 'label':'your account' }, { 'url':'/me/sites','label':'calendars' } ]  } %}
+{% endblock %}
+
+
+
+{% block innerContent %}
+
+	<div class="contentTwoColumns">
+
+		<div class="contentTwoColumnsLeft">
+
+			<ul class="sites">
+				{% for site in sites %}
+					<li class="site">
+						<a href="{{ config.getWebSiteDomainSecure(site.slug) }}" class="title">
+							<span class="logoWrapper"><img src="{{ config.getWebSiteDomainSecure(site.slug) }}/getLogo.php?v={{ site.logoCacheKey }}" alt="logo"></span>
+							<span class="titleWrapper">{{ site.title }}</span>
+						</a>
+						<a href="{{ config.getWebSiteDomainSecure(site.slug) }}" class="link">
+							View
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+
+
+		</div>
+
+		<div class="contentTwoColumnsRight">
+
+
+		</div>
+
+		<div class="afterContentTwoColumns"></div>
+
+	</div>
+
+
+
+{% endblock %}

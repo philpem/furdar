@@ -1,0 +1,60 @@
+
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Tags - {% endblock %} 
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{% else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/tag" />
+	{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/tag', 'label':'tags' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	{% if not currentSiteFeatures.has('org.openacalendar','Tag') %}
+		<div class="flash-error"><div class="contentMain">This feature has been disabled on this calendar. You can not make changes.</div></div>
+	{% endif %}
+
+	<div class="contentMain">
+		<h2>Tags</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% if currentUserActions.has("org.openacalendar","tagNew") %}
+				<li class="action">
+					<a href="/tag/new"><div class="fa fa-pencil"></div> Add a tag</a>
+				</li>
+			{% endif %}
+			<li class="action">
+				<li class="tab currentTab"><a href="/tag">Tags</a></li>
+			</li>
+		</ul>
+	</div>
+
+	<ul class="mainListTags">
+		{% for tag in tags %}
+			<li class="tag">
+				<div class="title"><a href="/tag/{{ tag.slugForURL }}">{{ tag.title }}</a></div>
+				{{ tag.description | nl2br }}
+			</li>
+		{% else %}
+			<li class="nodata">
+				No tags found.
+			</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}

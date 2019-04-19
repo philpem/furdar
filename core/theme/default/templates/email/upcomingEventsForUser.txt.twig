@@ -1,0 +1,27 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'email/email.txt.twig' %}
+
+{% block content %}
+
+Hello {{ user.displayname }},
+
+We wanted to let you know about upcoming events you have expressed an interest in.
+
+{% for event in allEvents|slice(0,config.upcomingEventsForUserEmailTextListsEvents)  %}
+EVENT: {{ event.summary }}
+{{ config.getWebSiteDomainSecure(event.siteSlug) }}/event/{{event.slugForUrl}}
+
+{% endfor %}
+
+Thanks,
+{{ config.installTitle }}
+
+ps. 
+To change which emails you get, click:
+{{ unsubscribeURL }}
+{% endblock %}

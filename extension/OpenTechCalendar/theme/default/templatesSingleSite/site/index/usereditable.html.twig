@@ -1,0 +1,44 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}User Editable - {% endblock %} 
+
+{% block htmlHeader %}
+	<link rel="canonical" href="{{ config.getWebIndexDomainSecure }}/usereditable" />
+{% endblock %}
+
+
+{% block content %}
+
+
+	<div class="contentMain">
+
+		<h2>Contribute</h2>
+
+		<p>We are trying to build up a calendar of tech events for the benefit of all.
+			We have strong Open Data feeds, so the data is reusable and useful to everyone.</p>
+
+		<p>To do this, we need your help.</p>
+
+		<p>Anyone can add or edit any events! You don't have to be the event organiser to do so,
+			and in fact if you add your favourite events it would help out the busy event organiser.</p>
+
+		<p>(All edits are saved, so don't worry that you might break something.)</p>
+
+		{% if currentUser is null %}
+			<p>Simply <a href="/you/register">create a user account</a> and browse the site - all editing is done in your browser using a simple process.</p>
+		{% else %}
+			<p>Simply browse the site - all editing is done in your browser using a simple process.</p>
+
+		{% endif %}
+
+		<p>If you aren't sure about this, <a href="/contact">just get in touch and ask</a>.</p>
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div class="filterListWrapper filterListVenueWrapper">
+
+	<div id="FilterListVenueWrapperSectionHidden" {% if not venueListFilterParams.isDefaultFilters %}style="display: none;"{% endif %}>
+		<div class="showHideLink">
+			<a href="#" onclick="$('#FilterListVenueWrapperSectionHidden').hide(); $('#FilterListVenueWrapperSectionShown').show();">
+				Show Filters <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+			</a>
+		</div>
+		{% if not venueListFilterParams.isDefaultFilters %}
+			<div class="currentFilters">
+				{{ venueListFilterParams.getHumanTextRepresentation }}
+			</div>
+		{%  endif %}
+		<div style="clear: both"></div>
+	</div>
+	<div id="FilterListVenueWrapperSectionShown"  {% if venueListFilterParams.isDefaultFilters %}style="display: none;"{% endif %}>
+
+		<div class="showHideLink">
+			<a href="#" onclick="$('#FilterListVenueWrapperSectionHidden').show(); $('#FilterListVenueWrapperSectionShown').hide();">
+				Hide Filters <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+			</a>
+		</div>
+
+		<form method="get" class="filterList filterListVenue  styled" style="clear: both;">
+			<input type="hidden" name="venueListFilterDataSubmitted" value="1">
+	
+			<div class="rowWrapper">
+				<label>
+					<div class="labelWrapper">Search:</div>
+					<div class="widgetWrapper"><input type="text" name="freeTextSearch" value="{{ venueListFilterParams.freeTextSearch }}" autocomplete="off"></div>
+					<div class="afterRowWrapper"></div>
+				</label>
+			</div>
+	
+			<div class="rowWrapper">
+				<label>
+					<div class="labelWrapper">&nbsp;</div>
+					<div class="widgetWrapper"><input type="checkbox" name="withFutureEventsOnly" value="1" {% if venueListFilterParams.withFutureEventsOnly %}checked{% endif %}> With future events only</div>
+					<div class="afterRowWrapper"></div>
+				</label>
+			</div>
+	
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Filter" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+	
+		</form>
+	</div>
+</div>

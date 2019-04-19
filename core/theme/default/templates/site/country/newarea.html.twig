@@ -1,0 +1,42 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/country/page.html.twig' %}
+
+
+{% block pageTitle %}{{ country.title }} - {% endblock %} 
+
+
+
+{% block actions %}
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="contentMain">
+
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.title) }}
+			{{ form_row(form.description) }}
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+
+		</form>
+
+	</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+

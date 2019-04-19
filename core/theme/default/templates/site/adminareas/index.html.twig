@@ -1,0 +1,47 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block pageTitle %}Admin Areas - {% endblock %} 
+
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [
+		{ 'url':'/admin', 'label':'admin' },
+		{ 'url':'/admin/areas', 'label':'areas in a country' } ,
+		{ 'url':'/admin/areas/' ~  country.twoCharCode, 'label': country.title }
+	]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<h2>Areas in {{  country.title }} <img src="/theme/default/img/countries/{{ country.twoCharCode|lower }}.png" alt="Flag"></h2>
+
+		<form action="/admin/areas/{{ country.twoCharCode }}/action" method="POST">
+			<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+			<ul class="areasAdmin">
+				{% for area in areaTree.children %}
+					{% include 'site/adminareas/index.areaAsTree.html.twig' with {'areaData':area} %}
+				{% endfor %}
+				<li class="area">
+					<span class="contentNew"><a href="/admin/areas/{{ country.twoCharCode }}/new">New</a></span>
+				</li>
+			</ul>
+			<select name="action">
+				<option value="delete">Delete</option>
+				<option value="undelete">Undelete</option>
+			</select>
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Perform selected action" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}

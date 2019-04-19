@@ -1,0 +1,85 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Add a Venue - {% endblock %}
+
+{% block htmlHeader %}
+	{% include 'site/common/mapLibrary.css.html.twig' %}
+{% endblock %}
+
+{% block breadcrumbs %}
+	{%  set breadcrumbs = [ ] %}
+	{%  if currentSite.cachedIsMultipleCountries  %}
+		{%  set breadcrumbs = breadcrumbs|merge([ {'url':'/country' , 'label':'countries' }])  %}
+	{%  endif %}
+	{%  if country %}
+		{%  set breadcrumbs = breadcrumbs|merge([ {'url':'/country/'~country.twoCharCode, 'label':country.title}])  %}
+	{%  endif %}
+	{% for parentArea in parentAreas %}
+		{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/area/'~parentArea.slugForUrl, 'label':parentArea.title }])  %}
+	{% endfor %}
+	{% if area %}
+		{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/area/'~area.slugForUrl, 'label':area.title }])  %}
+	{% endif %}
+	{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'#', 'label':'new venue' }])  %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.title) }}
+			{{ form_row(form.description) }}
+			{{ form_row(form.address) }}
+
+			{% include 'site/common/venueFormAreaBrowser.html.twig' %}
+
+			{{ form_row(form.address_code) }}
+			{{ form_row(form.country_id) }}
+
+			<div class="rowWrapper">
+				<div class="labelWrapper">Map (Click to set location)</div>
+				<div class="widgetWrapperPlacementOnly"><div id="Map"></div></div>
+				<div class="after"></div>
+			</div>
+
+			{%  include 'site/common/formRowEditComment.html.twig' with {'form': form} %}
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+	<script type="text/javascript">
+		{% if area and area.hasBounds %}
+			var mapData = { lat: null, lng:null, min_lat:{{ area.minLat }}, max_lat:{{ area.maxLat }}, min_lng: {{ area.minLng }}, max_lng:{{ area.maxLng }} };
+		{% else %}
+			var mapData = { lat: null, lng:null, min_lat:null, max_lat:null, min_lng: null, max_lng:null };
+		{% endif %}
+	</script>
+	{% include 'site/common/mapLibrary.js.html.twig' %}
+	<script type="text/javascript" src="/theme/default/js/venueform.js?v={{ config.assetsVersion }}"></script>
+	{% if startAreaBrowserFromScratch %}
+		<script type="text/javascript">
+			$(document).ready(function() {  setUpBlankVenueForm(); });
+		</script>
+	{% endif %}
+{% endblock %}
+

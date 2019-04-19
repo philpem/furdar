@@ -1,0 +1,67 @@
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}About - {% endblock %} 
+
+{% block htmlHeader %}
+	<link rel="canonical" href="{{ config.getWebIndexDomainSecure }}/about" />
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<h3>About</h3>
+
+		<p>Welcome to Open Tech Calendar, an user editable calendar of the local tech meet ups.<p>
+
+		<h3>Our Mission</h3>
+
+		<p>We help people find great tech events near them.</p>
+
+		<p>We also help the tech community work together for everyone's benefit.</p>
+
+		<p>We provide a platform of Open Data to make the data more useful and for others to build on.</p>
+
+		<p>We are a directory of tech events - we don't try to "take over" an events presence online but instead happily have prominent links to an events own home page and ticketing provider, where ever that may be.</p>
+
+		<h3>Open? How does this work?</h3>
+
+		<p>We are "Open" in the sense that we invite anyone from the community to add and edit events
+		for any tech group. You can do this through our easy web interface. You don't have to be the event organiser to do so. All edits and deletes are versioned to ensure safety, like a wiki.</p>
+
+		<p>We are also "Open" as in Open Data; there are feeds and an API so exporting the
+		data into the system of your choice should be easy. Our data is displayed on other websites, we post regular updates of upcoming events into Facebook and Slack groups, and have a WordPress plugin to display events on your site.</p>
+
+		<p>(We can also import other sources of Open Data - we are trying to encourage good Open Data practices in the community!)</p>
+
+		<h3>History</h3>
+
+		<p>Open Tech calendar was started in July 2012 after a similar calendar
+		run by <a href="http://techmeetup.co.uk/">Tech Meetup</a> was accidentally destroyed. Tech Meetup always was and still is a place to bring the community together, and we thought that was a great thing that should be encouraged.</P>
+
+
+		<p>We set out to create a calendar that made the data more useful, could welcome more contributors
+		and crucially, was less likely to be accidentally destroyed. Our initial version was a rough website launched using an Open Source wiki platform in a long weekend. However it was clear from the response to this that the community was interested.</p>
+
+		<p>We grew over time. We moved to our own custom platform as it quickly became clear that there were UI/UX challenges that our initial platform couldn't handle. We Open Sourced our own custom platform in Feb 2014.</P>
+
+		<h3>Our Open Source Software</h3>
+
+		<p>The <a href="https://gitlab.com/opentechcalendar">software is Open Source - please help us develop it!</a>.</p>
+
+		<h3>The People</h3>
+
+		<p>Open Tech Calendar is run by <a href="http://jmbtechnology.co.uk/">JMB Technology Limited</a>,
+			based in Edinburgh, Scotland.</p>
+
+		<p>James Baster is the founder and still leads the project. He is a developer who is a regular at many tech events. He previously helped run Tech Meetup and was the presenter and talks organiser in Edinburgh for a year. He now focusses on Open Tech Calendar.</p>
+
+		<p>Thanks to everyone who has helped out over the years, and thanks to our sponsors for keeping us going.</p>
+
+		<h3>I want more! Any Questions?</h3>
+
+		<p>Any questions, please <a href="/contact/">get in touch</a>. We also <a href="https://blog.opentechcalendar.co.uk/">write sometimes on our blog</a>.</p>
+
+	</div>
+
+{% endblock %}

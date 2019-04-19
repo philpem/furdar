@@ -1,0 +1,16 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div id="footer">
+	<div class="contentMain">
+		<ul>
+			{%  if extensions.hasExtensionID('org.openacalendar.contact') %}<a href="{{ config.getWebIndexDomainSecure() }}/contact">contact</a>{% endif %}
+			<li><a href="/terms">terms</a></li>
+			<li><a href="/privacy">privacy</a></li>
+			<li>Powered by <a href="http://ican.openacalendar.org">OpenACalendar</a></li>
+		</ul>
+	</div>
+</div>

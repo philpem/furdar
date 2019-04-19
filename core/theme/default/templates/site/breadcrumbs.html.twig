@@ -1,0 +1,30 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+{% if not config.isSingleSiteMode %}
+	{% set breadcrumbs = [{'url':'/', 'label':currentSite.title }]|merge(breadcrumbs) %}
+{% endif %}
+
+{%  if breadcrumbs %}
+	<ul class="breadcrumbs" vocab="http://schema.org/" typeof="BreadcrumbList">
+		{%  for breadcrumb in breadcrumbs %}
+			{%  if loop.last %}
+				<li class="current">
+					<span class="fa fa-angle-right"></span> <span property="name">{{ breadcrumb.label }}</span>
+				</li>
+			{%  else %}
+				<li property="itemListElement" typeof="ListItem">
+					<a href="{{  breadcrumb.url }}" property="item" typeof="WebPage">
+						<span class="fa fa-angle-right"></span> <span property="name">{{ breadcrumb.label }}</span>
+					</a>
+					<meta property="position" content="{{ loop.index }}">
+				</li>
+			{%  endif %}
+		{%  endfor %}
+	</ul>
+{%  endif %}
+

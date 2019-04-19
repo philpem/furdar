@@ -1,0 +1,96 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block htmlHeader %}
+	{%  if country %}<meta name="openacalendar:country:code" content="{{  country.twoCharCode }}" />{% endif %}
+	{%  if area %}<meta name="openacalendar:area:slug" content="{{  area.slugForURL}}" />{%  endif %}
+	{%  if venue %}<meta name="openacalendar:venue:slug" content="{{  venue.slugForURL}}" />{%  endif %}
+	<meta name="openacalendar:event:slug" content="{{  event.slugForURL}}" />
+{%  endblock %}
+
+{% block breadcrumbs %}
+	{%  set breadcrumbs = [ {'url':'/event' , 'label':'events' } ] %}
+	{% if currentSiteFeatures.has('org.openacalendar','Group') %}
+		{%  if group is not null %}
+			{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/group/'~group.slugForUrl, 'label':group.title }])  %}
+		{%  endif %}
+	{% elseif currentSiteFeatures.has('org.openacalendar','PhysicalEvents') %}
+		{%  if currentSite.cachedIsMultipleCountries  and  country %}
+			{%  set breadcrumbs = breadcrumbs|merge([ {'url':'/country/'~country.twoCharCode, 'label':country.title}])  %}
+		{%  endif %}
+		{% for parentArea in parentAreas %}
+			{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/area/'~parentArea.slugForUrl, 'label':parentArea.title }])  %}
+		{% endfor %}
+		{% if area %}
+			{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/area/'~area.slugForUrl, 'label':area.title }])  %}
+		{% endif %}
+	{% endif %}
+	{%  set breadcrumbs = breadcrumbs|merge([  { 'url':'/event/'~event.slugForUrl, 'label':event.summary }  ])  %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>
+			{{  event.summaryDisplay }}
+			{# Events can be both deleted and cancelled. In that case, show the more serious one. #}
+			{%  if event.isDeleted %} [DELETED]{%  elseif event.isCancelled  %} [CANCELLED]{%  endif %}
+		</h2>
+	</div>
+
+	{% if groups|length > 0 %}
+		<ul class="underTitleGroupListing contentMain">
+			{% for group in groups %}
+				<li>by <a href="/group/{{ group.slugForUrl }}" class="title">{{ group.title }}</a></li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+	{% if event.isdeleted %}
+		<div class="diversionBanner">
+			<div class="contentMain">
+				This event has been deleted!
+				{%  if eventIsDuplicateOf %}
+					It is a duplicate of <a href="/event/{{  eventIsDuplicateOf.slugForURL }}">{{  eventIsDuplicateOf.summaryDisplay }}</a>.
+				{% endif %}
+			</div>
+		</div>
+	{% elseif event.isCancelled %}
+		<div class="diversionBanner"><div class="contentMain">This event has been cancelled!</div></div>
+	{%  endif %}
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/event/{{ event.slugForUrl }}">Details</a></li>
+			{%  if currentUserActions.has("org.openacalendar","eventHistory") %}<li class="tab {% block tabHistory %}{% endblock %}"><a href="/event/{{ event.slugForUrl }}/history">History of changes</a></li>{%  endif %}
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">
+		var exportData = {
+			event:{{ event.slug }},
+			eventSlugURL:"{{ event.slugForURL|e('js') }}",
+			eventTitle:"{{ event.summaryDisplay|e('js') }}",
+			eventStartLocal:"{{  event.startAt|date('D jS M Y g:ia', event.timezone) }}",
+			eventTicketURL: "{{  event.ticketURL|e('js') }}"
+			{% if group is not null %}, group: {{ group.slug }}, groupTitle:"{{ group.title|e('js') }}"{% endif %}
+		}
+	</script>
+{% endblock %}
+

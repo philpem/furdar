@@ -1,0 +1,61 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'sysadmin/page.html.twig' %}
+
+{% block pageTitle %}Tag {{  tag.title }} - {% endblock %}
+
+{% block content %}
+
+
+	<table class="oneData">
+		<tr>
+			<th>ID</th>
+			<td>{{ tag.id }}</td>
+		</tr>
+		<tr>
+			<th>Slug</th>
+			<td>{{ tag.slug }}</td>
+		</tr>
+		<tr>
+			<th>Human Slug</th>
+			<td>{{ tag.slugHuman }}</td>
+		</tr>
+		<tr>
+			<th>Deleted</th>
+			<td>{% if tag.isDeleted %}Deleted{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Title</th>
+			<td>{{ tag.title }}</td>
+		</tr>
+		<tr>
+			<th>Description</th>
+			<td>{{ tag.description | nl2br }}</td>
+		</tr>
+		<tr>
+			<th>More</th>
+			<td>
+				<ul>
+					<li><a href="{{  config.getWebSiteDomainSecure(site.slug) }}/tag/{{ tag.slugForURL }}" target="_blank">View On Site</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<form action="#" method="post" class="action">
+		{{ form_errors(form) }}
+		{{ form_rest(form) }}
+		<input type="submit" name="Do Action" />
+	</form>
+
+	<ul class="actionHelp">
+		<li>delete</li>
+		<li>undelete</li>
+		<li>slughuman  <span class="param">slughuman</a></li>
+	</ul>
+
+{% endblock %}

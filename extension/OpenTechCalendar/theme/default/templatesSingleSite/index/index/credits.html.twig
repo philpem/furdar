@@ -1,0 +1,40 @@
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Credits - {% endblock %} 
+
+{% block htmlHeader %}
+	<link rel="canonical" href="{{ config.getWebIndexDomainSecure }}/credits" />
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<p>Open Tech Calendar &copy;2012-2019 <a href="https://www.jmbtechnology.co.uk/" target="_blank">JMB Technology Ltd</a>
+			and written by <a href="https://www.jamesbaster.co.uk/" target="_blank">James Baster</a></p>
+
+		<p>This site is directly powered by the following open projects:</p>
+
+		<ul class="listOfTextItems">
+			<li><a href="http://www.debian.org/" target="_blank"  rel="noopener">Debian</a> and <a href="https://www.ubuntu.com/"  target="_blank"  rel="noopener">Ubuntu</a></li>
+			<li><a href="http://httpd.apache.org/" target="_blank"  rel="noopener">Apache</a></li>
+			<li><a href="http://www.postgresql.org/" target="_blank" rel="noopener" >Postgres</a></li>
+			<li><a href="http://www.php.net/" target="_blank" rel="noopener">PHP</a></li>
+			<li><a href="http://silex.sensiolabs.org/" target="_blank" rel="noopener">Silex & associated Symfony 3 components (Forms)</a></li>
+			<li><a href="http://twig.sensiolabs.org/" target="_blank" rel="noopener">Twig</a></li>
+			<li><a href="http://swiftmailer.org/" target="_blank" rel="noopener">Swiftmailer</a></li>
+			<li><a href="http://jquery.com/" target="_blank" rel="noopener">JQuery</a></li>
+			<li><a href="http://jqueryui.com/" target="_blank" rel="noopener">JQuery UI</a></li>
+			<li><a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">Open Street Map</a></li>
+			<li><a href="http://leafletjs.com/" target="_blank" rel="noopener">Leaflet.js</a>
+				and <a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank" rel="noopener">Clustering</a></li>
+			<li><a href="http://fortawesome.github.io/Font-Awesome/" target="_blank" rel="noopener">Font Awesome</a></li>
+		</ul>
+
+		<p>The photo in the header is <a href="https://www.flickr.com/photos/edublogger/3045716110/"  target="_blank" rel="noopener">this one</a>.</p>
+
+		<p>Thanks to everyone who has supported the project over the years.</p>
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block pageTitle %}User Admin - {% endblock %}
+
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/user', 'label':'users' }, { 'url':'/admin/user/'~user.username, 'label':user.username} ]  } %}
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="contentMain">
+
+		<h2>User {{ user.username }}</h2>
+		
+		<h3>Has User Permissions</h3>
+
+		<table class="data">
+			<tr>
+				<th>Extension</th>
+				<th>ID</th>
+			</tr>
+			{% for userpermission in userpermissions %}
+				<tr>
+					<td>{{ userpermission.userPermissionExtensionID }}</td>
+					<td>{{ userpermission.userPermissionKey }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	</div>
+
+
+
+		
+{% endblock %}

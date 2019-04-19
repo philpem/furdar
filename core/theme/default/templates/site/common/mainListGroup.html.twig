@@ -1,0 +1,27 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+<li class="group">
+	{%  if group.hasMediaSlugs %}
+		{% for mediaSlug in group.mediaSlugsAsList(2) %}
+			<div class="media"><a href="/group/{{ group.slugForUrl }}"><img src="/media/{{ mediaSlug }}/thumbnail"></a></div>
+		{% endfor %}
+	{%  endif %}
+	<div class="title">
+		<a href="/group/{{ group.slugForUrl }}">
+			<span class="text">{{ group.title }}</span>
+			{% if group.cachedFutureEvents == 1 %}
+				<span class="futureEvents">1 Future Event</span>
+			{% elseif group.cachedFutureEvents > 1 %}
+				<span class="futureEvents">{{  group.cachedFutureEvents }} Future Events</span>
+			{%  endif %}
+		</a>
+	</div>
+	{{ group.description |  truncate(1000) | nl2br | linkify }}
+	<div class="afterGroupListing"></div>
+	{%  if extraHTMLAtEnd is defined and extraHTMLAtEnd %}{{  extraHTMLAtEnd | raw }}{%  endif %}
+</li>

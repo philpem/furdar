@@ -1,0 +1,34 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'email/email.txt.twig' %}
+
+{% block content %}
+	
+Hello {{ user.displayname }}
+
+We are trying to list events on: {{ site.title }}.
+
+{%  if futureEvents|length > 0 %}We only know of some future events.{%  else %}We don't know of any future events.{%  endif %}
+
+If you know about any more events, can you tell everyone? You don't have to be the organiser.
+
+It's easy to add events or recur an event that is continuing.
+
+Do so at:
+{{ config.getWebSiteDomainSecure(site.slug) }}
+
+To stop watching {{ site.title }}:
+{{ config.getWebSiteDomainSecure(site.slug) }}/stopWatchingFromEmail/{{ user.id }}/{{ stopCode }}
+
+To change which emails you get:
+{{ unsubscribeURL }}
+
+
+Thanks,
+{{ currentSite.title }}{% if not config.isSingleSiteMode %} {{ config.installTitle }}{%  endif %}
+
+{% endblock %}

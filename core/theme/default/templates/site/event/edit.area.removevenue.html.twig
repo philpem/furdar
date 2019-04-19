@@ -1,0 +1,52 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/event/page.html.twig' %}
+
+
+{% block pageTitle %}Edit {{ event.summaryDisplay }} - {% endblock %}
+
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="contentMain">
+
+		<p>Current Venue:</p>
+
+		<div class="dateAndLocationWrapper">
+			{% include 'site/common/eventLocationLine.html.twig' %}
+		</div>
+
+		<p>If this venue is wrong, you can remove it.</p>
+
+
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.remove) }}
+
+			{%  include 'site/common/formRowEditComment.html.twig' with {'form': form} %}
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+
+		<p><a href="/event/{{  event.slugForURL }}">The event is at this venue</a></p>
+
+	</div>
+
+
+{% endblock %}

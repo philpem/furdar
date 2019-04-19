@@ -1,0 +1,85 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/event/page.html.twig' %}
+
+
+{% block pageTitle %}Rollback {{ event.summaryDisplay }} - {% endblock %} 
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+{% block innerContent %}
+		
+	<div class="contentMain">
+
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.summary) }}
+			{{ form_row(form.description) }}
+			{{ form_row(form.url) }}
+			{{ form_row(form.ticket_url) }}
+			<div id="FieldStartAtWrapper">
+				{{ form_row(form.start_at) }}
+			</div>
+			<div id="FieldEndAtWrapper">
+				{{ form_row(form.end_at) }}
+			</div>
+			<div id="FieldCountryWrapper">
+				{{ form_row(form.country_id) }}
+			</div>
+			<div id="FieldTimeZoneWrapper">
+				{{ form_row(form.timezone) }}
+			</div>
+			{% if currentSiteFeatures.has('org.openacalendar','VirtualEvents') %}
+				{#  if both are an option, user must check which one.  #}
+				{% if currentSiteFeatures.has('org.openacalendar','PhysicalEvents') %}
+					{{ form_row(form.is_virtual) }}
+				{% endif %}
+				{# Secondly, any options for virtual events? ... nope #}
+			{% endif %}
+			{% if currentSiteFeatures.has('org.openacalendar','PhysicalEvents') %}
+				{#  if both are an option, user must check which one.  #}
+				{% if currentSiteFeatures.has('org.openacalendar','VirtualEvents') %}
+					<div id="FieldIsPhysicalWrapper">
+                        {{ form_row(form.is_physical) }}
+					</div>				{% endif %}
+				{# Secondly, any options for physical events? #}
+				<div id="physicalEventOptions">
+
+				</div>
+			{% endif %}
+
+
+			{%  include 'site/common/formRowEditComment.html.twig' with {'form': form} %}
+
+			{{ form_rest(form) }}
+
+			{% if event.isDeleted and event.isCancelled %}
+				<p>(The event will no longer be deleted and no longer be cancelled.)</p>
+			{% elseif event.isDeleted %}
+				<p>(The event will no longer be deleted.)</p>
+			{% elseif event.isCancelled %}
+				<p>(The event will no longer be cancelled.)</p>
+			{% endif %}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+	<script type="text/javascript" src="/theme/default/js/eventform.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+

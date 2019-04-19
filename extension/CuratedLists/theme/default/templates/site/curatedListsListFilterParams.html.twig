@@ -1,0 +1,56 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div class="filterListWrapper">
+	<div id="FilterListEventWrapperSectionHidden" {% if not curatedListListFilterParams.isDefaultFilters %}style="display: none;"{% endif %}>
+		<div class="showHideLink">
+			<a href="#" onclick="$('#FilterListEventWrapperSectionHidden').hide(); $('#FilterListEventWrapperSectionShown').show();">
+				Show Filters <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+			</a>
+		</div>
+		{% if not curatedListListFilterParams.isDefaultFilters %}
+			<div class="currentFilters">
+				{{ curatedListListFilterParams.getHumanTextRepresentation }}
+			</div>
+		{%  endif %}
+		<div style="clear: both"></div>
+	</div>
+	<div id="FilterListEventWrapperSectionShown"  {% if curatedListListFilterParams.isDefaultFilters %}style="display: none;"{% endif %}>
+
+		<div class="showHideLink">
+			<a href="#" onclick="$('#FilterListEventWrapperSectionHidden').show(); $('#FilterListEventWrapperSectionShown').hide();">
+				Hide Filters <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+			</a>
+		</div>
+
+		<form method="get" class="filterList styled"  style="clear: both;">
+			<input type="hidden" name="curatedListListFilterDataSubmitted" value="1">
+
+
+
+			<div class="rowWrapper">
+				<label>
+					<div class="labelWrapper">Search:</div>
+					<div class="widgetWrapper"><input type="text" name="freeTextSearch" value="{{ curatedListListFilterParams.freeTextSearch }}" autocomplete="off"></div>
+					<div class="afterRowWrapper"></div>
+				</label>
+			</div>
+
+			<div class="rowWrapper">
+				<label>
+					<div class="labelWrapper">&nbsp;</div>
+					<div class="widgetWrapper"><input type="checkbox" name="withFutureEventsOnly" value="1" {% if curatedListListFilterParams.withFutureEventsOnly %}checked{% endif %}> With future events only</div>
+					<div class="afterRowWrapper"></div>
+				</label>
+			</div>
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Filter" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+
+		</form>
+
+	</div>
+</div>

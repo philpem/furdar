@@ -1,0 +1,12 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{%  if currentSite.cachedIsMultipleTimezones %}
+	{% include 'site/common/eventFromToLine.html.twig' with {'startAt': event.startAtInUTC, 'endAt': event.endAtInUTC, 'timezone':event.timezone, 'showTimeZone':true,'showDuration':true } %}
+{%  else %}
+	{% include 'site/common/eventFromToLine.html.twig' with {'startAt': event.startAtInUTC, 'endAt': event.endAtInUTC, 'timezone':event.timezone, 'showTimeZone':false,'showDuration':true } %}
+{%  endif %}
+

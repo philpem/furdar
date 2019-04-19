@@ -1,0 +1,48 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+<li class="event">
+	{% if gistContent.event.isdeleted %}
+		<div class="dateTimeIcon">
+			<div class="dateIcon">
+				<span class="deleted">Deleted!</span>
+			</div>
+		</div>
+	{% elseif gistContent.event.iscancelled %}
+		<div class="dateTimeIcon">
+			<div class="dateIcon">
+				<span class="cancelled">Cancel<br>-led!</span>
+			</div>
+		</div>
+	{% else %}
+		<div class="dateTimeIcon">
+			<time datetime="{{ gistContent.event.getStartAt|date('c', currentTimeZone) }}" itemprop="startDate">
+				<a href="/event/{{ gistContent.event.slugForUrl }}">
+					<div class="dateIcon">
+						<span class="startDay">{{ gistContent.event.getStartAt|date('D', currentTimeZone) }}</span>
+						<span class="startDate">{{ gistContent.event.getStartAt|date('jS', currentTimeZone) }}</span>
+						<span class="startMonthYear">{{ gistContent.event.getStartAt|date('M \'y', currentTimeZone) }}</span>
+					</div>
+					<div class="timeIcon">
+						<span class="startTime">{{ gistContent.event.getStartAt|date( currentUserClock12Hour ?  'g:ia' : 'H:i', currentTimeZone) }}</span>
+					</div>
+				</a>
+			</time>
+		</div>
+	{% endif %}
+	<div class="title" itemprop="name">
+		<a href="/event/{{ gistContent.event.slugForUrl }}" itemprop="url">
+			{{ gistContent.event.summaryDisplay}}
+		</a>
+	</div>
+	<p class="description" itemprop="description">{{ gistContent.event.description |  truncate(1000) | nl2br  | linkify }}</p>
+	<div class="afterEventListing"></div>
+	<form action="/event/{{ gistContent.event.slugForUrl }}" method="get">
+		<div class="bigSubmitActionWrapper"><input type="submit"  value="More about {{ gistContent.event.summaryDisplay |e('html_attr') }}" class="bigSubmitAction"/></div>
+		<div class="afterBigSubmitActionWrapper"></div>
+	</form>
+</li>

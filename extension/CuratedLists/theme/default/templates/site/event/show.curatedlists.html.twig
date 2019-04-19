@@ -1,0 +1,28 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{%  if curatedLists|length > 0 %}
+	<div class="contentTwoColumns">
+		<div class="contentTwoColumnsTitle">
+			<p class="title">This is part of these Curated Lists</p>
+		</div>
+		<div class="contentTwoColumnsLeft">
+			<ul class="mainListCuratedLists">
+			{% for curatedList in curatedLists %}
+				<li class="curatedlist">
+					<a href="/curatedlist/{{  curatedList.slugForURL }}">{{  curatedList.title }}</a>
+				</li>
+			{% endfor %}
+			</ul>
+		</div>
+		<div class="contentTwoColumnsRight">
+			{%  if currentUserActions.has("org.openacalendar.curatedlists","eventEditCuratedLists") %}
+				<a href="/event/{{ event.slugForUrl }}/edit/curatedlists">Edit Curated Lists</a>
+			{% endif %}
+		</div>
+		<div class="afterContentTwoColumns"></div>
+	</div>
+{%  endif %}

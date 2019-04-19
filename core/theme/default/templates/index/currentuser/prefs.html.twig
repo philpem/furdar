@@ -1,0 +1,32 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Preferences - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'index/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/me', 'label':'your account' }, { 'url':'/me/prefs','label':'preferences' } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="contentMain">
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+	</div>
+
+{% endblock %}
+
+

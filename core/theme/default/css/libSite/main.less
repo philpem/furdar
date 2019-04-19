@@ -1,0 +1,863 @@
+/**
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+*/
+
+
+
+
+.likeFormStyledMinimal {
+	color: #666666;
+	.rowWrapper {
+		padding: 10px 0;
+		.labelWrapper {
+			padding: 0px 5px 0px 0px;
+			text-align: right;
+			display: block;
+			width: 20%;
+			float: left;
+		}
+		.widgetWrapper {
+			display: block;
+			width: 70%;
+			float: left;
+			input[type="text"] {
+				width: 80%;
+			}
+			div.dateInput input[type="text"] {
+				width: 100px;
+			}
+			input[type="url"] {
+				width: 80%;
+			}
+			textarea {
+				width: 80%;
+				height: 100px;
+			}
+		}
+		.widgetWrapperPlacementOnly {
+			display: block;
+			width: 70%;
+			float: left;
+		}
+		.after {
+			clear: both;
+		}
+	}
+}
+
+.oneActionFormRight {
+	float: right;
+	display: inline;
+	padding: 6px;
+	margin: 0;
+	line-height: 1.8;
+	text-align: right;
+	input[type="submit"], a.button {
+		display: inline;
+		background: @colourLighter1;
+		padding: 3px;
+		-webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android <=1.6 */
+		border-radius: 3px; /* Opera 10.5, IE9, Safari 5, Chrome, Firefox 4+, iOS 4, Android 2.1+ */
+		margin: 1px;
+		color: #333;
+		font-size: 1.25rem;
+		text-decoration: none;
+	}
+	input[type="submit"]:hover, a.button:hover, input[type="submit"]:focus, a.button:focus {
+		color: black;
+		text-decoration: underline;
+	}
+}
+.afterOneActionFormRight {
+	clear: both;
+}
+
+#Map.fullWidth {
+	width: 99%;
+	height: 400px;
+}
+
+.underTitleGroupListing {
+	padding: 5px 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+	li {
+		display: inline;
+		font-style: italic;
+		.title {
+			font-weight: bold;
+		}
+	}
+}
+
+ul.mainListGroups li.group, ul.mainListVenues li.venue, ul.mainListCountries li.country {
+	.futureEvents {
+		margin-left: 10px;
+		padding: 4px 20px 0px 20px;
+		font-size: 0.75rem;
+		font-weight: normal;
+		background: @colourFutureEventsInMainListingTitleBackground;
+		.rounded-corners(3px);
+	}
+}
+
+ul.mainListGroups {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.group {
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+	}
+	li.nodata {
+		margin: @listDataItemsMarginTopBottom 0;
+		font-style: italic;
+	}
+}
+
+ul.mainListGroups li.group, div.group {
+	min-height: 50px;
+	padding: 5px 0 20px 0;
+	.title {
+		padding: 2px 0 5px 0;
+		.text {
+			font-size: 1.125rem;
+			font-weight: bold;
+
+		}
+		a {
+			color: #333;
+			text-decoration: none;
+		}
+		a:hover, a:focus {
+			color: black;
+			text-decoration: underline;
+		}
+	}
+	.media {
+		width: 100px;
+		height: 100px;
+		text-align: center;
+		vertical-align: middle;
+		float: right;
+		margin: 2px;
+		img {
+			max-width: 100px;
+			max-height: 100px;
+		}
+	}
+	.notfound {
+		text-align: center;
+		font-style: italic;
+	}
+	div.afterGroupListing {
+		clear: both;
+	}
+}
+
+@media screen and (max-width: @narrowScreensMakeTwoColumnsIntoOneBoundary) {
+	ul.mainListGroups li.group, div.group {
+		.media {
+			display: none;
+		}
+	}
+}
+
+ul.mainListCountries {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.country {
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+		.title {
+			font-size: 1.125rem;
+			font-weight: bold;
+			padding: 2px 0;
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				color: black;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+ul.mainListVenues {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.venue {
+		min-height: 50px;
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+		.title {
+			padding: 2px 0 5px 0;
+			.text {
+				font-size: 1.125rem;
+				font-weight: bold;
+
+			}
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				color: black;
+				text-decoration: underline;
+			}
+		}
+
+		.media {
+			width: 100px;
+			height: 100px;
+			text-align: center;
+			vertical-align: middle;
+			float: right;
+			margin: 2px;
+			img {
+				max-width: 100px;
+				max-height: 100px;
+			}
+		}
+		.afterVenueListing {
+			clear: both;
+		}
+	}
+	li.nodata {
+		margin: @listDataItemsMarginTopBottom 0;
+		font-style: italic;
+	}
+}
+
+@media screen and (max-width: @narrowScreensMakeTwoColumnsIntoOneBoundary) {
+	ul.mainListVenues li.venue {
+		.media {
+			display: none;
+		}
+	}
+}
+
+ul.selectvenue {
+	li.newvenue {
+		.newvenueform {
+			border: 1px solid #ccc;
+			.rounded-corners(2px);
+			padding: 5px;
+			label {
+				display: block;
+				input[type="text"] {
+					width: 50%;
+				}
+			}
+		}
+	}
+}
+
+ul.mainListImports {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.import {
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+		.title {
+			font-size: 1.125rem;
+			font-weight: bold;
+			padding: 2px 0;
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				color: black;
+				text-decoration: underline;
+			}
+		}
+	}
+	li.nodata {
+		margin: @listDataItemsMarginTopBottom 0;
+		font-style: italic;
+	}
+}
+
+
+ul.mainListUserGroups {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.userGroup {
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+		.title {
+			font-size: 1.125rem;
+			font-weight: bold;
+			padding: 2px 0;
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				color: black;
+				text-decoration: underline;
+			}
+		}
+	}
+	li.nodata {
+		margin: @listDataItemsMarginTopBottom 0;
+		font-style: italic;
+	}
+}
+
+
+
+ul.mainListTags {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.tag {
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+		.title {
+			font-size: 1.125rem;
+			font-weight: bold;
+			padding: 2px 0;
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				color: black;
+				text-decoration: underline;
+			}
+		}
+		span.tagTitleWrapper {
+			font-size: 1.125rem;
+			background: url('/theme/default/img/tagBackground.png') no-repeat left center #4F4F4F;
+			white-space: nowrap;
+			.rounded-corners-right(2px);
+			padding: 2px 5px 2px 20px;
+			color: white;
+			a {
+				color: white;
+				text-decoration: none;
+			}
+		}
+	}
+	li.nodata {
+		margin: @listDataItemsMarginTopBottom 0;
+		font-style: italic;
+	}
+}
+
+div.inlineTags {
+	ul.inlineTags {
+		display: inline;
+		padding: 20px 0;
+		font-weight: 200;
+		li.tag {
+			padding: 2px;
+			display: inline;
+			line-height: 1.8em;
+			span.content {
+				background: url('/theme/default/img/tagBackground.png') no-repeat left center #4F4F4F;
+				white-space: nowrap;
+				.rounded-corners-right(2px);
+				padding: 2px 5px 2px 20px;
+				color: white;
+				a {
+					color: white;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}
+
+table.data {
+	margin: 10px 0;
+	tr th {
+		background: #ccc;
+		border-bottom: 1px solid black;
+		padding: 3px;
+		text-align: left;
+	}
+	tr {
+		background: #fff;       
+		td {
+			padding: 3px;
+		}
+	}
+	tr.alternative {
+		background: #ccc;       
+	}
+	tr.nodata {
+		background: #ccc;       
+		td {
+			font-style: italic;
+		}
+	}
+	div.buttonContainer {
+		padding: 6px;
+		margin: 0;
+	}
+	a.button {
+		border: 1px solid black;
+		background: white;
+		padding: 3px;
+		-webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android <=1.6 */
+		border-radius: 3px; /* Opera 10.5, IE9, Safari 5, Chrome, Firefox 4+, iOS 4, Android 2.1+ */            
+		margin: 1px;
+		color: black;
+		display: block;
+		text-decoration: none;
+	}
+	a.button:hover, a.button:focus {
+		color: red;
+		text-decoration: underline;
+	}
+}
+
+ul.history {
+	.contentMain();
+	li.event, li.group, li.venue, li.area, li.tag, li.import, li.media {
+		padding: 5px;
+		margin: 5px 0 5px 0;
+		.rounded-corners (5px);
+		div.icon {
+			float: left;
+			width: 60px;
+			height: 60px;
+			text-align: center;
+			background: #231f20;
+			.rounded-corners(4px);
+			position: relative;
+			z-index: 100;
+			img {
+				padding: 10px;
+			}
+			margin-right: 5px;
+		}
+		.title {
+			font-weight: bold;
+			a {
+				color: black;
+				text-decoration: none;
+			}
+		}
+		.created {
+			padding: 5px 0 0 0;
+			clear:both;
+			font-style: italic;
+			font-size: 0.815rem;
+		}
+		.fieldChanged {
+			.field {
+				display: inline;
+				font-style: italic;
+			}
+			.value {
+				display: inline;
+			}
+		}
+	}
+	li.event {
+		background: @colourHistoryEventBackground;
+	}
+	li.group {
+		background: @colourHistoryGroupBackground;
+	}
+	li.venue {
+		background: @colourHistoryVenueBackground;
+	}
+	li.area {
+		background: @colourHistoryAreaBackground;
+	}
+	li.tag {
+		background: @colourHistoryTagBackground;
+	}
+	li.media {
+		background: @colourHistoryMediaBackground;
+	}
+	li.import {
+		background: @colourHistoryImportURLBackground;
+	}
+	li.deleted {
+		text-color: @colourHistoryDeletedBackground;
+	}
+}
+
+#NewVenueForm {
+	form {
+		label {
+			display: block;
+		}
+	}
+}
+
+#MediaPopup {
+	.imageWrapper {
+		img {
+			max-width: 100%;
+		}
+	}
+	.title {
+		font-size: 1.125rem;
+		font-weight: bold;
+	}
+	.link {
+		text-align: right;
+	}
+	#MediaPopupContents {
+		a {
+			color: #333;
+			text-decoration: none;
+		}
+		a:hover, a:focus {
+			color: black;
+			text-decoration: underline;
+		}
+	}
+}
+
+ul.newRecuringEvents li.newRecuringEvent {
+	margin-bottom: 10px;
+	padding: 5px;
+	background: #ddd;
+	.rounded-corners(5px);
+	.summary {
+		display: inline;
+		font-weight: bold;
+		line-height: 1.25em;
+	}
+	.date {
+		clear: both;
+		margin-top: 10px;
+		display: block;
+		color: black;
+		font-weight: 400;
+		background: url('/theme/default/img/eventFooterCalendarIcon.png') no-repeat;
+		padding: 5px 10px 5px 20px;
+
+	}
+}
+
+
+.SendEmailPreview {
+	border: #555 2px solid;
+	background: #ddd;
+	margin: 10px 0;
+	.SendEmailPreviewHeader {
+		background: #ddd;
+		padding: 10px;
+		.SendEmailPreviewFieldKey {
+			font-weight: bold;
+		}
+	}
+	.SendEmailPreviewBody {
+		background: white;
+		padding: 10px;
+	}
+
+}
+
+.requestAccessWrapper {
+	.rounded-corners (5px);
+	padding: 10px;
+	background: #ddd;
+	.emailWarning{
+		font-style: italic;
+	}
+}
+
+#Map.fullScreen {
+		width: 90%;
+		height: 400px;
+	}
+.bigButtonContainer {
+	padding: 6px;
+	margin: 0;
+	line-height: 1.8;
+	text-align: right;
+	a.button, input.button {
+		background: @colourLighter1;
+		padding: 3px;
+		-webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android <=1.6 */
+		border-radius: 3px; /* Opera 10.5, IE9, Safari 5, Chrome, Firefox 4+, iOS 4, Android 2.1+ */            
+		margin: 1px;
+		color: #333;
+		font-size: 1.25rem;
+		text-decoration: none;
+	}
+	a.button:hover, input.button:hover,a.button:focus, input.button:focus  {
+		color: black;
+		text-decoration: underline;
+	}
+}
+
+ul.mediaGrid {
+	li {
+		width: 100px;
+		height: 100px;
+		text-align: center;
+		vertical-align: middle;
+		float: left;
+		margin: 2px;
+		img {
+			max-width: 100px;
+			max-height: 100px;
+		}
+	}
+}
+.afterMediaGrid {
+	clear: left;
+}
+
+ul.mainListMedias {
+	max-width: @listDataItemsMaxWidth;
+	margin: 0px auto;
+	padding: 0 @contentSideGap;
+	li.media {
+		margin: @listDataItemsMarginTopBottom 0;
+		border-bottom: 2px solid #E9E9E9;
+	}
+}
+
+ul.mainListMedias li.media {
+	border-bottom: 2px solid #E9E9E9;
+	padding: 5px 0;
+	.thumbnail {
+		width: 70px;
+		height: 70px;
+		float: left;
+		margin: 2px;
+		img {
+			max-width: 70px;
+			max-height: 70px;
+		}
+	}
+	.title {
+		font-weight: bold;
+	}
+	div.afterMediaListing {
+		clear: both;
+	}
+}
+
+ul.areasList {
+	li.area {
+		border-bottom: 2px solid #E9E9E9;
+		.title {
+			font-size: 1.125rem;
+			font-weight: bold;
+			padding: 2px 0;
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				color: black;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+ul.areas {
+	padding: 20px 0;
+	font-weight: 200;
+	li.area {
+		padding: 2px;
+		display: inline;
+		line-height: 1.8em;
+		span.content {
+			background: url('/theme/default/img/areaBackground.png') no-repeat @colourDarker2;
+		}
+		span.contentWithEvents {
+			background: url('/theme/default/img/areaBackground.png') no-repeat @colourDarker2;
+		}
+		span.contentWithNoEvents {
+			font-size: 0.875rem;
+			background: url('/theme/default/img/areaBackground.png') no-repeat #676767;
+		}
+		span.content, span.contentWithEvents, span.contentWithNoEvents {
+			white-space: nowrap;
+			.rounded-corners(2px);
+			padding: 2px 5px 2px 20px;
+			color: white;
+			a {
+				color: white;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+ul.areasAdmin {
+	padding: 10px 5px 10px 20px;
+	font-weight: 200;
+	li.area {
+		padding: 2px;
+		span.content {
+			background: url('/theme/default/img/areaBackground.png') no-repeat @colourDarker2;
+		}
+		span.contentWithEvents {
+			background: url('/theme/default/img/areaBackground.png') no-repeat @colourDarker2;
+		}
+		span.contentWithNoEvents {
+			font-size: 0.875rem;
+			background: url('/theme/default/img/areaBackground.png') no-repeat @colourDarker2;
+		}
+		span.contentNew {
+			font-size: 0.875rem;
+			background: url('/theme/default/img/areaBackground.png') no-repeat #676767;
+		}
+		span.content, span.contentWithEvents, span.contentWithNoEvents, span.contentNew {
+			white-space: nowrap;
+			.rounded-corners(2px);
+			padding: 2px 2px 2px 20px;
+			color: white;
+			a {
+				color: white;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+#ChangeVenueAreaList, #ChangeEventAreaList, #ChangeAreaAreaList {
+	li.selectedarea {
+		padding: 10px 0;
+		.content {
+			background: url('/theme/default/img/areaBackground.png') no-repeat @colourDarker1;
+			.rounded-corners(2px);
+			padding: 2px 5px 2px 20px;
+			color: white;
+			a.remove {
+				padding-left: 10px; 
+				color: white;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+ul.mainListImportedEvents {
+    .contentMain();
+}
+
+ul.mainListImportedEvents li.importedevent, div.importedevent {
+	border: 2px solid #E9E9E9;
+	background: #eeeeee;
+	.rounded-corners(5px);
+	margin: 10px 0;
+	padding: 5px;
+	div.title {
+		font-size: 1.125rem;
+		font-weight: bold;
+		line-height: 1.25em;
+		padding: 2px 0 10px 70px;
+		position: relative;
+		top: -5px;
+		color: #555555;
+		a {
+			color: #555;
+			text-decoration: none;
+		}
+		a:hover, a:focus {
+			color: black;
+			text-decoration: underline;
+		}
+	}
+	p.description {
+		color: #555555;
+	}
+	.dateAndLocationWrapper {
+		clear: both;
+		padding: 10px 0 0 0;
+		margin-top: 10px;
+		div.date {
+			display: block;
+			color: #555;
+			font-weight: 400;
+			background: url('/theme/default/img/eventFooterCalendarIcon.png') no-repeat;
+			padding: 5px 10px 5px 20px;
+		}
+	}
+	div.afterEventListing {
+		clear: both;
+	}
+}
+
+#formRowEditCommentToggler {
+	.title, .arrow {
+		font-size: 0.875rem;
+	}
+	.title {
+		text-decoration: underline;
+	}
+}
+
+
+#stepDoneViewsShowHideLink {
+	text-align: right;
+	a {
+		text-decoration: none;
+		background: #ccc;
+		font-size: 0.875rem;
+		padding: 2px 5px;
+		.rounded-corners(2px);
+		color: #000000;
+	}
+	a:visited {
+		color: #000000;
+	}
+}
+
+ul#ImportURLRecommendations {
+	li.ImportURLRecommendation {
+		border: 2px solid @colourDarker2;
+		background: @colourLighter2;
+		padding: 10px;
+		.title {
+			font-weight: bold;
+			padding-bottom: 5px;
+		}
+		.description {
+			padding-bottom: 5px;
+		}
+		.action {
+			text-align: right;
+			padding: 5px 0;
+			line-height: 1.5;
+			a {
+				background: @colourLighter1;
+				padding: 5px 10px;
+				-webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android <=1.6 */
+				border-radius: 3px; /* Opera 10.5, IE9, Safari 5, Chrome, Firefox 4+, iOS 4, Android 2.1+ */
+				color: #333;
+			}
+			a:hover, a:focus {
+				color: black;
+			}
+		}
+	}
+}
+
+ul.listFeatures {
+    li.feature {
+        border-bottom: 2px solid #E9E9E9;
+    }
+}
+
+#ReadableDateTimeRange .date .warning {
+	color: red;
+	font-weight: bold;
+	padding-top: 10px;
+}

@@ -1,0 +1,123 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'sysadmin/page.html.twig' %}
+
+{% block pageTitle %}User {{  user.username }} - {% endblock %}
+
+{% block content %}
+
+
+	<table class="oneData">
+		<tr>
+			<th>ID</th>
+			<td>{{ user.id }}</td>
+		</tr>
+		<tr>
+			<th>Username</th>
+			<td>{{ user.username }}</td>
+		</tr>
+		<tr>
+			<th>Displayname</th>
+			<td>{{ user.displayname }}</td>
+		</tr>
+		<tr>
+			<th>Email</th>
+			<td>{{ user.email }}</td>
+		</tr>
+		<tr>
+			<th>Email Verified</th>
+			<td>{% if user.isEmailVerified %}<span class="yes">yes</span>{% else %}<span class="no">no</span>{% endif %}</td>
+		</tr>
+		<tr>
+			<th>System Admin</th>
+			<td>{% if user.isSystemAdmin %}<span class="yes">yes</span>{% else %}<span class="no">no</span>{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Editor</th>
+			<td>{% if user.isEditor %}<span class="yes">yes</span>{% else %}<span class="no">no</span>{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Closed by sys admin</th>
+			<td>
+				{% if user.isClosedBySysAdmin %}<span class="yes">yes</span>{% else %}<span class="no">no</span>{% endif %}				
+			</td>
+		</tr>
+		<tr>
+			<th>Email Upcoming Events</th>
+			<td>{{ user.getEmailUpcomingEvents }}</td>
+		</tr>
+		<tr>
+			<th>Email Upcoming Events Days Notice</th>
+			<td>{{ user.getEmailUpcomingEventsDaysNotice }}</td>
+		</tr>
+		<tr>
+			<th>Clock</th>
+			<td>{% if user.getIsClock12Hour %}12hr{% else %}24hr{% endif %}</td>
+		</tr>	
+		<tr>
+			<th>Created</th>
+			<td>{% if user.createdAt %}{{ user.createdAt |date('D H:i jS M Y', currentTimeZone ) }}{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Created From IP</th>
+			<td>{{  user.createdFromIP }}</td>
+		</tr>
+		<tr>
+			<th>Can Purge</th>
+			<td>{% if canPurge %}Yes{%  else %}No{%  endif %}</td>
+		</tr>
+		<tr>
+			<th>Last Website Login at</th>
+			<td>{% if user.getLastWebsiteLoginAt %}{{ user.getLastWebsiteLoginAt |date('D H:i jS M Y', currentTimeZone ) }}{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Last Website Remember Me Used at</th>
+			<td>{% if remember_me_last_used %}{{ remember_me_last_used |date('D H:i jS M Y', currentTimeZone ) }}{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Last Private Feed Key Used at</th>
+			<td>{% if private_feed_key_last_used %}{{ private_feed_key_last_used |date('D H:i jS M Y', currentTimeZone ) }}{% endif %}</td>
+		</tr>
+		<tr>
+			<th>More</th>
+			<td>
+				<ul>
+					<li><a href="/sysadmin/user/{{ user.id }}/verify">Verify</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/reset">Reset</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/notification">Notifications</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/notificationprefs">Notification Preferences</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/event/edited">Events Edited</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/area/edited">Areas Edited</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/venue/edited">Venues Edited</a></li>
+					<li><a href="/sysadmin/user/{{ user.id }}/group/edited">Groups Edited</a></li>
+				</ul>
+			</td>
+		</tr>		
+	</table>
+
+	{%  include 'sysadmin/common/sysadminCommentsList.html.twig' %}
+
+	<form action="#" method="post" class="action">
+		{{ form_errors(form) }}
+		{{ form_rest(form) }}
+		<input type="submit" name="Do Action" />
+	</form>
+
+	<ul class="actionHelp">
+		<li>editor yes</li>
+		<li>editor no</li>
+		<li>sysadmin yes</li>
+		<li>sysadmin no</li>
+		<li>verifyemail</li>
+		<li>resendverificationemail</li>
+		<li>close</li>
+		<li>open</li>
+		<li>email email</li>
+		<li>purge <span class="param">password</span></li>
+	</ul>
+
+{% endblock %}

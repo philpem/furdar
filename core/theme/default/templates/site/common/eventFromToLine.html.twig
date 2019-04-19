@@ -1,0 +1,38 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div class="date">
+	<time datetime="{{ startAt|date('c', timezone) }}" itemprop="startDate">
+		<span class="startDay">{{ startAt|date('D jS', timezone) }}</span>
+		<span class="startMonthYear">{{ startAt|date('M Y', timezone) }}</span>
+		<span class="startTime">
+			{{ startAt|date( currentUserClock12Hour ? 'g:ia' : 'H:i', timezone) }}
+		</span>
+	</time>
+	<span class="to">to</span>
+	{% if sameday(startAt,endAt) %}
+		<time datetime="{{ endAt|date('c', timezone) }}" itemprop="endDate">
+			<span class="end">
+				{{ endAt|date( currentUserClock12Hour ?  'g:ia' : 'H:i', timezone) }}
+			</span>
+		</time>
+	{% else %}
+		<time datetime="{{ endAt|date('c', timezone) }}" itemprop="endDate">
+			<span class="end">
+				{{ endAt|date( currentUserClock12Hour ?  'D jS M Y g:ia' : 'D jS M Y H:i', timezone) }}
+			</span>
+		</time>
+	{% endif %}
+	{% if showTimeZone %}
+		({{ timezone }} time)
+	{% endif %}
+	{%  if showDuration is defined and showDuration and startAt.timestamp != endAt.timestamp %}
+		Lasts {{ timebetween(endAt, startAt) }}.
+		{%  if (endAt.timestamp - startAt.timestamp) > config.warnWhenEventsLastLongerThanSeconds %}
+			<div class="warning">(Does it really last this long?)</div>
+		{%  endif %}
+	{% endif %}
+</div>

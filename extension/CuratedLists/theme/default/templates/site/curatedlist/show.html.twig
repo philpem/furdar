@@ -1,0 +1,83 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/curatedlist/page.mainTab.html.twig' %}
+
+{% block pageTitle %}{{ curatedlist.title }} - {% endblock %}
+
+{% block switcherAgenda %}current{% endblock %}
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed or curatedlist.isDeleted or not eventListFilterParams.isDefaultFilters %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{%  else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/curatedlist/{{ curatedlist.slug }}/" />
+	{% endif %}
+	{{ parent() }}
+{% endblock %}
+
+{% block eventsContent %}
+
+	<ul class="mainListEvents">
+		{% for event in events %}
+			{%  set html %}
+				{% if actionCuratedListEditContents %}
+					<div class="curatedListOptions">
+						{%  if event.isEventInCuratedList %}
+							<form action="/curatedlist/{{ curatedlist.slug }}/event/{{ event.slug }}/remove" method="post">
+								<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+								<input type="hidden" name="returnTo" value="curatedlist">
+								<div class="curatedlistOptionsActionWrapper"><input type="submit" value="Remove Event"></div>
+							</form>
+						{% endif %}
+						{%  if event.inCuratedListGroupSlug %}
+							<form action="/curatedlist/{{ curatedlist.slug }}/group/{{ event.inCuratedListGroupSlug }}/remove" method="post">
+								<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+								<input type="hidden" name="returnTo" value="curatedlist">
+								<div class="curatedlistOptionsActionWrapper"><input type="submit" value="Remove Group {{ event.inCuratedListGroupTitle | e('html_attr') }}"></div>
+							</form>
+						{% endif %}
+						<div class="afterCuratedlistOptionsActionWrapper"></div>
+					</div>
+				{% endif %}
+			{%  endset %}
+			{% include '/site/common/mainListEvent.html.twig' with {'event':event, 'showCurrentUserOptions':true, 'showVenueAndArea':true, extraHTMLAtEnd: html }  %}
+		{% else %}
+			<li>
+				<p>
+					{%  if not eventListFilterParams.isDefaultFilters %}
+						{%  if eventsDefaultCount == 1 %}
+							No events found with that filter. Do you want to see <a href="/curatedlist/{{  curatedlist.slugForURL }}">the one future event</a> instead?
+						{%  elseif eventsDefaultCount > 1 %}
+							No events found with that filter. Do you want to see <a href="/curatedlist/{{  curatedlist.slugForURL }}">the {{ eventsDefaultCount }} future events</a> instead?
+						{%  else %}
+							No events found.
+						{%  endif %}
+					{%  else  %}
+						No events found.
+					{%  endif %}
+				</p>
+
+				{%  if eventListFilterParams.isDefaultFilters %}
+					{%  if eventsPastCount == 1 %}
+						<p>(Sorry, you've already missed 1 event.)</p>
+					{% elseif eventsPastCount > 1 %}
+						<p>(Sorry, you've already missed {{ eventsPastCount  }} events.)</p>
+					{%  endif %}
+				{%  endif %}
+			</li>		
+		{% endfor %}
+	</ul>
+
+{% endblock %}
+
+
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+
+	

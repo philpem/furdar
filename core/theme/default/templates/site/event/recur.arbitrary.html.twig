@@ -1,0 +1,45 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/event/page.html.twig' %}
+
+{% block pageTitle %}Recur {{ event.summaryDisplay }} - {% endblock %}
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+{% block actions %}
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="contentMain">
+
+		<p>What date does the event next happen on?</p>
+
+		<form id="GroupSearchForm" method="POST">
+			<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+
+			<input type="text" name="date" value="" id="RecurArbitraryDate" class="hasDatePicker" required="true">
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Create new event" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+	<script type="text/javascript" src="/theme/default/js/recur.arbitrary.js"></script>
+{% endblock %}
+

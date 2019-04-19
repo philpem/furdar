@@ -1,0 +1,75 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+{% extends 'site/venue/page.mainTab.html.twig' %}
+
+{% block pageTitle %}{{ venue.title }} - {% endblock %} 
+
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed or venue.isDeleted  or not eventListFilterParams.isDefaultFilters %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{%  else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/venue/{{ venue.slugForUrl }}/" />
+	{% endif %}
+	{% include 'site/common/mapLibrary.css.html.twig' %}
+	{{ parent() }}
+{% endblock %}
+
+{% block switcherAgenda %}current{% endblock %}
+
+{% block tabDetails %}currentTab{% endblock %}
+
+{% block eventsContent %}
+
+	<ul class="mainListEvents">
+		{% for event in events %}
+			{% include '/site/common/mainListEvent.html.twig' with {'event':event, 'showCurrentUserOptions':true}  %}
+		{% else %}
+			<li class="nodata">
+				<p>
+					{%  if not eventListFilterParams.isDefaultFilters %}
+						{%  set eventsDefaultCount = venue|futureeventscount %}
+						{%  if eventsDefaultCount == 1 %}
+							No events found with that filter. Do you want to see <a href="/venue/{{  venue.slugForURL }}">the one future event</a> instead?
+						{%  elseif eventsDefaultCount > 1 %}
+							No events found with that filter. Do you want to see <a href="/venue/{{  venue.slugForURL }}">the {{ eventsDefaultCount }} future events</a> instead?
+						{%  else %}
+							No events found.
+						{%  endif %}
+					{%  else  %}
+						No events found.
+					{%  endif %}
+				</p>
+
+				{%  if eventListFilterParams.isDefaultFilters %}
+					{%  set eventsPastCount = venue|pasteventscount %}
+					{%  if eventsPastCount == 1 %}
+						<p>(Sorry, you've already missed 1 event.)</p>
+					{% elseif eventsPastCount > 1 %}
+						<p>(Sorry, you've already missed {{ eventsPastCount  }} events.)</p>
+					{%  endif %}
+				{%  endif %}
+			</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	{{ parent() }}
+{% endblock %}		
+		
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,29 @@
+<?php
+
+use models\SiteModel;
+use models\VenueModel;
+use models\UserAccountModel;
+use Silex\Application;
+
+/**
+ *
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ */
+interface InterfaceNewsFeedModel
+{
+
+
+    /** @return \DateTime */
+    public function getCreatedAt();
+
+    public function getID();
+
+    public function getURL();
+
+    public function getTitle();
+
+    public function getSummary();
+}

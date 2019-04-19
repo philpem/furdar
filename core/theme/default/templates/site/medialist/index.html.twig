@@ -1,0 +1,51 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block pageTitle %}Media - {% endblock %} 
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{% else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/media/" />
+	{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/media', 'label':'media' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>Media</h2>
+	</div>
+
+	<ul class="mainListMedias">
+		{% for media in medias %}
+			<li class="media">
+				<div class="thumbnail">
+					<a href="/media/{{ media.slug }}"><img src="/media/{{ media.slug }}/thumbnail"></a>
+				</div>
+				<div class="title">{% if media.title %}{{ media.title }}{% else %}Picture{% endif %}</div>
+				<div class="source">Source: 
+					<a href="{% if media.sourceUrl %}{{ media.sourceUrl }}{% else %}/media/{{ media.slug }}/{% endif %}" target="_blank">
+						{% if media.sourceText %}{{ media.sourceText }}{% else %}Unknown{% endif %}
+					</a>
+				</div>
+				<div class="afterMediaListing"></div>
+			</li>
+		{% endfor %}
+	</ul>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,37 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/currentuser/page.events.html.twig' %}
+
+
+{% block switcherAgenda %}current{% endblock %}
+
+{% block eventsContent %}
+
+	<ul class="mainListEvents">
+		{% for event in events %}
+			{% include '/index/common/eventListing.html.twig' with {'event':event, 'showCurrentUserOptions':true, 'showVenueAndArea':true}  %}
+		{% else %}
+			{%  if eventListFilterParams.isDefaultFilters %}
+				<li class="info">You can watch groups of events or say you are attending them - and
+					then your personal list of only the events you are interested in will build up here.</li>
+			{%  else %}
+				<li class="info">No events found with that filter.</li>
+			{%  endif %}
+		{% endfor %}
+	</ul>
+
+{% endblock %}
+
+{% block scripts %}
+	{{  parent() }}
+	{% if config.isSingleSiteMode %}
+		<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>	
+	{% else %}
+		<script type="text/javascript" src="/theme/default/js/userAtEvents.index.js?v={{ config.assetsVersion }}"></script>	
+	{% endif %}
+{% endblock %}
+

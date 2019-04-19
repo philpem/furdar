@@ -1,0 +1,54 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block htmlHeader %}
+	<meta name="openacalendar:tag:slug" content="{{  tag.slugForURL}}" />
+{%  endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/tag', 'label':'tags' }, { 'url':'/tag/'~tag.slugForURL, 'label':tag.title } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	{% if not currentSiteFeatures.has('org.openacalendar','Tag') %}
+		<div class="flash-error"><div class="contentMain">This feature has been disabled on this calendar. You can not make changes.</div></div>
+	{% endif %}
+
+	<div class="contentMain">
+		<h2>{{  tag.title }}</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% if currentUserActions.has("org.openacalendar","tagEdit") %}
+				<li class="action"><a href="/tag/{{ tag.slugForUrl }}/edit"><div class="fa fa-pencil"></div> edit</a></li>
+			{% endif %}
+			{% if currentUserActions.has("org.openacalendar","tagDelete") %}
+				<li class="action"><a href="/tag/{{ tag.slugForUrl }}/delete"><div class="fa fa-trash-o"></div> delete</a></li>
+			{% endif %}
+			{% if currentUserActions.has("org.openacalendar","tagUndelete") %}
+				<li class="action"><a href="/tag/{{ tag.slugForUrl }}/undelete"><div class="fa fa-trash-o"></div> undelete</a></li>
+			{% endif %}
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/tag/{{ tag.slugForUrl }}">Details</a></li>
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">var exportData = { tag:{{ tag.slug }}, tagSlugURL:"{{ tag.slugForURL|e('js') }}", tagTitle:"{{ tag.title|e('js') }}" }</script>
+{% endblock %}
+

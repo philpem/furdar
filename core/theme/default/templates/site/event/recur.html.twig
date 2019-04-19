@@ -1,0 +1,46 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/event/page.html.twig' %}
+
+
+
+{% block pageTitle %}Recur {{ event.summaryDisplay }} - {% endblock %} 
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+{% block actions %}
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="contentMain">
+
+		<p>Does this event recur <a href="/event/{{ event.slugForUrl }}/recur/weekly">weekly</a>?</p>
+
+		{% if recurMonthlyOnWeekNumber %}
+			<p>Does this event recur <a href="/event/{{ event.slugForUrl }}/recur/monthly">monthly
+					on the {{ recurMonthlyOnWeekNumber }}{{ recurMonthlyOnWeekNumberOrdinal }}
+					{{ event.getStartAt|date('l', currentTimeZone)  }} in the month</a>?</p>
+		{% endif %}
+
+		{% if recurMonthlyOnLastWeek %}
+			<p>Does this event recur <a href="/event/{{ event.slugForUrl }}/recur/monthlyLast">monthly
+					on the last {{ event.getStartAt|date('l', currentTimeZone)  }} in the month</a>?</p>
+		{% endif %}
+
+
+		<p>Does this event recur <a href="/event/{{ event.slugForUrl }}/recur/arbitrary">at a set date</a>?</p>
+
+	</div>
+
+{% endblock %}
+

@@ -1,0 +1,29 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Add a Group - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/group', 'label':'groups' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<h3>Add a group</h3>
+
+	<p>Create an account or login to add a group</p>
+
+	<div class="bigButtonContainer">
+		<a  class="button" href="{{ config.getWebIndexDomainSecure() }}/you/login{%  if not config.isSingleSiteMode %}?site={{ currentSite.slug }}{% endif %}">Login</a>
+		<a  class="button" href="{{ config.getWebIndexDomainSecure() }}/you/register{%  if not config.isSingleSiteMode %}?site={{ currentSite.slug }}{% endif %}">Register</a>
+	</div>
+
+{% endblock %}
+
+
+

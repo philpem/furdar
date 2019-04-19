@@ -1,0 +1,27 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+
+<li class="venue">
+	{%  if venue.hasMediaSlugs %}
+		{% for mediaSlug in venue.mediaSlugsAsList(2) %}
+			<div class="media"><a href="/venue/{{ venue.slugForUrl }}"><img src="/media/{{ mediaSlug }}/thumbnail"></a></div>
+		{% endfor %}
+	{%  endif %}
+	<div class="title">
+		<a href="/venue/{{ venue.slugForUrl }}">
+			<span class="text">{{ venue.title }}</span>
+			{% if venue.cachedFutureEvents == 1 %}
+				<span class="futureEvents">1 Future Event</span>
+			{% elseif venue.cachedFutureEvents > 1 %}
+				<span class="futureEvents">{{  venue.cachedFutureEvents }} Future Events</span>
+			{%  endif %}
+		</a>
+	</div>
+	{{ venue.description | nl2br }}
+	<div class="afterVenueListing"></div>
+</li>

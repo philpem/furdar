@@ -1,0 +1,83 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div class="filterListWrapper filterListEventWrapper">
+	<div id="FilterListEventWrapperSectionHidden" {% if not eventListFilterParams.isDefaultFilters %}style="display: none;"{% endif %}>
+		<div class="showHideLink">
+			<a href="#" onclick="$('#FilterListEventWrapperSectionHidden').hide(); $('#FilterListEventWrapperSectionShown').show();">
+				Show Filters <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+			</a>
+		</div>
+		{% if not eventListFilterParams.isDefaultFilters %}
+			<div class="currentFilters">
+				{{ eventListFilterParams.getHumanTextRepresentation }}
+			</div>
+		{%  endif %}
+		<div style="clear: both"></div>
+	</div>
+	<div id="FilterListEventWrapperSectionShown"  {% if eventListFilterParams.isDefaultFilters %}style="display: none;"{% endif %}>
+
+		<div class="showHideLink">
+			<a href="#" onclick="$('#FilterListEventWrapperSectionHidden').show(); $('#FilterListEventWrapperSectionShown').hide();">
+				Hide Filters <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+			</a>
+		</div>
+
+		<form method="get" class="filterList filterListEvent styled" style="clear: both;">
+			<input type="hidden" name="eventListFilterDataSubmitted" value="1">
+
+			{% if eventListFilterParams.dateControls %}
+				<div class="rowWrapper">
+					<div class="labelWrapper">&nbsp;</div>
+					<div class="widgetWrapper"><label><input type="checkbox" name="fromNow" value="1" {% if eventListFilterParams.fromNow %}checked{% endif %}> From now</label></div>
+					<div class="afterRowWrapper"></div>
+				</div>
+
+				<div class="rowWrapper" id="eventListFilterFromWrapper">
+					<label>
+						<div class="labelWrapper">From:</div>
+						<div class="widgetWrapper"><input type="text" name="from" value="{{  eventListFilterParams.from }}" autocomplete="off"></div>
+						<div class="afterRowWrapper"></div>
+					</label>
+				</div>
+			{% endif %}
+
+			{% if eventListFilterParams.specifiedUserControls %}
+				<div class="rowWrapper">
+					<label>
+						<div class="labelWrapper">Show:</div>
+						<div class="widgetWrapper"><select name="specifiedUserWhich">
+								<option value="AW" {% if eventListFilterParams.includeSpecifiedUserWatching %}selected{% endif %}>Attending or Watching</option>
+								<option value="A" {% if not eventListFilterParams.includeSpecifiedUserWatching %}selected{% endif %}>Attending</option>
+							</select></div>
+						<div class="afterRowWrapper"></div>
+					</label>
+				</div>
+			{% endif %}
+
+
+			<div class="rowWrapper">
+				<label>
+					<div class="labelWrapper">Search:</div>
+					<div class="widgetWrapper"><input type="text" name="freeTextSearch" value="{{ eventListFilterParams.freeTextSearch }}" autocomplete="off"></div>
+					<div class="afterRowWrapper"></div>
+				</label>
+			</div>
+
+			<div class="rowWrapper">
+				<label>
+					<div class="labelWrapper">&nbsp;</div>
+					<div class="widgetWrapper"><input type="checkbox" name="includeDeleted" value="1" {% if eventListFilterParams.includeDeleted %}checked{% endif %}> Show Deleted</div>
+					<div class="afterRowWrapper"></div>
+				</label>
+			</div>
+
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Filter" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+	</div>
+</div>

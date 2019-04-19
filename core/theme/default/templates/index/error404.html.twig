@@ -1,0 +1,35 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/pageMinimal.html.twig' %}
+
+{% block pageTitle %}Sorry - {% endblock %}
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{% endblock %}
+
+{% block content %}
+	<div class="contentTwoColumns">
+		<div class="contentTwoColumnsLeft">
+
+			<p class="errorPageHeader">404</p>
+			<p class="errorPageHeader">Not found</p>
+			<p class="errorPageHeader">Error</p>
+		</div>
+		<div class="contentTwoColumnsRight">
+
+			<p class="errorPageText">Sorry, we can't find this page.</p>
+
+			<p  class="errorPageText">
+				Please <a href="/">return to the home page and try again</a>
+				{%  if extensions.hasExtensionID('org.openacalendar.contact') %}, or <a href="/contact">contact us</a> with any problems.{%  endif %}
+			</p>
+
+		</div>
+		<div class="afterContentTwoColumns"></div>
+	</div>
+{%  endblock %}

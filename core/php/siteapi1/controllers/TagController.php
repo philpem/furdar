@@ -1,0 +1,152 @@
+<?php
+
+namespace siteapi1\controllers;
+
+use api1exportbuilders\EventListCSVBuilder;
+use api1exportbuilders\ICalEventIdConfig;
+use Silex\Application;
+use site\forms\GroupNewForm;
+use site\forms\GroupEditForm;
+use site\forms\EventNewForm;
+use Symfony\Component\HttpFoundation\Request;
+use models\SiteModel;
+use models\GroupModel;
+use models\EventModel;
+use repositories\TagRepository;
+use repositories\builders\TagRepositoryBuilder;
+use repositories\EventRepository;
+use repositories\UserWatchesTagRepository;
+use repositories\builders\EventRepositoryBuilder;
+use repositories\builders\HistoryRepositoryBuilder;
+use api1exportbuilders\EventListICalBuilder;
+use api1exportbuilders\EventListJSONBuilder;
+use api1exportbuilders\EventListJSONPBuilder;
+use api1exportbuilders\EventListATOMBeforeBuilder;
+use api1exportbuilders\EventListATOMCreateBuilder;
+
+use repositories\builders\filterparams\EventFilterParams;
+
+/**
+ *
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ */
+class TagController
+{
+    protected $parameters = array();
+    
+    protected function build($slug, Request $request, Application $app)
+    {
+        $this->parameters = array();
+
+        if (strpos($slug, "-") > 0) {
+            $slugBits = explode("-", $slug, 2);
+            $slug = $slugBits[0];
+        }
+
+        $tr = new TagRepository($app);
+        $this->parameters['tag'] = $tr->loadBySlug($app['currentSite'], $slug);
+        if (!$this->parameters['tag']) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    public function ical($slug, Request $request, Application $app)
+    {
+        if (!$this->build($slug, $request, $app)) {
+            $app->abort(404, "Tag does not exist.");
+        }
+        
+        $ical = new EventListICalBuilder($app, $app['currentSite'], $app['currentTimeZone'], $this->parameters['tag']->getTitle(), new ICalEventIdConfig($request->get('eventidconfig'), $request->server->all()));
+        $ical->getEventRepositoryBuilder()->setTag($this->parameters['tag']);
+        $ical->build();
+        return $ical->getResponse();
+    }
+
+    public function json($slug, Request $request, Application $app)
+    {
+        $ourRequest = new \Request($request);
+
+        if (!$this->build($slug, $request, $app)) {
+            $app->abort(404, "Tag does not exist.");
+        }
+
+        
+        $json = new EventListJSONBuilder($app, $app['currentSite'], $app['currentTimeZone']);
+        $json->getEventRepositoryBuilder()->setTag($this->parameters['tag']);
+        $json->setIncludeEventMedias($ourRequest->getGetOrPostBoolean("includeMedias", false));
+        $json->build();
+        return $json->getResponse();
+    }
+
+    public function jsonp($slug, Request $request, Application $app)
+    {
+        $ourRequest = new \Request($request);
+
+        if (!$this->build($slug, $request, $app)) {
+            $app->abort(404, "Tag does not exist.");
+        }
+
+        
+        $jsonp = new EventListJSONPBuilder($app, $app['currentSite'], $app['currentTimeZone']);
+        $jsonp->getEventRepositoryBuilder()->setTag($this->parameters['tag']);
+        $jsonp->setIncludeEventMedias($ourRequest->getGetOrPostBoolean("includeMedias", false));
+        $jsonp->build();
+        if (isset($_GET['callback'])) {
+            $jsonp->setCallBackFunction($_GET['callback']);
+        }
+        return $jsonp->getResponse();
+    }
+
+    public function csv($slug, Request $request, Application $app)
+    {
+        $ourRequest = new \Request($request);
+
+        if (!$this->build($slug, $request, $app)) {
+            $app->abort(404, "Tag does not exist.");
+        }
+
+
+        $csv = new EventListCSVBuilder($app, $app['currentSite'], $app['currentTimeZone']);
+        $csv->getEventRepositoryBuilder()->setTag($this->parameters['tag']);
+        $csv->setIncludeEventMedias($ourRequest->getGetOrPostBoolean("includeMedias", false));
+        $csv->build();
+        return $csv->getResponse();
+    }
+
+    
+    public function atomBefore($slug, Request $request, Application $app)
+    {
+        if (!$this->build($slug, $request, $app)) {
+            $app->abort(404, "Tag does not exist.");
+        }
+
+        $days = isset($_GET['days']) ? $_GET['days'] : null;
+        $atom = new EventListATOMBeforeBuilder($app, $app['currentSite'], $app['currentTimeZone']);
+        $atom->setDaysBefore($days);
+        $atom->setTitle($this->parameters['tag']->getTitle());
+        $atom->getEventRepositoryBuilder()->setTag($this->parameters['tag']);
+        $atom->build();
+        return $atom->getResponse();
+    }
+    
+
+    public function atomCreate($slug, Request $request, Application $app)
+    {
+        if (!$this->build($slug, $request, $app)) {
+            $app->abort(404, "Tag does not exist.");
+        }
+
+        
+        $atom = new EventListATOMCreateBuilder($app, $app['currentSite'], $app['currentTimeZone']);
+        $atom->setTitle($this->parameters['tag']->getTitle());
+        $atom->getEventRepositoryBuilder()->setTag($this->parameters['tag']);
+        $atom->build();
+        return $atom->getResponse();
+    }
+}

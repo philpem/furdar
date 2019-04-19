@@ -1,0 +1,66 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/area/page.html.twig' %}
+
+{% block pageTitle %}Edit {{ area.title }} - {% endblock %} 
+
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="contentMain">
+
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			<div class="rowWrapper">
+				<div class="labelWrapper">&nbsp;</div>
+				<div class="widgetWrapperPlacementOnly">
+					<ul id="ChangeAreaAreaList">
+						<li class="selectedarea">
+							<span class="content">
+								<span class="title">{{ country.title }}</span>
+							</span>
+						</li>
+
+						{% for parentArea in parentAreas %}
+							<li class="selectedarea">
+								<span class="content">
+									<span class="title">{{ parentArea.title }}</span>
+								</span>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+
+			{{ form_row(form.title) }}
+			{{ form_row(form.description) }}
+
+			{%  include 'site/common/formRowEditComment.html.twig' with {'form': form} %}
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+

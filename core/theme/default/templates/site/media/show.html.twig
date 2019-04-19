@@ -1,0 +1,75 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/media/page.html.twig' %}
+
+
+{% block pageTitle %}{% if media.title %}{{ media.title }}{% else %}Media{% endif %} - {% endblock %} 
+
+{% block htmlHeader %}
+	<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/media/{{ media.slugForUrl }}" />
+	{% if not currentSite.isWebRobotsAllowed %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endif %}
+{% endblock %}
+
+
+{% block tabDetails %}currentTab{% endblock %}
+
+
+{% block actions %}
+	{% if currentUserActions.has("org.openacalendar","mediaEditDetails")  %}
+		<li class="action">
+			<a href="/media/{{ media.slugForUrl }}/edit/details"><div class="fa fa-pencil"></div> edit</a>
+		</li>
+	{%  endif %}
+{% endblock %}
+
+{% block innerContent %}
+
+	<div  class="mainShowMedia contentMain">
+
+		<img src="/media/{{ media.slugForUrl }}/normal">
+
+		<p>
+			Size:
+			{% set kilobyte = 1024 %}
+			{% set megabyte = kilobyte * 1024 %}
+			{% if media.storageSize < kilobyte %}
+				{{ bytmedia.storageSize ~ ' B' }}
+			{% elseif media.storageSize < megabyte %}
+				{{ (media.storageSize / kilobyte)|number_format(2, '.') ~ ' KB' }}
+			{% else %}
+				{{ (media.storageSize / megabyte)|number_format(2, '.') ~ ' MB' }}
+			{% endif %}
+		</p>
+
+		<p><a href="/media/{{ media.slugForUrl }}/full" target="_blank">View Full Size Image</a></p>
+
+		<p>
+			Source:
+			{% if media.sourceUrl %}<a href="{{ media.sourceUrl }}" target="_blank">{% endif %}
+				{% if media.sourceText %}{{ media.sourceText }}{% else %}not known{% endif%}
+			{% if media.sourceUrl %}</a>{% endif %}
+		</p>
+
+		{% if not config.isSingleSiteMode %}
+			{% if currentSite.logoMediaId == media.id %}
+				<p>This is being used as the logo for the calendar.</p>
+			{% else %}
+				{% if currentUserActions.has("org.openacalendar","admin") %}
+					<form id="CountriesForm" action="" method="post" onsubmit="return confirm('Are you sure?');">
+						<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+						<input type="hidden" name="action" value="makeSiteLogo">
+						<input type="submit" value="Make this the site logo">
+					</form>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+
+	</div>
+		
+		
+{% endblock %}
+

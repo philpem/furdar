@@ -1,0 +1,89 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/event/page.html.twig' %}
+
+
+
+
+{% block pageTitle %}Edit Groups for {{ event.summaryDisplay }} - {% endblock %} 
+
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+{% block innerContent %}
+
+	<p class="contentMain">An event can be in more than one group at once.</p>
+
+	<div class="contentTwoColumns">
+
+		<div class="contentTwoColumnsRight">
+
+			<h3>Current Groups</h3>
+
+			<ul class="mainListGroups">
+				{% for group in groups %}
+					<li class="group">
+						<div class="title"><a href="/group/{{ group.slugForUrl }}">{{ group.title }}</a></div>
+						{{ group.description | truncate(200) | nl2br }}
+						<form method="post">
+							<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+							<input type="hidden" name="removeGroup" value="{{ group.slug }}">
+
+							<div class="bigSubmitActionWrapper"><input type="submit"  value="Remove Event From Group" class="bigSubmitAction"/></div>
+							<div class="afterBigSubmitActionWrapper"></div>
+						</form>
+					</li>
+				{% else %}
+					<li class="nodata">
+						This event is not in any groups.
+					</li>
+				{% endfor %}
+			</ul>
+
+			<form method="get" action="/event/{{ event.slugForURL }}">
+				<div class="bigSubmitActionWrapper"><input type="submit"  value="OK, Finished editing!" class="bigSubmitAction"/></div>
+				<div class="afterBigSubmitActionWrapper"></div>
+			</form>
+
+		</div>
+
+		<div class="contentTwoColumnsLeft">
+
+			<h3>Add to other Groups</h3>
+
+			{% include '/site/groupListFilterParams.html.twig' %}
+
+			<ul class="mainListGroups">
+				{% for group in groupsToAdd %}
+					<li class="group">
+						<div class="title"><a href="/group/{{ group.slugForUrl }}">{{ group.title }}</a></div>
+						{{ group.description | truncate(200) |  nl2br }}
+						<form method="post">
+							<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+							<input type="hidden" name="addGroup" value="{{ group.slug }}">
+							<div class="bigSubmitActionWrapper"><input type="submit"  value="Add Event To Group" class="bigSubmitAction"/></div>
+							<div class="afterBigSubmitActionWrapper"></div>
+						</form>
+					</li>
+				{% else %}
+					<li class="nodata">
+						There are no groups.
+					</li>
+				{% endfor %}
+			</ul>
+
+		</div>
+
+		<div class="afterContentTwoColumns"></div>
+
+	</div>
+
+{% endblock %}
+

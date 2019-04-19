@@ -1,0 +1,123 @@
+<?php
+
+
+namespace dbaccess;
+
+use models\UserAccountModel;
+use models\UserGroupEditMetaDataModel;
+use models\UserGroupModel;
+use Silex\Application;
+
+/**
+ *
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ */
+
+class UserGroupDBAccess
+{
+
+    /** @var  \PDO */
+    protected $db;
+
+    /** @var  \TimeSource */
+    protected $timesource;
+
+
+    public function __construct(Application $application)
+    {
+        $this->db = $application['db'];
+        $this->timesource = $application['timesource'];
+    }
+
+    protected $possibleFields = array('title','description','is_deleted','is_in_index','is_includes_anonymous','is_includes_users','is_includes_verified_users');
+
+
+    public function update(UserGroupModel $userGroup, array $fields, UserGroupEditMetaDataModel $userGroupEditMetaDataModel)
+    {
+        $alreadyInTransaction = $this->db->inTransaction();
+
+        // Make Information Data
+        $fieldsSQL1 = array();
+        $fieldsParams1 = array( 'id'=>$userGroup->getId() );
+        foreach ($fields as $field) {
+            $fieldsSQL1[] = " ".$field."=:".$field." ";
+            if ($field == 'title') {
+                $fieldsParams1['title'] = substr($userGroup->getTitle(), 0, VARCHAR_COLUMN_LENGTH_USED);
+            } elseif ($field == 'description') {
+                $fieldsParams1['description'] = $userGroup->getDescription();
+            } elseif ($field == 'is_deleted') {
+                $fieldsParams1['is_deleted'] = ($userGroup->getIsDeleted()?1:0);
+            } elseif ($field == 'is_in_index') {
+                $fieldsParams1['is_in_index'] = ($userGroup->getIsDeleted()?1:0);
+            } elseif ($field == 'is_includes_anonymous') {
+                $fieldsParams1['is_includes_anonymous'] = ($userGroup->getIsIncludesAnonymous()?1:0);
+            } elseif ($field == 'is_includes_users') {
+                $fieldsParams1['is_includes_users'] = ($userGroup->getIsIncludesUsers()?1:0);
+            } elseif ($field == 'is_includes_verified_users') {
+                $fieldsParams1['is_includes_verified_users'] = ($userGroup->getIsIncludesVerifiedUsers()?1:0);
+            }
+        }
+
+        // Make History Data
+        $fieldsSQL2 = array('user_group_id','user_account_id','created_at','from_ip');
+        $fieldsSQLParams2 = array(':user_group_id',':user_account_id',':created_at',':from_ip');
+        $fieldsParams2 = array(
+            'user_group_id'=>$userGroup->getId(),
+            'user_account_id'=>($userGroupEditMetaDataModel->getUserAccount() ? $userGroupEditMetaDataModel->getUserAccount()->getId() : null),
+            'created_at'=>$this->timesource->getFormattedForDataBase(),
+            'from_ip'=>$userGroupEditMetaDataModel->getIp(),
+        );
+        foreach ($this->possibleFields as $field) {
+            if (in_array($field, $fields) || $field == 'title') {
+                $fieldsSQL2[] = " ".$field." ";
+                $fieldsSQLParams2[] = " :".$field." ";
+                if ($field == 'title') {
+                    $fieldsParams2['title'] = substr($userGroup->getTitle(), 0, VARCHAR_COLUMN_LENGTH_USED);
+                } elseif ($field == 'description') {
+                    $fieldsParams2['description'] = $userGroup->getDescription();
+                } elseif ($field == 'is_deleted') {
+                    $fieldsParams2['is_deleted'] = ($userGroup->getIsDeleted()?1:0);
+                } elseif ($field == 'is_in_index') {
+                    $fieldsParams2['is_in_index'] = ($userGroup->getIsDeleted()?1:0);
+                } elseif ($field == 'is_includes_anonymous') {
+                    $fieldsParams2['is_includes_anonymous'] = ($userGroup->getIsIncludesAnonymous()?1:0);
+                } elseif ($field == 'is_includes_users') {
+                    $fieldsParams2['is_includes_users'] = ($userGroup->getIsIncludesUsers()?1:0);
+                } elseif ($field == 'is_includes_verified_users') {
+                    $fieldsParams2['is_includes_verified_users'] = ($userGroup->getIsIncludesVerifiedUsers()?1:0);
+                }
+                $fieldsSQL2[] = " ".$field."_changed ";
+                $fieldsSQLParams2[] = " 0 ";
+            } else {
+                $fieldsSQL2[] = " ".$field."_changed ";
+                $fieldsSQLParams2[] = " -2 ";
+            }
+        }
+
+        try {
+            if (!$alreadyInTransaction) {
+                $this->db->beginTransaction();
+            }
+
+            // Information SQL
+            $stat = $this->db->prepare("UPDATE user_group_information  SET ".implode(",", $fieldsSQL1)." WHERE id=:id");
+            $stat->execute($fieldsParams1);
+
+            // History SQL
+            $stat = $this->db->prepare("INSERT INTO user_group_history (".implode(",", $fieldsSQL2).") VALUES (".implode(",", $fieldsSQLParams2).")");
+            $stat->execute($fieldsParams2);
+
+            if (!$alreadyInTransaction) {
+                $this->db->commit();
+            }
+        } catch (Exception $e) {
+            if (!$alreadyInTransaction) {
+                $this->db->rollBack();
+            }
+            throw $e;
+        }
+    }
+}

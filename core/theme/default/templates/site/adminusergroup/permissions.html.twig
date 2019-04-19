@@ -1,0 +1,78 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/adminusergroup/page.html.twig' %}
+
+
+{% block pageTitle %}User Group Admin - {% endblock %}
+
+
+{% block tabPermissions %}currentTab{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="contentMain">
+
+		<h3>User Permissions</h3>
+
+		<table class="data">
+			<tr>
+				<th>Extension</th>
+				<th>ID</th>
+					<th>&nbsp;</th>
+			</tr>
+			{% for userpermission in userpermissions %}
+				<tr>
+					<td>{{ userpermission.userPermissionExtensionID }}</td>
+					<td>{{ userpermission.userPermissionKey }}</td>
+					<td>
+						<form method="post" action="">
+							<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+							<input type="hidden" name="action" value="removepermission">
+							<input type="hidden" name="extension" value="{{ userpermission.userPermissionExtensionID }}">
+							<input type="hidden" name="permission" value="{{ userpermission.userPermissionKey }}">
+							<input type="submit" value="Remove!">
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+		<h3>Add User Permissions</h3>
+
+		{%  if  userpermissionstoadd %}
+			<table class="data">
+				<tr>
+					<th>Extension</th>
+					<th>ID</th>
+					<th>&nbsp;</th>
+				</tr>
+				{% for userpermission in userpermissionstoadd %}
+					<tr>
+						<td>{{ userpermission.userPermissionExtensionID }}</td>
+						<td>{{ userpermission.userPermissionKey }}</td>
+						<td>
+							<form method="post" action="">
+								<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+								<input type="hidden" name="action" value="addpermission">
+								<input type="hidden" name="extension" value="{{ userpermission.userPermissionExtensionID }}">
+								<input type="hidden" name="permission" value="{{ userpermission.userPermissionKey }}">
+								<input type="submit" value="Add!">
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{%  else %}
+			<p>No more to add.</p>
+		{%  endif %}
+
+	</div>
+
+
+
+{% endblock %}

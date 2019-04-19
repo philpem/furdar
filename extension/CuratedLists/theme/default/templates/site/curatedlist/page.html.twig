@@ -1,0 +1,47 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block htmlHeader %}
+	<link rel="stylesheet" type="text/css" href="/theme/default/css/curatedlists.css?v={{ config.assetsVersion }}">
+	<meta name="openacalendar:curatedlist:slug" content="{{  curatedlist.slugForURL}}" />
+{%  endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/curatedlist', 'label':'curated lists' } ,  { 'url':'/curatedlist/' ~ curatedlist.slugForUrl, 'label': curatedlist.title  } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	{% if not currentSiteFeatures.has('org.openacalendar.curatedlists','CuratedList') %}
+		<div class="flash-error">This feature has been disabled on this calendar. You can not make changes.</div>
+	{% endif %}
+
+	<div class="contentMain">
+		<h2>{{  curatedlist.title }}</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/curatedlist/{{ curatedlist.slug }}">Details &amp; Events</a></li>
+			<li class="tab {% block tabCurators %}{% endblock %}"><a href="/curatedlist/{{ curatedlist.slugForUrl }}/curators">Curators</a></li>
+			<li class="tab {% block tabGroups %}{% endblock %}"><a href="/curatedlist/{{ curatedlist.slugForUrl }}/groups">Groups</a></li>
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">var exportData = { curatedlist:{{ curatedlist.slug }}, curatedlistSlugURL:"{{ curatedlist.slugForURL|e('js') }}"  , curatedlistTitle:"{{ curatedlist.title|e('js') }}"  }</script>
+{% endblock %}
+

@@ -1,0 +1,146 @@
+<?php
+
+
+namespace models;
+
+/**
+ *
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ */
+class UserAtEventModel
+{
+    protected $user_account_id;
+    protected $event_id;
+    protected $is_plan_attending = false;
+    protected $is_plan_maybe_attending = false;
+    protected $is_plan_not_attending = false;
+    protected $is_plan_public = false;
+    
+    protected $user_username;
+    protected $user_displayname;
+
+
+    public function setFromDataBaseRow($data)
+    {
+        $this->user_account_id = $data['user_account_id'];
+        $this->event_id = $data['event_id'];
+        $this->is_plan_attending = (boolean)$data['is_plan_attending'];
+        $this->is_plan_maybe_attending = (boolean)$data['is_plan_maybe_attending'];
+        $this->is_plan_not_attending = (boolean)$data['is_plan_not_attending'];
+        $this->is_plan_public = (boolean)$data['is_plan_public'];
+        $this->user_username = isset($data['user_username']) ? $data['user_username'] : null;
+        $this->user_displayname = isset($data['user_displayname']) ? $data['user_displayname'] : null;
+    }
+    
+    public function getUserAccountId()
+    {
+        return $this->user_account_id;
+    }
+
+    public function setUserAccountId($user_account_id)
+    {
+        $this->user_account_id = $user_account_id;
+    }
+
+    public function getEventId()
+    {
+        return $this->event_id;
+    }
+
+    public function setEventId($event_id)
+    {
+        $this->event_id = $event_id;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPlanUnknownAttending()
+    {
+        return !$this->is_plan_not_attending && !$this->is_plan_maybe_attending && !$this->is_plan_attending;
+    }
+
+
+    public function setIsPlanUnknownAttending($value)
+    {
+        if ($value) {
+            $this->is_plan_attending = false;
+            $this->is_plan_maybe_attending = false;
+            $this->is_plan_not_attending = false;
+        }
+    }
+
+    public function getIsPlanAttending()
+    {
+        return $this->is_plan_attending;
+    }
+
+    public function setIsPlanAttending($is_plan_attending)
+    {
+        $this->is_plan_attending = $is_plan_attending;
+        if ($is_plan_attending) {
+            $this->is_plan_not_attending = false;
+            $this->is_plan_maybe_attending = false;
+        }
+    }
+
+    public function getIsPlanMaybeAttending()
+    {
+        return $this->is_plan_maybe_attending;
+    }
+
+    public function setIsPlanMaybeAttending($is_plan_maybe_attending)
+    {
+        $this->is_plan_maybe_attending = $is_plan_maybe_attending;
+        if ($is_plan_maybe_attending) {
+            $this->is_plan_not_attending = false;
+            $this->is_plan_attending = false;
+        }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPlanNotAttending()
+    {
+        return $this->is_plan_not_attending;
+    }
+
+    /**
+     * @param boolean $is_plan_not_attending
+     */
+    public function setIsPlanNotAttending($is_plan_not_attending)
+    {
+        $this->is_plan_not_attending = $is_plan_not_attending;
+        if ($is_plan_not_attending) {
+            $this->is_plan_attending = false;
+            $this->is_plan_maybe_attending = false;
+        }
+    }
+
+    public function getIsPlanPublic()
+    {
+        return $this->is_plan_public;
+    }
+
+    public function setIsPlanPublic($is_plan_public)
+    {
+        $this->is_plan_public = $is_plan_public;
+    }
+
+    public function getUserUsername()
+    {
+        return $this->user_username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserDisplayname()
+    {
+        return $this->user_displayname ? $this->user_displayname : $this->user_username;
+    }
+}

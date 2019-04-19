@@ -1,0 +1,84 @@
+
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/tag/page.html.twig' %}
+
+{% block pageTitle %}{{ tag.title }} - {% endblock %} 
+
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed or tag.isDeleted or not eventListFilterParams.isDefaultFilters %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{% else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/tag/{{ tag.slugForUrl }}/" />
+	{% endif %}
+	{{ parent() }}
+{% endblock %}
+
+{% block tabDetails %}currentTab{% endblock %}
+	
+{% block actions %}
+	<li class="action">
+		<a href="/api1/tag/{{ tag.slug }}/events.ical" onclick="showExportSharePopup(); return false;">
+			{%  include '/site/common/actionExportShareLabel.html.twig' %}
+		</a>
+	</li>
+{% endblock %}
+
+
+{% block innerContent %}
+
+	<div class="mainShowTag">
+
+		<p>{{ tag.description | nl2br  | linkify }}</p>
+
+		{% include '/site/eventListFilterParams.html.twig' %}
+
+		<ul class="mainListEvents">
+			{% for event in events %}
+				{% include '/site/common/mainListEvent.html.twig' with {'event':event, 'showCurrentUserOptions':true, 'showVenueAndArea':true}  %}
+			{% else %}
+				<li class="nodata">
+					<p>
+						{%  if not eventListFilterParams.isDefaultFilters %}
+							{%  set eventsDefaultCount = tag|futureeventscount %}
+							{%  if eventsDefaultCount == 1 %}
+								No events found with that filter. Do you want to see <a href="/tag/{{  tag.slugForURL }}">the one future event</a> instead?
+							{%  elseif eventsDefaultCount > 1 %}
+								No events found with that filter. Do you want to see <a href="/tag/{{  tag.slugForURL }}">the {{ eventsDefaultCount }} future events</a> instead?
+							{%  else %}
+								No events found.
+							{%  endif %}
+						{%  else  %}
+							No events found.
+						{%  endif %}
+					</p>
+
+					{%  if eventListFilterParams.isDefaultFilters %}
+						{%  set eventsPastCount = tag|pasteventscount %}
+						{%  if eventsPastCount == 1 %}
+							<p>(Sorry, you've already missed 1 event.)</p>
+						{% elseif eventsPastCount > 1 %}
+							<p>(Sorry, you've already missed {{ eventsPastCount  }} events.)</p>
+						{%  endif %}
+					{%  endif %}
+				</li>					
+			{% endfor %}
+		</ul>
+
+	</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+	{{ parent() }}
+	<script src="/theme/default/js/eventFilterParams.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+	<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+
+

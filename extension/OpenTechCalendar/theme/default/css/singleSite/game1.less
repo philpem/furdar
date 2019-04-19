@@ -1,0 +1,136 @@
+@import("mixins.less");
+
+
+
+
+#intro {
+	font-size: 1.4em;
+	font-style: italic;
+	padding: 5px 0;
+}
+
+#instructions {
+	font-size: 1.4em;
+	font-style: italic;
+	padding: 5px 0;
+	#loading {
+		padding: 5px 0;
+	}
+	#startFirstGame {
+		padding: 5px 0;
+	}
+}
+
+#gameState {
+	padding: 8px;
+	font-size: 1.4em;
+	font-style: italic;
+	line-height: 1.6;
+	div {
+		display: inline;
+	}
+	.group {
+		padding: 2px 20px;
+		white-space: nowrap;
+	}
+	a {
+		white-space: nowrap;
+	}
+}
+
+#playAgain {
+	display: inline;
+}
+
+a.button {
+	background: @pageBorderBackgroundColour;	
+	.rounded-corners(5px);
+	padding: 5px 20px;
+	color: white;
+	text-decoration: none;
+}
+
+#eventsListWrapper {
+	clear: both;
+}
+ul.eventsList {
+	li.event {
+		margin: 2px;
+		padding: 4px;
+		.date {
+			font-style: italic;
+			padding-right: 10px ;
+		}
+		a {
+			color: #444;
+			text-decoration: none;
+		}
+		a:hover {
+			color: black;
+			text-decoration: underline;
+		}
+	}
+}
+
+@cellSize: 40px;
+@headerHeight: 30px;
+
+#gameBoardWrapper {
+	width: 100%;
+	#gameBoard {
+		margin: 0 auto;
+		width: ((@cellSize + 1) * 7 + 1);
+		height: ((@cellSize + 1) * 7) + @headerHeight + 1;
+		#gameBoardHeader {
+			background: url('/theme/default/img/gameHeader.png') no-repeat;
+			height: @headerHeight;
+		}
+		#gameBoardFlashWrapper {
+			position: absolute;
+			z-index: 10;
+			width: ((@cellSize + 1) * 7 + 1);
+			#gameBoardFlash {
+				margin: 50px 20px 0 20px;
+				background: #cadeea;
+				border: 2px solid #A8C7DB;
+				padding: 10px 5px;
+				#gameBoardFlashContent {
+					text-align: center;
+				}
+				#gameBoardFlashClose {
+					text-align: right;
+				}
+			}
+		}
+		#gameBoardBoard {
+			border-left: 1px solid #666;
+			.row {
+				clear: both;
+				.cell {
+					float: left;
+					border-right: 1px solid #666;
+					border-bottom: 1px solid #666;
+					width: (@cellSize);
+					height: (@cellSize);
+					img {
+						width: (@cellSize);
+						height: (@cellSize);
+					}
+					a {
+						width: (@cellSize);
+						height: (@cellSize);
+					}
+				}
+			}
+			.squareSeen {
+				background: #ddd;
+			}
+			.squareNotSeen {
+				background: white;
+			}
+			#gameBoardBoardFooter  {
+				clear: both;
+			}
+		}
+	}
+}

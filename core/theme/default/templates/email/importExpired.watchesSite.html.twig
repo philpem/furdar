@@ -1,0 +1,41 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'email/email.html.twig' %}
+
+{% block content %}
+	
+	<p>
+		Hello {{ user.displayname }},
+	</p>
+	<p>
+		We were importing events into the group: {{ group.title }}
+	</p>
+	<p>
+		We were checking regularly for events on: {{import.url}}
+	</p>
+	<p>
+		We haven't had confirmation for a while that this source is correct. To make sure our events data is good, we like to check regularly that a source is correct and still useful.
+	</p>
+	<p>
+		Can you confirm this source is still correct?
+	</p>
+
+	{% include 'email/common/actionButton.html.twig' with { link: config.getWebSiteDomainSecure(currentSite.slug) ~ '/import/' ~ import.slug ~ '/enablefromnotification/' ~  user.id ~ '/' ~ generalSecurityCode, text: 'Confirm source is still correct' } %}
+
+	<p>If this source is confirmed as correct, we will carry on checking regularly for events information there.</p>
+
+	<p>If this source is no longer correct or no longer useful, you can just ignore this email.</p>
+
+	<p>Thanks,<br>
+	{{ currentSite.title }}{% if not config.isSingleSiteMode %} {{ config.installTitle }}{%  endif %}</p>
+		
+	<p>ps. 
+		To <a href="{{ config.getWebIndexDomainSecure() }}/you/emails/{{ user.id }}/{{ generalSecurityCode }}">change which emails you get, click here</a>.
+		 To <a href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/stopWatchingFromEmail/{{ user.id }}/{{ stopCode }}">stop watching {{ currentSite.title }} click here</a>.</p>
+
+{% endblock %}
+	

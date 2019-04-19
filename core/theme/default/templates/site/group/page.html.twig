@@ -1,0 +1,57 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block htmlHeader %}
+	<meta name="openacalendar:group:slug" content="{{  group.slugForURL}}" />
+{%  endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/group', 'label':'groups' }, {'url':'/group/'~ group.slugForURL, 'label': group.title } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	{% if not currentSiteFeatures.has('org.openacalendar','Group') %}
+		<div class="flash-error"><div class="contentMain">This feature has been disabled on this calendar. You can not make changes.</div></div>
+	{% endif %}
+
+	<div class="contentMain">
+		<h2>{{  group.title }}</h2>
+	</div>
+
+	{% if group.isdeleted %}
+		<div class="diversionBanner">
+			<div class="contentMain">
+				This group has been deleted!
+				{%  if groupIsDuplicateOf %}
+					It is a duplicate of <a href="/group/{{  groupIsDuplicateOf.slugForURL }}">{{  groupIsDuplicateOf.title }}</a>.
+				{% endif %}
+			</div>
+		</div>
+	{%  endif %}
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/group/{{ group.slugForUrl }}">Details &amp; Events</a></li>
+			{%  if currentUserActions.has("org.openacalendar","groupHistory") %}<li class="tab {% block tabHistory %}{% endblock %}"><a href="/group/{{ group.slugForUrl }}/history">History of changes</a></li>{%  endif %}
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">var exportData = { group:{{ group.slug }}, groupSlugURL:"{{ group.slugForURL|e('js') }}", groupTitle:"{{ group.title|e('js') }}" , groupTwitterUsername:"{{ group.twitterUsername|e('js') }}"}</script>
+{% endblock %}
+

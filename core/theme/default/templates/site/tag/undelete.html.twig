@@ -1,0 +1,34 @@
+
+
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/tag/page.html.twig' %}
+
+{% block pageTitle %}Undelete {{ tag.title }} - {% endblock %} 
+
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+{% block actions %}
+{% endblock %}
+
+{% block innerContent %}
+
+	<p>Are you sure you want to undelete this tag?</p>
+
+	<form action="#" method="post" class="styled">
+		<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+		<input type="hidden" name="undelete" value="yes">
+
+		<input type="submit"  value="Restore" />	
+	</form>
+
+{% endblock %}

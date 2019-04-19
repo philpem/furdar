@@ -1,0 +1,37 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Add a Group - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/group', 'label':'groups' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		{# We don't client side validate any form with URL fields to get around UI/UX bug. See https://github.com/OpenACalendar/OpenACalendar-Web-Core/issues/221  #}
+		<form action="#" method="post" class="styled" novalidate="novalidate">
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.title) }}
+			{{ form_row(form.description) }}
+			{{ form_row(form.url) }}
+			{{ form_row(form.twitterUsername) }}
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}
+

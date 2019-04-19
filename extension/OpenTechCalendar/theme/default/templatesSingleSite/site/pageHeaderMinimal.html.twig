@@ -1,0 +1,30 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div id="header">
+	<div class="contentMain">
+		<div class="title siteTitle">
+			<a href="/">
+				<img src="/{% if config.isSingleSiteMode %}theme/default/img/logo.png{% else %}getLogo.php{% endif %}?v={{ currentSite.logoCacheKey }}" alt="logo" class="logo">
+				<h1>{{ currentSite.title }}</h1>
+			</a>
+		</div>
+        {% if config.siteWideMessageHTML %}
+			<div id="headerSponsorsWrapper">
+				<div id="headerSponsors">
+					<div id="headerSponsorsContents">
+                        {{ config.siteWideMessageHTML | raw }}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		<div style="clear: both"></div>
+		<ul class="menu">
+		</ul>
+		<div class="afterMenu"></div>
+	</div>
+</div>
+

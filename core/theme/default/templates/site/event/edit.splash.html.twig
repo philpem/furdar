@@ -1,0 +1,64 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/event/page.html.twig' %}
+
+
+{% block pageTitle %}Edit {{ event.summaryDisplay }} - {% endblock %} 
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+{% block innerContent %}
+
+	<div class="contentMain">
+		<ul class="actionList">
+
+			{%  if currentUserActions.has("org.openacalendar","eventEditDetails") %}
+				<li><a href="/event/{{ event.slugForURL }}/edit/details"><div class="fa fa-pencil"></div> Edit Details</a></li>
+			{%  endif %}
+
+			{% if currentUserActions.has("org.openacalendar","eventEditVenue") %}
+				<li><a href="/event/{{ event.slugForUrl }}/edit/venue"><div class="fa fa-pencil"></div> Edit Venue</a></li>
+			{% endif %}
+
+			{% if currentUserActions.has("org.openacalendar","eventEditTags") %}
+				<li><a href="/event/{{ event.slugForUrl }}/edit/tags"><div class="fa fa-pencil"></div> Edit Tags</a></li>
+			{% endif %}
+
+			{% if currentUserActions.has("org.openacalendar","eventEditGroups") %}
+				<li><a href="/event/{{ event.slugForUrl }}/edit/groups"><div class="fa fa-pencil"></div> Edit Groups</a></li>
+			{% endif %}
+
+
+			{% if currentUserActions.has("org.openacalendar","eventEditCuratedLists") %}
+				<li><a href="/event/{{ event.slugForUrl }}/edit/curatedlists"><div class="fa fa-pencil"></div> Edit Curated lists</a></li>
+			{% endif %}
+
+			{% if currentUserActions.has("org.openacalendar","eventEditMedia") %}
+				<li><a href="/event/{{ event.slugForUrl }}/edit/media"><div class="fa fa-pencil"></div> Edit Media</a></li>
+			{% endif %}
+
+			{% if currentUserActions.has("org.openacalendar","eventUndelete") %}
+				<li><a href="/event/{{ event.slugForUrl }}/undelete"><div class="fa fa-pencil"></div> Undelete</a></li>
+			{% endif %}
+
+			{% if currentUserActions.has("org.openacalendar","eventUncancel") %}
+				<li><a href="/event/{{ event.slugForUrl }}/uncancel"><div class="fa fa-pencil"></div> Uncancel</a></li>
+			{%  endif  %}
+
+			{% if currentUserActions.has("org.openacalendar","eventDelete") and currentUserActions.has("org.openacalendar","eventCancel") %}
+				<li><a href="/event/{{ event.slugForUrl }}/cancel"><div class="fa fa-pencil"></div> Cancel/Delete</a></li>
+			{%  elseif currentUserActions.has("org.openacalendar","eventDelete")  %}
+				<li><a href="/event/{{ event.slugForUrl }}/delete"><div class="fa fa-trash-o"></div> Delete</a></li>
+			{% endif %}
+
+		</ul>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+/**
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+*/
+
+
+.contentCalendar {
+	padding: 0 @contentSideGap;
+}
+
+.calendarLabel, .calendarControls {
+	text-align: right;
+	padding: 5px 0 10px 0;
+	.date {
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+}
+
+.calendarControls {
+	a {
+		margin: 0px 5px;
+		text-decoration: none;
+		color: #000000;
+	}
+}
+
+
+
+table.calendar {
+	width: 100%;
+	td {
+		border: 1px solid black;
+		padding: 2px;
+		width: 14%;
+		div.date {
+			font-weight: bold;
+			text-align: center;
+		}
+		background: white;
+		.addURL {
+			display: none;
+		}
+	}
+	td:hover, td:focus {
+		.addURL {
+			display: inline;
+		}
+	}
+	td.day6, td.day7 {
+		background: none repeat scroll 0 0 #EEEEEE;
+	}
+	td.today {
+		background: none repeat scroll 0 0 @colourCalendarTodayBackground;
+		border: 3px solid @colourCalendarTodayBorder;
+	}
+	.events {
+		min-height: 50px;
+	}
+	.event {
+		background: none repeat scroll 0 0 @colourLighter1;
+		border: 1px solid @colourDarker1;
+		border-radius: 3px 3px 3px 3px;
+		margin: 5px 15px;
+		padding: 5px;
+		.start_at {
+			font-size: 0.875rem;
+		}
+		a {
+			color: #222;
+			text-decoration: none;
+		}
+		a:hover, a:focus {
+			color: block;
+			text-decoration: underline;
+		}
+		div.currentUserAttendance {
+			float: right;
+			padding: 0px 0px 5px 5px;
+			a {
+				text-decoration: none;
+			}
+		}
+		.below {
+			clear: both;
+		}
+	}
+	.event.notAttending {
+		background: none repeat scroll 0 0 #cccccc;
+		border: 1px solid #cccccc;
+	}
+	.deleted {
+		background: url('/theme/default/img/deletedBackground.png');
+	}
+	.cancelled {
+		background: url('/theme/default/img/cancelledBackground.png');
+	}
+}

@@ -1,0 +1,37 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'email/email.txt.twig' %}
+
+{% block content %}
+	
+Hello {{ user.displayname }},
+
+We were importing events into the group: {{ group.title }}
+
+We were checking regularly for events on: {{import.url}}
+
+We haven't had confirmation for a while that this source is correct. To make sure our events data is good, we like to check regularly that a source is correct and still useful.
+
+Can you confirm this source is still correct?
+
+Do so at: {{ config.getWebSiteDomainSecure(currentSite.slug) }}/import/{{ import.slug }}/enablefromnotification/{{  user.id }}/{{ generalSecurityCode }}
+
+If this source is confirmed as correct, we will carry on checking regularly for events information there.
+
+If this source is no longer correct or no longer useful, you can just ignore this email.
+
+Thanks,
+{{ currentSite.title }}{% if not config.isSingleSiteMode %} {{ config.installTitle }}{%  endif %}
+
+
+ps. 
+To change which emails you get, click:
+{{ config.getWebIndexDomainSecure() }}/you/emails/{{ user.id }}/{{ generalSecurityCode }}
+To stop watching {{ currentSite.title }} click:
+{{ config.getWebSiteDomainSecure(currentSite.slug) }}/stopWatchingFromEmail/{{ user.id }}/{{ stopCode }}
+
+{% endblock %}

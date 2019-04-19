@@ -1,0 +1,33 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Media Admin - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/media', 'label':'media' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+		<p>
+			Currently using:
+			{% set kilobyte = 1024 %}
+			{% set megabyte = kilobyte * 1024 %}
+			{% if size < kilobyte %}
+				{{ size ~ ' B' }}
+			{% elseif size < megabyte %}
+				{{ (size / kilobyte)|number_format(2, '.') ~ ' KB' }}
+			{% else %}
+				{{ (size / megabyte)|number_format(2, '.') ~ ' MB' }}
+			{% endif %}
+		</p>
+	</div>
+		
+{% endblock %}
+

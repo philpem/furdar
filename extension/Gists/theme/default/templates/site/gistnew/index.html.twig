@@ -1,0 +1,29 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}New Gist - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/newGist', 'label':'new gist' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<form action="#" method="post" class="styled">
+			<input type="hidden" name="action" value="new">
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="New Gist" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}
+

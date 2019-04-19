@@ -1,0 +1,42 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'email/email.html.twig' %}
+
+{% block content %}
+	
+	<p>Hello {{ user.displayname }}</p>
+
+	<p>
+		We are trying to list events from: {{ group.title }}.
+	</p>
+
+	{% if futureEvents %}
+		<p>We only know of these future events:</p>
+
+		<ul>
+			{% for event in futureEvents %}
+				<li><a href="{{ config.getWebSiteDomainSecure(site.slug) }}/event/{{  event.slugForURL }}">{{ event.getStartAt|date("D jS M", event.timeZone) }}: {{  event.summaryDisplay }}</a></li>
+			{% endfor %}
+		</ul>
+	{%  else %}
+		<p>We don't know of any future events.</p>
+	{% endif %}
+
+	<p>If you know about any more events, can you tell everyone? You don't have to be the organiser.</p>
+
+	<p>It's easy to add events or recur an event that is continuing.</p>
+
+	{% include 'email/common/actionButton.html.twig' with { link:config.getWebSiteDomainSecure(site.slug) ~ '/group/' ~ group.slugForUrl, text: 'Add more events to ' ~ site.title} %}
+
+	<p>Thanks,<br>
+	{{ currentSite.title }}{% if not config.isSingleSiteMode %} {{ config.installTitle }}{%  endif %}</p>
+		
+	<p>ps. 
+		To <a href="{{ unsubscribeURL }}">change which emails you get, click here</a>.
+		To <a href="{{ config.getWebSiteDomainSecure(site.slug) }}/stopWatchingFromEmail/{{ user.id }}/{{ stopCode }}">stop watching {{ site.title }} click here</a>.</p>
+
+{% endblock %}

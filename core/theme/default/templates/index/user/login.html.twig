@@ -1,0 +1,67 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Login - {% endblock %} 
+
+{% block content %}
+
+	{%  include '/index/common/afterGetUser.html.twig' with { forRegister: false, forLogin: true } %}
+
+	<div class="contentMain">
+
+		<form action="#" method="post" class="styled">
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.email) }}
+
+			{{ form_row(form.password) }}
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Login" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+		<div class="alternativeToFormAction">
+			<a href="/you/forgot">Forgot your password?</a>
+		</div>
+
+	</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+	<script type="text/javascript" src="/theme/default/js/loginOrRegister.js?v={{ config.assetsVersion }}"></script>
+	<script type="text/javascript">
+		function emailOrUsernameAction() {
+			var emailField = $('#LogInUserForm_username');
+			var usernameField = $('#LogInUserForm_email');
+			if (emailField.val() && !usernameField.val()) {
+				emailField.prop( "disabled", false );
+				usernameField.prop( "disabled", true );
+			} else if (!emailField.val() && usernameField.val()) {
+				emailField.prop( "disabled", true );
+				usernameField.prop( "disabled", false );
+			} else {
+				emailField.prop("disabled", false);
+				usernameField.prop("disabled", false);
+			}
+		};
+
+		$( document ).ready(function() {
+			$('#LogInUserForm_username').keyup(function() { emailOrUsernameAction() }).change(function() { emailOrUsernameAction() });
+			$('#LogInUserForm_email').keyup(function() { emailOrUsernameAction() }).change(function() { emailOrUsernameAction() });
+			emailOrUsernameAction();
+		});
+	</script>
+{% endblock %}
+
+

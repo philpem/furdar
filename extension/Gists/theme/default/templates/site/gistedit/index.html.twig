@@ -1,0 +1,42 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Edit {{  gist.title }} - {% endblock %}
+
+{% block htmlHeader %}
+	<meta name="openacalendar:gist:slug" content="{{  gist.slug }}" />
+	<link rel="stylesheet" type="text/css" href="/theme/default/css/gists.css?v={{ config.assetsVersion }}">
+{% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/gist/' ~ gist.slug, 'label':'gist' },  { 'url':'/gist/' ~ gist.slug ~ '/edit', 'label':'edit' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="contentMain">
+
+		<ul class="gistContent">
+			{%  for content in contents %}
+				{%  if content.hasContentTitle %}
+					{% include 'site/common/gistContent.contentTitle.html.twig' with { gistContent:content } %}
+				{%  elseif content.hasContentText %}
+					{% include 'site/common/gistContent.contentBody.html.twig' with { gistContent:content } %}
+				{%  elseif content.hasEvent %}
+					{% include 'site/common/gistContent.event.html.twig' with { gistContent:content } %}
+				{%  endif %}
+			{% endfor %}
+		</ul>
+
+		<a href="/gist/{{  gist.slug }}/edit/content/new">New Content At End</a>
+
+	</div>
+
+{% endblock %}
+

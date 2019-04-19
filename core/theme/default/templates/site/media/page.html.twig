@@ -1,0 +1,35 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block htmlHeader %}
+	<meta name="openacalendar:group:media" content="{{  media.slugForUrl }}" />
+{%  endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/media', 'label':'media' }, { 'url':'/media/'~media.slugForUrl, 'label':media.title } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>{% if media.title %}{{ media.title }}{% else %}Media{% endif %}</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/media/{{ media.slugForUrl }}">Details</a></li>
+			{%  if currentUserActions.has("org.openacalendar","mediaHistory") %}<li class="tab {% block tabHistory %}{% endblock %}"><a href="/media/{{ media.slugForUrl }}/history">History of changes</a></li>{%  endif %}
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Add an Event - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/event', 'label':'events' },  { 'url':'/event/new/' ~ draft.slug ~ '/' ~ currentStep.stepId, 'label':'new' } ]  } %}
+{% endblock %}
+
+{% block htmlHeader %}
+	{% include 'site/common/mapLibrary.css.html.twig' %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>Add an event</h2>
+	</div>
+
+	<div class="wizardProgressWrapper">
+		<ul class="steps">
+			{%  for step in stepsUI %}
+				<li class="step">
+					{%  if step.jumpBack %}
+						<a href="/event/new/{{ draft.slug }}/{{ step.jumpBack }}">{{  step.title }}</a>
+					{%  else %}
+						{{  step.title }}
+					{%  endif %}
+					{%  if step.done %}<div class="fa fa-check-square-o"></div>{% else %}<div class="fa fa-square-o"></div>{% endif %}
+				</li>
+				{%  if not loop.last %}
+					<li class="arrow"><div class="fa fa-arrow-right"></div></li>
+				{%  endif %}
+			{%  endfor %}
+		</ul>
+	</div>
+
+	<div class="contentMain">
+
+		{%  set process = true %}
+		{%  set hasStepDoneViews = false %}
+		{%  for step in steps %}
+			{%  if step.stepID == currentStep.stepID  %}
+				{%  set process = false %}
+			{% endif %}
+			{%  if process %}
+				{%  set hasStepDoneViews = true %}
+			{%  endif %}
+		{% endfor %}
+
+		{%  if hasStepDoneViews %}
+			<div id="stepDoneViewsShowHideLink">
+				<a href="#" onclick="showHideStepDoneViews(); return false;">Show/hide previous answers</a>
+			</div>
+
+			<div id="stepDoneViews" style="display: none;">
+				{%  set process = true %}
+				{%  for step in steps %}
+					{%  if step.stepID == currentStep.stepID  %}
+						{%  set process = false %}
+					{% endif %}
+					{%  if process %}
+						{%  if step.stepDoneGetMinimalViewName %}
+							{%  include step.stepDoneGetMinimalViewName %}
+						{%  elseif step.stepDoneGetViewName %}
+							{%  include step.stepDoneGetViewName %}
+						{%  endif %}
+					{%  endif %}
+				{% endfor %}
+			</div>
+		{%  endif %}
+
+		{%  include currentStep.onThisStepGetViewName %}
+
+		<div class="likeFormStyled">
+			<div class="rowWrapper" id="DuplicateEventsContainer" style="display: none;">
+				<div class="labelWrapper">&nbsp;</div>
+				<div class="widgetWrapperPlacementOnly">
+					<div class="highlightInfoBoxWrapper">
+						<div class="highlightInfoBoxTitle">Duplicate?</div>
+						<div class="highlightInfoBoxContent">
+							<p>Wait, is this event maybe a duplicate of one of these? Click for more information - you won't lose what you have already entered. You can also edit these events yourself to add more information.</p>
+							<ul id="DuplicateEventsList" class="mainListEvents"></ul>
+						</div>
+					</div>
+				</div>
+				<div class="after"></div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">var newEventDraftSlug = {{ draft.slug }}; var currentStepID = '{{  currentStep.stepID }}'; </script>
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript" src="/theme/default/js/newEvent.js"></script>
+	{%  if currentStep and currentStep.onThisStepGetViewJavascriptName %}{%  include currentStep.onThisStepGetViewJavascriptName %}{%  endif %}
+{% endblock %}
+

@@ -1,0 +1,45 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+#}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Add an Event - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/event', 'label':'events' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<h2>Add an event</h2>
+
+		<p>It's easy to add a tech event to our site using our easy web process (sometimes we can import events to make it easier to).</p>
+
+		<p>You don't have to be the event organiser to do so - if you are a fan of an event, you can help out by adding it yourself. Anyone can edit anything - so they can add details later.</p>
+
+		<p>
+			Once added, your event becomes part of our Open Data and will be shown not only on our website,
+			but will be shown on other websites and posted to email lists, Facebook groups and Slack groups.
+		</p>
+
+
+		<p>Create an account or login to add an event:</p>
+
+		<div class="bigButtonContainer">
+			<a  class="button" href="{{ config.getWebIndexDomainSecure() }}/you/login{%  if not config.isSingleSiteMode %}?site={{ currentSite.slug }}{% endif %}">Login</a>
+			<a  class="button" href="{{ config.getWebIndexDomainSecure() }}/you/register{%  if not config.isSingleSiteMode %}?site={{ currentSite.slug }}{% endif %}">Register</a>
+		</div>
+
+		<p>If you have any questions or problems, please <a href="/contact">contact us</a>.</p>
+
+	</div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,370 @@
+<?php
+
+
+use models\SiteModel;
+
+/**
+ *
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ */
+class SearchForDuplicateEventsTest extends \BaseAppTest
+{
+
+    /** with venues **/
+    public function testScoreNoMatch1()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        $eventNew->setUrl("http://www.greatevent.com");
+        $eventNew->setVenueId(34);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setUrl("http://www.okevent.com");
+        $eventNew->setVenueId(78);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals(0, $score);
+    }
+
+    /** with areas **/
+    public function testScoreNoMatch2()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        $eventNew->setUrl("http://www.greatevent.com");
+        $eventNew->setAreaId(34);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setUrl("http://www.okevent.com");
+        $eventNew->setAreaId(78);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals(0, $score);
+    }
+
+    /** little info as possible **/
+    public function testScoreNoMatch3()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals(0, $score);
+    }
+
+
+    public function dataForTestScoreURLSame()
+    {
+        return array(
+                array('http://www.greatevent.com','http://www.terribleevent.com',0),
+                array('http://www.greatevent.com','http://www.greatevent.com',1),
+                array('http://www.greatevent.com','http://www.GREATEVENT.com',1),
+                array('http://www.greatevent.com','http://www.greatevent.com/',1),
+                array('http://www.greatevent.com','http://www.GREATEVENT.com?',1),
+                array('http://www.greatevent.com','http://www.greatevent.com/?',1),
+                array('http://www.greatevent.com','https://www.greatevent.com',1),
+                array('http://www.greatevent.com','HTTP://www.greatevent.com',1),
+                // These tests are just to make sure the code catches the bad input fine
+                array('greatevent','http://www.terribleevent.com',0),
+                array('greatevent.com','http://www.terribleevent.com',0),
+                array('greatevent.com/fantastic','http://www.terribleevent.com',0),
+            );
+    }
+
+
+    /**
+     * @dataProvider dataForTestScoreURLSame
+     */
+    public function testScoreURLSame($url1, $url2, $score)
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        $eventNew->setUrl($url1);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setUrl($url2);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        $this->assertEquals($score, $sfde->getScoreForConsideredEvent($eventExisting));
+    }
+    
+
+
+    /**
+     * We're going to use the same data provider.
+     * @dataProvider dataForTestScoreURLSame
+     */
+    public function testScoreTicketURLSame($url1, $url2, $score)
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        $eventNew->setTicketUrl($url1);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setTicketUrl($url2);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        $this->assertEquals($score, $sfde->getScoreForConsideredEvent($eventExisting));
+    }
+
+    public function testScoreStartSame()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals(1, $score);
+    }
+
+    public function testScoreEndSame()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+            
+        $this->assertEquals(1, $score);
+    }
+    
+
+    public function testScoreStartEndSame()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        // Only 1 of start or end matching counts as a point
+        $this->assertEquals(1, $score);
+    }
+    
+
+    public function dataForTestScoreSummaryCompare()
+    {
+        return array(
+                array('wibble','wobble',0),
+                array('wibble wibble','wibble wibble', 1),
+                array('wibble','wiBBle', 1),
+                array('wibble cat dog','wiBBle', 1),
+                array('wibble','cat wiBBle dof', 1),
+                array('alpha beta','alphabeta', 0),
+            );
+    }
+    
+    /**
+     * @dataProvider dataForTestScoreSummaryCompare
+     */
+    public function testScoreSummaryCompare($summary1, $summary2, $scoreExpected)
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        $eventNew->setSummary($summary1);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setSummary($summary2);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals($scoreExpected, $score);
+    }
+
+    public function dataForTestScoreSummaryCompareWithNoMatchList()
+    {
+        return array(
+                array('wibble hustings','wobble hustings',array(), 1),
+                array('wibble hustings','wobble hustings',array('hustings'), 0),
+                array('wibble hustings','wobble hustings',array('husting'), 1),
+            );
+    }
+
+    /**
+     * @dataProvider dataForTestScoreSummaryCompareWithNoMatchList
+     */
+    public function testScoreSummaryCompareWithNoMatchList($summary1, $summary2, $noMatchList, $scoreExpected)
+    {
+        $site = new SiteModel();
+
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th Feb 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th Feb 2012 13:00:00"));
+        $eventNew->setSummary($summary1);
+
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setSummary($summary2);
+
+        $sfde = new SearchForDuplicateEvents($eventNew, $site, 3, 2, $noMatchList);
+
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+
+        $this->assertEquals($scoreExpected, $score);
+    }
+
+    public function testScoreVenueSame()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th April 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th April 2012 13:00:00"));
+        $eventNew->setVenueId(34);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setVenueId(34);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals(1, $score);
+    }
+
+    public function testScoreAreaSame()
+    {
+        $site = new SiteModel();
+        
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th April 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th April 2012 13:00:00"));
+        $eventNew->setAreaId(34);
+        
+        $eventExisting = new models\EventModel();
+        $eventExisting->setStartAt(new \DateTime("12th March 2012 10:00:00"));
+        $eventExisting->setEndAt(new \DateTime("12th March 2012 13:00:00"));
+        $eventExisting->setAreaId(34);
+        
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+        
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+        
+        $this->assertEquals(1, $score);
+    }
+
+    public function testScoreAreaSameButByVenue()
+    {
+        $site = new SiteModel();
+
+        $eventNew = new models\EventModel();
+        $eventNew->setStartAt(new \DateTime("12th April 2012 10:00:00"));
+        $eventNew->setEndAt(new \DateTime("12th April 2012 13:00:00"));
+        $eventNew->setAreaId(34);
+
+        $eventExisting = new models\EventModel();
+        $eventExisting->setFromDataBaseRow(array(
+            'id'=>1,
+            'site_id'=>1,
+            'slug'=>1,
+            'slug_human'=>'cat',
+            'summary'=>'Cat',
+            'description'=>'Cat',
+            'start_at'=>'2014:01:01 01:01:01',
+            'end_at'=>'2014:01:01 01:01:01',
+            'created_at'=>'2013:01:01 01:01:01',
+            'is_deleted'=>0,
+            'is_cancelled'=>0,
+            'event_recur_set_id'=>null,
+            'country_id'=>1,
+            'venue_id'=>12,
+            'area_id'=>null,
+            'timezone'=>'Europe/London',
+            'import_id'=>null,
+            'import_url_id'=>null,
+            'url'=>null,
+            'ticket_url'=>null,
+            'area_information_id'=>34,
+            'area_title'=>'Edinburgh',
+            'area_slug'=>'1',
+            'is_virtual'=>0,
+            'is_physical'=>0,
+            'is_duplicate_of_id'=>null,
+            'custom_fields'=>null,
+            'custom_fields_changed'=>null,
+            'cached_updated_at'=> null,
+        ));
+
+        $sfde = new SearchForDuplicateEvents($eventNew, $site);
+
+        $score = $sfde->getScoreForConsideredEvent($eventExisting);
+
+        $this->assertEquals(1, $score);
+    }
+}

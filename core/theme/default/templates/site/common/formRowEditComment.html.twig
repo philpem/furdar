@@ -1,0 +1,19 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{%  if currentSiteFeatures.has('org.openacalendar','EditComments') %}
+	<div class="rowWrapper" id="formRowEditCommentToggler" onclick="onClickFormRowEditCommentToggler(); return false;">
+		<div class="labelWrapper">&nbsp;</div>
+		<div class="widgetWrapperPlacementOnly">
+			<span class="arrow">&#x25B2;</span>
+			<span class="title">Add a comment on this change</span>
+		</div>
+		<div class="after"></div>
+	</div>
+	<div id="formRowEditCommentWrapper" style="display: none;">
+		{{ form_row(form.edit_comment) }}
+	</div>
+{% endif %}

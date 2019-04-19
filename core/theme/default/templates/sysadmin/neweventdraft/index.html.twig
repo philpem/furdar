@@ -1,0 +1,69 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'sysadmin/page.html.twig' %}
+
+{% block pageTitle %}New Event Draft {{  draft.slug }} - {% endblock %}
+
+{% block breadcrumbs %}
+	<li><a href="/sysadmin/site/{{ site.id }}/">{{ site.title }}</a></li>
+	<li><a href="/sysadmin/site/{{ site.id }}/neweventdraft">new event drafts</a></li>
+	<li class="current"><a href="/sysadmin/site/{{ site.id }}/neweventdraft/{{  draft.slug }}">new event draft {{  draft.slug }}</a></li>
+{% endblock %}
+
+{% block content %}
+
+
+<table class="oneData">
+	<tr>
+		<th>ID</th>
+		<td>{{ draft.id }}</td>
+	</tr>
+	<tr>
+		<th>Slug</th>
+		<td>{{ draft.slug }}</td>
+	</tr>
+	{%  if user %}
+		<tr>
+			<th>User</th>
+			<td><a href="/sysadmin/user/{{  user.id }}/">{{ user.username }}</a></td>
+		</tr>
+
+	{%  endif %}
+	<tr>
+		<th>Details</th>
+		<td>&nbsp;</td>
+	</tr>
+	{%  for k,v in draft.getDetails %}
+		<tr>
+			<th>&nbsp;</th>
+			<td>{{  k }}</td>
+			<td>{{ v }}</td>
+		</tr>
+	{%  endfor %}
+	{%  if eventCreated %}
+		<tr>
+			<th>Is Event </th>
+			<td><a href="/sysadmin/site/{{  site.id }}/event/{{  eventCreated.slug }}">{{  eventCreated.summaryDisplay }}</a></td>
+		</tr>
+	{%  endif %}
+	{%  if eventDupe %}
+		<tr>
+			<th>Is Duplicate Of Event</th>
+			<td><a href="/sysadmin/site/{{  site.id }}/event/{{  eventDupe.slug }}">{{  eventDupe.summaryDisplay }}</a></td>
+		</tr>
+	{%  endif %}
+	<tr>
+		<th>Created</th>
+		<td>{{ draft.createdAt |date('D H:i jS M Y', currentTimeZone ) }}</td>
+	</tr>
+	<tr>
+		<th>Updated</th>
+		<td>{{ draft.updatedAt |date('D H:i jS M Y' , currentTimeZone) }}</td>
+	</tr>
+</table>
+
+{%  endblock %}

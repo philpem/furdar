@@ -1,0 +1,68 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block htmlHeader %}
+	{%  if country %}<meta name="openacalendar:country:code" content="{{  country.twoCharCode }}" />{% endif %}
+	{%  if area %}<meta name="openacalendar:area:slug" content="{{  area.slugForURL}}" />{%  endif %}
+	<meta name="openacalendar:venue:slug" content="{{  venue.slugForURL}}" />
+{%  endblock %}
+
+{% block breadcrumbs %}
+	{%  set breadcrumbs = [  { 'url':'/venue', 'label':'venues' }, {'url':'/country/'~country.twoCharCode, 'label':country.title} ] %}
+	{% for parentArea in parentAreas %}
+		{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/area/'~parentArea.slugForUrl, 'label':parentArea.title }])  %}
+	{% endfor %}
+	{% if area %}
+		{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/area/'~area.slugForUrl, 'label':area.title }])  %}
+	{% endif %}
+	{%  set breadcrumbs = breadcrumbs|merge([{ 'url':'/venue/'~venue.slugForUrl, 'label':venue.title }])  %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	{% if not currentSiteFeatures.has('org.openacalendar','PhysicalEvents') %}
+		<div class="flash-error"><div class="contentMain">This feature has been disabled on this calendar. You can not make changes.</div></div>
+	{% endif %}
+
+	<div class="contentMain">
+		<h2>{{  venue.title }}</h2>
+	</div>
+
+	{% if venue.isdeleted %}
+		<div class="diversionBanner">
+			<div class="contentMain">
+				This venue has been deleted!
+				{%  if venueIsDuplicateOf %}
+					It is a duplicate of <a href="/venue/{{  venueIsDuplicateOf.slugForURL }}">{{  venueIsDuplicateOf.title }}</a>.
+				{% endif %}
+			</div>
+		</div>
+	{%  endif %}
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/venue/{{ venue.slugForUrl }}">Details &amp; Events</a></li>
+			{% if currentUserActions.has("org.openacalendar","venueHistory") %}<li class="tab {% block tabHistory %}{% endblock %}"><a href="/venue/{{ venue.slugForUrl }}/history">History of changes</a></li>{% endif %}
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">
+		var exportData = { venue:{{ venue.slug }} , venueSlugURL: "{{  venue.slugForURL | e('js') }}" , venueTitle: "{{  venue.title | e('js') }}" {% if country is not null %}, country: "{{ country.twoCharCode }}", countryTitle: "{{  country.title | e('js') }}"  {% endif %} }
+	</script>
+{% endblock %}
+

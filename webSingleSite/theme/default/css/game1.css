@@ -1,0 +1,124 @@
+#intro {
+  font-size: 1.4em;
+  font-style: italic;
+  padding: 5px 0;
+}
+#instructions {
+  font-size: 1.4em;
+  font-style: italic;
+  padding: 5px 0;
+}
+#instructions #loading {
+  padding: 5px 0;
+}
+#instructions #startFirstGame {
+  padding: 5px 0;
+}
+#gameState {
+  padding: 8px;
+  font-size: 1.4em;
+  font-style: italic;
+  line-height: 1.6;
+}
+#gameState div {
+  display: inline;
+}
+#gameState .group {
+  padding: 2px 20px;
+  white-space: nowrap;
+}
+#gameState a {
+  white-space: nowrap;
+}
+#playAgain {
+  display: inline;
+}
+a.button {
+  background: #2f569b;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px 20px;
+  color: white;
+  text-decoration: none;
+}
+#eventsListWrapper {
+  clear: both;
+}
+ul.eventsList li.event {
+  margin: 2px;
+  padding: 4px;
+}
+ul.eventsList li.event .date {
+  font-style: italic;
+  padding-right: 10px;
+}
+ul.eventsList li.event a {
+  color: #444;
+  text-decoration: none;
+}
+ul.eventsList li.event a:hover {
+  color: black;
+  text-decoration: underline;
+}
+#gameBoardWrapper {
+  width: 100%;
+}
+#gameBoardWrapper #gameBoard {
+  margin: 0 auto;
+  width: 288px;
+  height: 318px;
+}
+#gameBoardWrapper #gameBoard #gameBoardHeader {
+  background: url('/theme/default/img/gameHeader.png') no-repeat;
+  height: 30px;
+}
+#gameBoardWrapper #gameBoard #gameBoardFlashWrapper {
+  position: absolute;
+  z-index: 10;
+  width: 288px;
+}
+#gameBoardWrapper #gameBoard #gameBoardFlashWrapper #gameBoardFlash {
+  margin: 50px 20px 0 20px;
+  background: #cadeea;
+  border: 2px solid #A8C7DB;
+  padding: 10px 5px;
+}
+#gameBoardWrapper #gameBoard #gameBoardFlashWrapper #gameBoardFlash #gameBoardFlashContent {
+  text-align: center;
+}
+#gameBoardWrapper #gameBoard #gameBoardFlashWrapper #gameBoardFlash #gameBoardFlashClose {
+  text-align: right;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard {
+  border-left: 1px solid #666;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard .row {
+  clear: both;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard .row .cell {
+  float: left;
+  border-right: 1px solid #666;
+  border-bottom: 1px solid #666;
+  width: 40px;
+  height: 40px;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard .row .cell img {
+  width: 40px;
+  height: 40px;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard .row .cell a {
+  width: 40px;
+  height: 40px;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard .squareSeen {
+  background: #ddd;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard .squareNotSeen {
+  background: white;
+}
+#gameBoardWrapper #gameBoard #gameBoardBoard #gameBoardBoardFooter {
+  clear: both;
+}

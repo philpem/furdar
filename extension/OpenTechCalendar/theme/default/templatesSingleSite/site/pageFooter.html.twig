@@ -1,0 +1,37 @@
+<div id="footer">
+	<div class="contentMain">
+		{% if config.siteWideMessageHTML %}
+			<div id="footerSponsors">
+				{{ config.siteWideMessageHTML | raw }}
+			</div>
+		{% endif %}
+		<div id="footerLinks">
+			{% if currentSite.cachedIsMultipleTimezones %}
+				<div class="footerLinksRow"><a href="/mytimezone">Current Timezone: {{ currentTimeZone }}</a></div>
+			{% endif %}
+			<div class="footerLinksRow">
+				<a href="/about">About</a>
+				{% if config.ourBlog %}<a href="{{  config.ourBlog }}">News Blog</a>{% endif %}
+				<a href="https://gitlab.com/opentechcalendar">Open Source</a>
+			</div>
+
+			<div class="footerLinksRow">
+				<a href="/contact">Contact Us</a>
+				{% if config.contactTwitter %}<a href="https://twitter.com/{{config.contactTwitter }}">@{{config.contactTwitter }} on Twitter</a>{% endif %}
+				{% if config.facebookPage %}<a href="{{config.facebookPage}}">Facebook</a>{% endif %}
+			</div>
+
+			<div class="footerLinksRow">
+				<a href="/privacy">Privacy</a>
+				<a href="/terms">Terms</a>
+			</div>
+		</div>
+		<div id="footerCredits">
+			<a href="http://jmbtechnology.co.uk/">&copy; JMB Technology Limited 2012 - 2019</a>
+			Event data is in the public domain.
+			<a href="/credits">Credits</a>
+		</div>
+		<div id="afterFooter"></div>
+	</div>
+</div>
+

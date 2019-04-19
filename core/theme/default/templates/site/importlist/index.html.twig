@@ -1,0 +1,50 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block pageTitle %}Imports - {% endblock %} 
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/import', 'label':'import from web' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	{% if not currentSiteFeatures.has('org.openacalendar','Importer') %}
+		<div class="flash-error"><div class="contentMain">This feature has been disabled on this calendar. You can not make changes.</div></div>
+	{% endif %}
+
+	<div class="contentMain">
+		<h2>Import from web</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			<li class="tab currentTab">List</li>
+		</ul>
+	</div>
+
+	<ul class="mainListImports">
+		{% for import in imports %}
+			<li class="import">
+				<div class="title"><a href="/import/{{ import.slug }}">{{ import.title }}</a></div>
+			</li>
+		{% else %}
+			<li class="nodata">
+				There are no imports.
+			</li>
+		{% endfor %}
+	</ul>
+
+
+{% endblock %}
+

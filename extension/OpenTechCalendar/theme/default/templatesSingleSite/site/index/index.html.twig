@@ -1,0 +1,154 @@
+{#
+ # @license CLOSED SOURCE
+ # @copyright (c) JMB Technology Limited, http://jmbtechnology.co.uk/
+ # @author James Baster <james@jarofgreen.co.uk>
+ #}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+	<title>Welcome - {{ currentSite.title }} {{ config.installTitle }}</title>
+	<link rel="stylesheet" type="text/css" href="/theme/default/css/main.css?v={{ config.assetsVersion }}">
+	<link rel="stylesheet" type="text/css" href="{%  if config.useLibraryCDNs %}https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css{%  else %}/font-awesome-4.5.0/css/font-awesome.min.css{%  endif %}">
+	{%  if config.useLibraryCDNs %}
+		<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	{%  else %}
+		<link rel="stylesheet" type="text/css" href="/jqueryui-1.11.4/jquery-ui.theme.min.css">
+		<link rel="stylesheet" type="text/css" href="/jqueryui-1.11.4/jquery-ui.min.css">
+	{%  endif %}
+	<link rel="shortcut icon" href="/theme/default/img/favicon.png?v={{ config.assetsVersion }}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+	<link rel="manifest" href="/manifest.json">
+	{%  include 'site/ourMetaTags.html.twig' %}
+	<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/" />
+	<link rel="alternate"  type="text/calendar" title="{{ currentSite.title | escape('html_attr') }}" href="/api1/events.ical" />
+</head>
+<body>
+<div id="page">
+	{% include 'site/pageHeader.html.twig' with { 'onFrontPage':true } %}
+	<div id="body">
+		{% if  currentUser is not null and config.siteReadOnly %}
+			<div class="flash-error"><div class="contentMain">
+				Sorry, the site is currently read only. {{ config.siteReadOnlyReason }}
+			</div></div>
+		{% elseif currentUser is not null and not currentUser.isEmailVerified %}
+			<div class="flash-notice"><div class="contentMain">
+				Please check your email for instructions on how to verify your account. Until you do, some features are not available. (Remember it may be in your spam folder.)
+				<a href="{{ config.getWebIndexDomainSecure() }}/me/resendverifyemail">Click here to resend the email</a>.
+			</div></div>
+		{% endif %}
+		{% for msg in getAndClearFlashErrors() %}
+			<div class="flash-error"><div class="contentMain">{{ msg }}</div></div>
+		{% endfor %}
+		{% for msg in getAndClearFlashMessages() %}
+			<div class="flash-notice"><div class="contentMain">{{ msg }}</div></div>
+		{% endfor %}
+		{%  if currentUser and currentUser.isEmailVerified and not currentUserActions.has("org.openacalendar","eventNew") %}
+			<div class="flash-notice">
+				<p>Do you want to edit the calendar?</p>
+				<p>Unfortunately we are having a minor problem with spam at the moment, and as a precaution all new and recent user accounts are not allowed to edit events on the calendar.</p>
+				<p>If you wish to edit events on the calendar, please <a href="/contact">contact us</a> and we will sort you out.</p>
+				<p>We apologise for this temporary measure, but I'm sure you understand we take our calendar very seriously.</p>
+			</div>
+		{% endif %}
+
+		<div class="contentTwoColumns">
+
+
+			<div class="contentTwoColumnsLeft">
+				{% for parent in areaTree %}
+					<div class="countryOnHomePage">{{ parent.title }}</div>
+
+					<ul class="listLegacyLocations">
+						{% for child in parent.children %}
+							<li class="locationWithEvents">
+								{% spaceless %}
+									<span class="content{% if child.count %}WithEvents{% else %}WithNoEvents{% endif %}">
+									<a class="button" href="/area/{{ child.slug }}">{{ child.title }}<span title="{{child.count}} future events"> ({{child.count}})</span></a>
+								</span>
+								{% endspaceless %}
+								<span class="aftercontent">&nbsp;</span>
+							</li>
+						{% endfor %}
+					</ul>
+
+				{% endfor %}
+
+				<div class="countryOnHomePage">Other</div>
+
+				<ul class="listLegacyLocations">
+
+					{% spaceless %}
+						<li class="locationWithEvents">
+						<span class="contentWithEvents">
+							<a class="button" href="/venue/virtual">Virtual</a>
+						</span>
+							<span class="aftercontent">&nbsp;</span>
+						</li>
+					{% endspaceless %}
+
+					{% for child in areasOther %}
+						<li class="locationWithEvents">
+							{% spaceless %}
+								<span class="content{% if child.count %}WithEvents{% else %}WithNoEvents{% endif %}">
+									<a class="button" href="/area/{{ child.slug }}">{{ child.title }}<span title="{{child.count}} future events"> ({{child.count}})</span></a>
+								</span>
+							{% endspaceless %}
+							<span class="aftercontent">&nbsp;</span>
+						</li>
+					{% endfor %}
+				</ul>
+
+
+				<div class="countryOnHomePage">Your great place not listed?</div>
+
+				{% if currentUserActions.has("org.openacalendar","eventNew") or ( currentUser is null and anyVerifiedUserActions.has("org.openacalendar","eventNew") ) %}
+					<p><a href="/event/new">Add any local events you know about</a> to put it on the map!</p>
+				{% else %}
+					<p>Add any local events you know about to put it on the map!</p>
+				{% endif %}
+
+			</div>
+
+			<div class="contentTwoColumnsRight">
+
+				<div class="infoBoxWrapper">
+					<div class="infoBoxTitle">We love Open Data!</div>
+					<div class="infoBoxContent">
+						<div class="homePageShareBoxIcons">
+							<a href="/api1/events.ical" onclick="showExportSharePopup(); return false;">
+								<div class="fa fa-download"></div> <div class="fa fa-share"></div>
+							</a>
+						</div>
+						We encourage you
+						<a href="/api1/events.ical" onclick="showExportSharePopup(); return false;">
+							to export or share
+						</a>
+						our data! No API key needed.
+					</div>
+				</div>
+
+
+			</div>
+
+			<div class="afterContentTwoColumns"></div>
+
+		</div>
+
+
+	</div>
+	{% include 'site/pageFooter.html.twig' %}
+</div>
+<script type="text/javascript">var exportData = {}</script>
+<script src="/info.js.php?v={{ config.assetsVersion }}{% if currentUser %}&u={{  currentUser.username|e('url') }}{%  endif %}" type="text/javascript"></script>
+<script src="{%  if config.useLibraryCDNs %}https://code.jquery.com/jquery-1.12.0.min.js{%  else %}/js/jquery-1.12.0.min.js{%  endif %}" type="text/javascript"></script>
+<script src="{%  if config.useLibraryCDNs %}https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js{% else %}/jqueryui-1.11.4/jquery-ui.min.js{%  endif %}" type="text/javascript"></script>
+<script src="/theme/default/js/general.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+<script src="/theme/default/js/general.site.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+{% include 'analytics.html.twig' %}
+</body>
+</html>
+

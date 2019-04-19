@@ -1,0 +1,22 @@
+image: ubuntu:16.04
+
+before_script:
+  - apt-get update
+  - apt-get install -y locales
+  - echo "en_GB.UTF-8 UTF-8" >> /etc/locale.gen
+  - locale-gen
+  - apt-get install -y postgresql php-gd php php-curl php-pgsql php-intl php-geoip curl zip  phpunit phpunit composer
+  - /etc/init.d/postgresql start
+  - composer install
+  - su --login -c "psql -c \"CREATE USER opentechcalendar3 WITH PASSWORD 'password';\"" postgres
+  - su --login -c "psql -c \"CREATE DATABASE opentechcalendar3 WITH OWNER opentechcalendar3 ENCODING 'UTF8'  LC_COLLATE='en_GB.UTF-8' LC_CTYPE='en_GB.UTF-8'  TEMPLATE=template0 ;\"" postgres
+  - echo "<?php " > config.test.php
+  - echo "\$CONFIG->databaseName = 'opentechcalendar3'; " >> config.test.php
+  - echo "\$CONFIG->databaseHost = 'localhost'; " >> config.test.php
+  - echo "\$CONFIG->databaseUser = 'opentechcalendar3'; " >> config.test.php
+  - echo "\$CONFIG->databasePassword = 'password'; " >> config.test.php
+  - echo "\$CONFIG->extensions = array('OpenTechCalendar','Meetup','CuratedLists','DisplayBoard','Gists'); " >> config.test.php
+
+tests:
+  script:
+    - phpunit -c core/tests

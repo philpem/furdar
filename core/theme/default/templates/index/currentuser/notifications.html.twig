@@ -1,0 +1,32 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Notifications - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'index/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/me', 'label':'your account' }, { 'url':'/me/notification','label':'notifications' } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+	<ul class="usernotifications">
+		{% for notification in notifications  %}
+			<li class="usernotification{% if notification.isRead %}read{% else %}unread{% endif %}">
+				<a href="/me/notification/{{ notification.id }}" class="title">{{ notification.notificationText }}</a>
+				<div class="timesince">{{ notification.createdAt | time_diff }}</div>
+				{% if not config.isSingleSiteMode %}
+					<div class="site"><a href="{{ config.getWebSiteDomainSecure(notification.site.slug) }}">{{ notification.site.title }}</a></div>
+				{% endif %}
+			</li>
+		{% else %}
+			<li>You have no notifications</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
+
+

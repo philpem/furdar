@@ -1,0 +1,98 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+<div class="contentTwoColumns">
+
+
+	<div class="contentTwoColumnsLeft">
+
+		<h3>Does one group organise many events?</h3>
+
+		<p>You can put all your events into one group.</p>
+
+		<p>Groups let you add more information and lets users find future events
+			from the same organisers easily.</p>
+
+		{%  if not groupExisting %}
+
+			{%  if incomingGroup %}
+
+				<form action="" class="styled" method="POST">
+					<input type="hidden" name="action" value="selectgroup">
+					<input type="hidden" name="group" value="{{  incomingGroup.slug }}">
+					<div class="bigSubmitActionWrapper"><input type="submit"  value="Create Event with {{ incomingGroup.title|e('html_attr') }}" class="bigSubmitAction"/></div>
+					<div class="afterBigSubmitActionWrapper"></div>
+				</form>
+
+				<form action="" class="styled" method="POST">
+					<input type="hidden" name="action" value="group">
+					<div class="bigSubmitActionWrapper"><input type="submit"  value="Create Event with a different Group" class="bigSubmitAction"/></div>
+					<div class="afterBigSubmitActionWrapper"></div>
+				</form>
+
+			{%  else %}
+
+				<form action="" class="styled" method="POST">
+					<input type="hidden" name="action" value="group">
+					<div class="bigSubmitActionWrapper"><input type="submit"  value="Create Event with a Group" class="bigSubmitAction"/></div>
+					<div class="afterBigSubmitActionWrapper"></div>
+				</form>
+
+			{%  endif %}
+
+		{%  else %}
+
+			<form id="GroupSearchForm" method="post">
+				<input type="hidden" name="action" value="groupsearch">
+				Search for a group: <input type="text"  name="groupsearch" id="GroupSearchText" autocomplete="off" value="{{  groupSearchText }}">
+
+				<div class="bigSubmitActionWrapper"><input type="submit" value="Search For a Group" class="bigSubmitAction"/></div>
+				<div class="afterBigSubmitActionWrapper"></div>
+			</form>
+
+			<ul class="mainListGroups" id="GroupSearchList">
+				{%  if groups is defined %}
+					{% for group in groups %}
+						<li class="group">
+							<div class="title">{{  group.title }}</div>
+							<form action="" class="styled" method="POST">
+								<input type="hidden" name="action" value="selectgroup">
+								<input type="hidden" name="group" value="{{  group.slug }}">
+								<div class="bigSubmitActionWrapper"><input type="submit"  value="Create Event with this Group" class="bigSubmitAction"/></div>
+								<div class="afterBigSubmitActionWrapper"></div>
+							</form>
+						</li>
+					{% endfor %}
+				{%  endif %}
+			</ul>
+
+		{%  endif %}
+
+	</div>
+
+	<div class="contentTwoColumnsRight">
+
+		<h3>Is this a one-off event?</h3>
+
+		<p>You can just create an event by itself.</p>
+
+		<form action="" class="styled" method="POST">
+			<input type="hidden" name="action" value="nogroup">
+
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Create Event without a Group" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+
+	<div class="afterContentTwoColumns"></div>
+
+</div>
+
+

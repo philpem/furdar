@@ -1,0 +1,48 @@
+
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}User Groups Admin - {% endblock %}
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/usergroup', 'label':'user groups' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>User Groups</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			<li class="action">
+				<a href="/admin/usergroup/new"><div class="fa fa-pencil"></div> new</a>
+			</li>
+			<li class="tab currentTab"><a href="/admin/usergroup">User Groups</a></li>
+		</ul>
+	</div>
+
+	<div class="contentMain">
+
+		<ul class="mainListUserGroups">
+			{% for usergroup in usergroups %}
+				<li class="userGroup">
+					<div class="title"><a href="/admin/usergroup/{{ usergroup.id }}">{{ usergroup.title }}</a></div>
+					{{ usergroup.description | nl2br }}
+				</li>
+			{% else %}
+				<li>
+					No user groups found.
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+
+{% endblock %}

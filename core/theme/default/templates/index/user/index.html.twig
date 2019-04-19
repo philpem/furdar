@@ -1,0 +1,40 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}You - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'index/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/me', 'label':'your account' } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="contentTwoColumns">
+
+		<div class="contentTwoColumnsLeft">
+
+			<p>Welcome!</p>
+
+		</div>
+
+		<div class="contentTwoColumnsRight">
+
+			<ul class="actionList">
+				<li><a href="/you/register"><div class="fa fa-user fa-2x"></div> Register</a></li>
+				<li><a href="/you/login"><div class="fa fa-user fa-2x"></div> Login</a></li>
+				<li><a href="/you/forgot"><div class="fa fa-user fa-2x"></div> Forgot your login details?</a></li>
+			</ul>
+
+		</div>
+
+		<div class="afterContentTwoColumns"></div>
+
+	</div>
+
+{% endblock %}

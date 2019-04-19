@@ -1,0 +1,60 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'sysadmin/page.html.twig' %}
+
+{% block pageTitle %}Config - {% endblock %}
+
+{% block content %}
+
+	<table class="oneData">
+	<tr>
+		<th>useBeanstalkd</th>
+		<td>{% if config.useBeanstalkd %}<span class="yes">yes</span>{% else %}<span class="no">no</span>{% endif %}
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'useBeanstalkd'} %}</td>
+	</tr>
+	<tr>
+		<th>beanstalkdHost</th>
+		<td>{{ config.beanstalkdHost }}
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'beanstalkdHost'} %}
+		</td>
+	</tr>
+	<tr>
+		<th>beanstalkdPort</th>
+		<td>{{ config.beanstalkdPort }}
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'beanstalkdPort'} %}
+		</td>
+	</tr>
+	<tr>
+		<th>beanstalkdProducerConnectTimeOut</th>
+		<td>{{ config.beanstalkdProducerConnectTimeOut }}
+			({{ (config.beanstalkdProducerConnectTimeOut / 60) | round (0,'floor') }} mins)
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'beanstalkdProducerConnectTimeOut'} %}</td>
+	</tr>
+	<tr>
+		<th>beanstalkdConsumerConnectTimeOut</th>
+		<td>{{ config.beanstalkdConsumerConnectTimeOut }}
+			({{ (config.beanstalkdConsumerConnectTimeOut / 60) | round (0,'floor') }} mins)
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'beanstalkdConsumerConnectTimeOut'} %}</td>
+	</tr>
+	<tr>
+		<th>messageQueConsumerProcessRunsForSeconds</th>
+		<td>{{ config.messageQueConsumerProcessRunsForSeconds }}
+			({{ (config.messageQueConsumerProcessRunsForSeconds / 60) | round (0,'floor') }} mins)
+			({{ (config.messageQueConsumerProcessRunsForSeconds / 60/60) | round (0,'floor') }} hours)
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'messageQueConsumerProcessRunsForSeconds'} %}</td>
+	</tr>
+	<tr>
+		<th>messageQueConsumerProcessChecksEverySeconds</th>
+		<td>{{ config.messageQueConsumerProcessChecksEverySeconds }}
+			({{ (config.messageQueConsumerProcessChecksEverySeconds / 60) | round (0,'floor') }} mins)
+			({{ (config.messageQueConsumerProcessChecksEverySeconds / 60/60) | round (0,'floor') }} hours)
+			{% include 'sysadmin/config/index.configcheck.html.twig' with {'field':'messageQueConsumerProcessChecksEverySeconds'} %}</td>
+	</tr>
+	</table>
+
+{% endblock %}
+

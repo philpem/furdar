@@ -1,0 +1,191 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'sysadmin/page.html.twig' %}
+{% block pageTitle %}Event {{  event.summaryDisplay }} - {% endblock %}
+
+{% block content %}
+
+
+	<table class="oneData">
+		<tr>
+			<th>ID</th>
+			<td>{{ event.id }}</td>
+		</tr>
+		<tr>
+			<th>Slug</th>
+			<td>{{ event.slug }}</td>
+		</tr>
+		<tr>
+			<th>Human Slug</th>
+			<td>{{ event.slugHuman }}</td>
+		</tr>
+		<tr>
+			<th>Cancelled</th>
+			<td>{% if event.isCancelled %}Cancelled{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Deleted</th>
+			<td>{% if event.isDeleted %}Deleted{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Is Duplicate of</th>
+			<td>{% if event.isDuplicateOfId %}<a href="/sysadmin/site/{{ site.id }}/event/{{ eventisduplicateof.slug }}/">{{ eventisduplicateof.summary }}</a>{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<th>Summary</th>
+			<td>{{ event.summary }}</td>
+		</tr>
+		<tr>
+			<th>Description</th>
+			<td>{{ event.description | nl2br }}</td>
+		</tr>
+		<tr>
+			<th>Country ID</th>
+			<td>{{ event.countryId }}</td>
+		</tr>
+		{% if country is not null %}
+			<tr class="sub">
+				<th>Country Title</th>
+				<td>{{ country.title }}</td>
+			</tr>
+		{% endif %}
+		<tr>
+			<th>Timezone</th>
+			<td>{{ event.timezone }}</td>
+		</tr>
+		<tr>
+			<th>Start</th>
+			<td>
+				{% if event.timezone != currentTimeZone %}
+					{{ event.startAt |date('D H:i jS M Y', event.timezone ) }} ( {{  event.timezone }})<br/>
+					{{ event.startAt |date('D H:i jS M Y', currentTimeZone ) }} ( {{  currentTimeZone }})
+				{% else %}
+					{{ event.startAt |date('D H:i jS M Y', currentTimeZone ) }} ( {{  currentTimeZone }})
+				{%  endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>End</th>
+			<td>
+				{% if event.timezone != currentTimeZone %}
+					{{ event.endAt |date('D H:i jS M Y', event.timezone ) }} ( {{  event.timezone }})<br/>
+					{{ event.endAt |date('D H:i jS M Y', currentTimeZone ) }} ( {{  currentTimeZone }})
+				{% else %}
+					{{ event.endAt |date('D H:i jS M Y', currentTimeZone ) }} ( {{  currentTimeZone }})
+				{%  endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>Main Group ID</th>
+			<td>{{ event.groupId }}</td>
+		</tr>
+		{% if group is not null %}
+			<tr class="sub">
+				<th>Main Group Slug</th>
+				<td>{{ group.slug }}</td>
+			</tr>
+			<tr class="sub">
+				<th>Main Group Title</th>
+				<td>{{ group.title }}</td>
+			</tr>
+			<tr class="sub">
+				<th>More</th>
+				<td><a href="/sysadmin/site/{{ site.id }}/group/{{ group.slug }}">Group</a></td>
+			</tr>
+		{% endif %}
+		<tr>
+			<th>Area ID</th>
+			<td>{{ event.areaId }}</td>
+		</tr>
+		{% if area is not null %}
+			<tr class="sub">
+				<th>Area Slug</th>
+				<td>{{ area.slug }}</td>
+			</tr>
+			<tr class="sub">
+				<th>Area Title</th>
+				<td>{{ area.title }}</td>
+			</tr>
+			<tr class="sub">
+				<th>More</th>
+				<td><a href="/sysadmin/site/{{ site.id }}/area/{{ area.slug }}">Area</a></td>
+			</tr>
+		{% endif %}
+		<tr>
+			<th>Venue ID</th>
+			<td>{{ event.venueId }}</td>
+		</tr>
+		{% if venue is not null %}
+			<tr class="sub">
+				<th>Venue Slug</th>
+				<td>{{ venue.slug }}</td>
+			</tr>
+			<tr class="sub">
+				<th>Venue Title</th>
+				<td>{{ venue.title }}</td>
+			</tr>
+			<tr class="sub">
+				<th>More</th>
+				<td><a href="/sysadmin/site/{{ site.id }}/venue/{{ venue.slug }}">Venue</a></td>
+			</tr>
+		{% endif %}
+	</table>
+
+
+	<table class="data">
+		<tr>
+			<th>Group Slug</th>
+			<th>Group Title</th>
+			<th>More</th>
+		</tr>
+		{% for group in groups %}
+			<tr>
+				<td>{{ group.slug }}</td>
+				<td>{{ group.title }}</td>
+				<td><a href="/sysadmin/site/{{ site.id }}/group/{{ group.slug }}">Group</a></td>
+			</tr>
+		{% endfor %}
+	</table>
+
+	<table class="oneData">
+		<tr>
+			<th>More</th>
+			<td>
+				<ul>
+					<li><a href="{{  config.getWebSiteDomainSecure(site.slug) }}/event/{{ event.slugForURL }}" target="_blank">View On Site</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	{%  include 'sysadmin/common/sysadminCommentsList.html.twig' %}
+
+	<form action="#" method="post" class="action">
+		{{ form_errors(form) }}
+		{{ form_rest(form) }}
+		<input type="submit" name="Do Action" />
+	</form>
+
+	<ul class="actionHelp">
+		<li>addgroup  <span class="param">slug</a></li>
+		<li>removegroup  <span class="param">slug</a></li>
+		<li>maingroup  <span class="param">slug</a></li>
+		<li>delete</li>
+		<li>undelete</li>
+		<li>cancel</li>
+		<li>uncancel</li>
+		<li>addcuratedlist  <span class="param">curatedlistslug</a></li>
+		<li>removecuratedlist  <span class="param">curatedlistslug</a></li>
+		<li>isduplicateof <span class="param">SLUG</span></li>
+		<li>isnotduplicate</li>
+		<li>purge <span class="param">password</span></li>
+		<li>slughuman  <span class="param">slughuman</a></li>
+	</ul>
+
+{% endblock %}
+
+

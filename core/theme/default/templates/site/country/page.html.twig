@@ -1,0 +1,47 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block htmlHeader %}
+	<meta name="openacalendar:country:code" content="{{  country.twoCharCode }}" />
+{%  endblock %}
+
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/country', 'label':'countries' }, {'url':'/country/'~country.twoCharCode, 'label':country.title} ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="contentMain">
+		<h2>{{  country.title }} <img src="/theme/default/img/countries/{{ country.twoCharCode|lower }}.png" alt="Flag"></h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/country/{{ country.twoCharCode }}">Details &amp; Events</a></li>
+		</ul>
+	</div>
+
+	{% block innerContent %}{% endblock %}
+
+{% endblock %}
+
+
+{% block scriptsForState %}
+	<script type="text/javascript">
+		var exportData = { country:"{{ country.twoCharCode }}", countryTitle: "{{  country.title | e('js') }}"   };
+		var countryData = { code: "{{ country.twoCharCode }}",
+					maxLat: {% if country.maxLat %}{{ country.maxLat }}{% else %}null{% endif %},
+					maxLng: {% if country.maxLng %}{{ country.maxLng }}{% else %}null{% endif %}, 
+					minLat: {% if country.minLat %}{{ country.minLat }}{% else %}null{% endif %},
+					minLng: {% if country.minLng %}{{ country.minLng }}{% else %}null{% endif %}, };
+	</script>
+{% endblock %}
+

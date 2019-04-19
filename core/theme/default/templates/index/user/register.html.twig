@@ -1,0 +1,50 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Register - {% endblock %} 
+
+{% block content %}
+
+	{%  include '/index/common/afterGetUser.html.twig' with { forRegister: true, forLogin: false } %}
+
+	<div class="contentMain">
+		<form action="#" method="post" class="styled">
+	
+			{{ form_errors(form) }}
+
+			{{ form_row(form.email) }}
+
+            {{ form_row(form.displayname) }}
+
+			<p class="information">(Your name might be displayed to the public. It doesn't have to be your real name!)</p>
+
+			{{ form_row(form.password1) }}
+			{{ form_row(form.password2) }}
+			{{ form_row(form.agree) }}
+
+			<p><a href="/terms" target="_new">Open Terms & Conditions in a separate window</a></p>
+
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Create my account" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+
+
+		</form>
+	</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+	<script type="text/javascript" src="/theme/default/js/loginOrRegister.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+
+

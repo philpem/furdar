@@ -1,0 +1,55 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Profile Admin - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/profile', 'label':'profile' } ]  } %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="contentMain">
+
+        {{ form_start(form, {'method': 'POST',  'attr': { 'class':'styled' }, 'action':'#'}) }}
+
+			{{ form_errors(form) }}
+
+			{{ form_row(form.title) }}
+			{{ form_row(form.description_text) }}
+			{{ form_row(form.footer_text) }}
+
+			{% if siteLogoAllowed %}
+				<div class="rowWrapper">
+					<div class="labelWrapper">Existing Logo</div>
+					<div class="widgetWrapper">
+						<img src="/getLogo.php?t={{ "now"|date('U') }}" class="logo" alt="Logo">
+					</div>
+					<div class="after"></div>
+				</div>
+				{{ form_row(form.logo) }}
+			{% endif %}
+
+			{{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+
+		</form>
+
+		{% if siteLogoAllowed %}
+			<div class="contentMain">
+				<p>(Note you can also pick a site logo from <a href="/media/">your existing media</a>.)</p>
+			</div>
+		{%  endif %}
+
+	</div>
+
+{% endblock %}
+

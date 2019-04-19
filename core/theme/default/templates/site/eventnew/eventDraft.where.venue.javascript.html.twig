@@ -1,0 +1,20 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+
+
+
+<script type="text/javascript">
+	var countryMaxLat = {{  country.maxLat }};
+	var countryMinLat = {{  country.minLat }};
+	var countryMaxLng = {{  country.maxLng }};
+	var countryMinLng = {{  country.minLng }};
+</script>
+{% include 'site/common/mapLibrary.js.html.twig' %}
+<script src="/theme/default/js/newEvent.where.venue.js"></script>
+
+

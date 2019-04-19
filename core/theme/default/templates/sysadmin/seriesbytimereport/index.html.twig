@@ -1,0 +1,24 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+
+{% extends 'sysadmin/page.html.twig' %}
+
+{% block content %}
+
+	<h2>{{  report.reportTitle }} By Time</h2>
+
+
+	<form action="/sysadmin/report/seriesbytime/{{  report.extensionID }}/{{ report.reportID }}/run" method="post" class="action">
+		{{ form_errors(form) }}
+		{{ form_rest(form) }}
+		<input type="submit" value="Run Report Now" />
+	</form>
+
+
+{% endblock %}
+
+

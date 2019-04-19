@@ -1,0 +1,35 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/venue/page.mainTab.html.twig' %}
+
+{% block pageTitle %}{{ country.title }} - {% endblock %}
+
+{% block tabDetails %}currentTab{% endblock %}
+
+{% block htmlHeader %}
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{{ parent() }}
+{% endblock %}
+
+
+
+{% block switcherCalendar %}current{% endblock %}
+
+{% block eventsContent %}
+
+	{%  include '/site/common/calendar.monthly.html.twig' with {'showCurrentUserOptions':true, 'addURL':'/event/new', 'calURL':'/venue/' ~ venue.slugForURL ~ '/calendar' } %}
+
+{% endblock %}
+
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		var showCurrentUserOptions = {% if currentUser is not null %}true{% else %}false{% endif %};
+	</script>
+	<script src="/theme/default/js/calendar.site.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+{% endblock %}
+

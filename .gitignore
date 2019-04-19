@@ -1,0 +1,12 @@
+/cache/templates/*
+/cache/templates.cli/*
+/cache/templates.web/*
+/config.php
+/config.test.php
+.DS_Store
+/import.sql
+/vendor
+/.idea
+/.vagrant
+/ubuntu-xenial-16.04-cloudimg-console.log
+/cache/frontPageAreas.php

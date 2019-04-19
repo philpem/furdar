@@ -1,0 +1,91 @@
+
+{% extends 'site/pageMinimal.html.twig' %}
+
+{% block pageTitle %}Game - {% endblock %}
+
+{% block htmlHeader %}
+	<link rel="stylesheet" type="text/css" href="/theme/default/css/game1.css?v={{ config.assetsVersion }}">
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<div id="intro">
+			<p>Do you want to <a href="#" onclick="loadGame(); return false;">play a game</a>?</p>
+		</div>
+		<div id="instructions" style="display: none;">
+			<p>To play, move around the calendar.
+				You have a limited number of moves to uncover as many events as you can,
+				1 point for each event!</p>
+			<p>Tip: These are real tech events listed on the correct day, so try to think
+				which direction is best to move in. Which day of the week is most popular,
+				for instance?</p>
+			<div id="loading">
+				Loading, please wait ...
+			</div>
+			<div id="startFirstGame" style="display: none;">
+				<a href="#" onclick="startFirstGame(); return false;"  class="button">Play</a>
+			</div>
+
+		</div>
+
+		<div id="gameState" style="display: none;">
+			<div class="group">Moves Left: <div id="gameStateMovesLeft"></div></div>
+			<div class="groupBreak"></div>
+			<div class="group">Score: <div id="gameStateCurrentScore"></div></div>
+			<div class="groupBreak"></div>
+			<div class="group">Top Score: <div id="gameStateMaxScore"></div></div>
+			<div class="groupBreak"></div>
+			{% spaceless %}<div id="playAgain" style="display: none;">
+				<a href="#" onclick="startGame(); return false;" class="button">Play again?</a>
+			</div>{% endspaceless %}
+			<div class="groupBreak"></div>
+			{% spaceless %}<div id="browseEvents" style="display: none;">
+				<a href="/"  class="button">Browse tech events?</a>
+			</div>{% endspaceless %}
+		</div>
+
+		<div id="gameBoardWrapper" style="display: none;">
+			<div id="gameBoard">
+				<div id="gameBoardHeader"></div>
+				<div id="gameBoardFlashWrapper" style="display: none;">
+					<div id="gameBoardFlash">
+						<div id="gameBoardFlashClose"><a href="#" onclick="$('#gameBoardFlashWrapper').hide(); return false;">X</a></div>
+						<div id="gameBoardFlashContent"></div>
+					</div>
+				</div>
+				<div id="gameBoardBoard">
+					{% for week in 1..7 %}
+						<div class="row">
+							{% for day in 1..7 %}
+								<div id="Week{{ week }}Day{{ day }}" class="cell" onclick="cellClicked({{ week }},{{ day }}); return false;">
+								</div>
+							{% endfor %}
+						</div>
+					{% endfor %}
+					<div id="gameBoardBoardFooter"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="eventsListWrapper" style="display: none;">
+			<ul id="eventsList" class="eventsList"></ul>
+		</div>
+
+
+	</div>
+{%  endblock %}
+
+{% block scripts %}
+	<script src="/theme/default/js/game1.js?v={{ config.assetsVersion }}" type="text/javascript"></script>
+{% endblock %}
+
+
+
+
+
+
+
+

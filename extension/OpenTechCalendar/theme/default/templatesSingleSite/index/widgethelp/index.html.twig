@@ -1,0 +1,36 @@
+{% extends 'index/page.html.twig' %}
+
+
+{% block pageTitle %}Widgets - {% endblock %} 
+
+{% block htmlHeader %}
+	<link rel="canonical" href="{{ config.getWebIndexDomainSecure }}/widgethelp/" />
+{% endblock %}
+ 
+	
+{% block content %}
+
+	<p>We have several widgets that let you take data from {{ config.installTitle }} and display it on your website.</p>
+	
+	
+	<p>The code for all our widgets <a href="https://github.com/OpenACalendar/OpenACalendar-Web-Widgets">is available as a Github repository under a BSD License</a>, to encourage you to improve them as you see fit.</p>
+	
+	<p>There is a WordPress plugin to make the widgets easy to use. 
+		<a href="http://wordpress.org/plugins/openacalendar/">Download stable releases 
+		from the WordPress site</a>.</p>
+
+	<p>If you want to write your own widget, we have a full API you can use.</p>
+	
+	<p>
+		Our widgets include a small link back to {{ config.installTitle  }}  and our sponsors. Please do not alter these.
+	</a>
+
+	<p>
+		There are currently no limits on use, unless your use starts to impact on the healthy operation of our servers.
+	</p>
+	
+
+
+	
+	
+{% endblock %}

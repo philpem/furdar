@@ -1,0 +1,34 @@
+{#
+ #
+ # In this file we have to carefully use a combination of all 3 of:
+ #   - in twig tags http://twig.sensiolabs.org/doc/templates.html#whitespace-control
+ #   spaceless
+ #   putting the title on thte same line as the opening <a tag
+ #
+ # To make the HTML come out with no new lines in the HTML, and that is essential to make it render properly in FireFox.
+ #
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% set value = 'no spaces' %}
+<ul class="areas">
+	{% for areaToList in areasToList %}
+			<li class="area">
+				{% spaceless %}
+					<span class="content{% if areaToList.cachedFutureEvents %}WithEvents{% else %}WithNoEvents{% endif %}">
+						<a href="/area/{{ areaToList.slugForUrl }}">{{ areaToList.title }}
+							{%- if areaToList.cachedFutureEvents -%}
+								<span title="{{areaToList.cachedFutureEvents}} future events"> ({{areaToList.cachedFutureEvents}})</span>
+							{%- endif -%}
+						</a>
+					</span>
+				{% endspaceless %}
+				<span class="aftercontent">&nbsp;</span>
+			</li>
+	{% endfor %}
+</ul>
+
+
+

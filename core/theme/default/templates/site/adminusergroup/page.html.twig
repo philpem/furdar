@@ -1,0 +1,40 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [
+		{ 'url':'/admin', 'label':'admin' },
+		{ 'url':'/admin/usergroup', 'label':'user groups' },
+		{ 'url':'/admin/usergroup/' ~ usergroup.id, 'label':usergroup.title }
+	]  } %}
+{% endblock %}
+
+
+
+{% block content %}
+
+
+	<div class="contentMain">
+		<h2>{{  usergroup.title }}</h2>
+	</div>
+
+	<div class="pageActionsWrapper">
+		<ul class="pageActions">
+			{% block actions %}{% endblock %}
+			<li class="tab {% block tabDetails %}{% endblock %}"><a href="/admin/usergroup/{{  usergroup.id }}">Details</a></li>
+			<li class="tab {% block tabPermissions %}{% endblock %}"><a href="/admin/usergroup/{{  usergroup.id }}/permissions">Manage Permissions</a></li>
+			<li class="tab {% block tabUsers %}{% endblock %}"><a href="/admin/usergroup/{{  usergroup.id }}/users">Manage Users</a></li>
+		</ul>
+	</div>
+
+
+	{% block innerContent %}{% endblock %}
+
+{% endblock %}
+

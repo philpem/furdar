@@ -1,5 +1,13 @@
-Software License
-================
+Brand and Name License
+======================
+
+The Open Tech Calendar brand and name (including but not limited to the logo and design)
+is copyright JMB Technology Limited (Scottish Company SC440747).
+
+Written permission must be obtained before reuse.
+
+Our Software License
+=====================
 
 Copyright (c) 2013-2019, JMB Technology Ltd. Scottish Company SC440747.
 All rights reserved.
@@ -30,3 +38,17 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+Other Licenses
+==============
+
+Note this software includes some static data.
+
+* Time Zone data http://www.iana.org/time-zones
+* Country Bound Data http://wiki.openstreetmap.org/wiki/User:Ewmjc/Country_bounds
+
+Note this software includes other assets.
+
+* FamFam Flags http://www.famfamfam.com/lab/icons/flags/
+* Font Awesome
+
+Note this software includes other libraries. See composer.lock and the software for details.

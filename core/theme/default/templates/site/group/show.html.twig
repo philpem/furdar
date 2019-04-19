@@ -1,0 +1,79 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/group/page.mainTab.html.twig' %}
+
+{% block htmlHeader %}
+	{% if not currentSite.isWebRobotsAllowed or group.isDeleted or not eventListFilterParams.isDefaultFilters %}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	{%  else %}
+		<link rel="canonical" href="{{ config.getWebSiteDomainSecure(currentSite.slug) }}/group/{{ group.slugForUrl }}/" />
+	{% endif %}
+	<link rel="stylesheet" type="text/css" href="/theme/default/css/curatedlists.css?v={{ config.assetsVersion }}">
+	{{ parent() }}
+{% endblock %}
+
+{% block switcherAgenda %}current{% endblock %}
+
+{% block eventsContent %}
+
+		<ul class="mainListEvents">
+			{%  if events|length > 0 %}
+				{% for event in events %}
+					{% include '/site/common/mainListEvent.html.twig' with {'event':event, 'showCurrentUserOptions':true, 'showVenueAndArea':true}  %}
+				{% endfor %}
+				{% if isGroupRunningOutOfFutureEvents and currentUserActions.has("org.openacalendar","groupNewEvent") %}
+					<li class="nodata">
+						<p>
+							{# the search filters could be showing old events, so it could be true there are event to show AND there are no future events #}
+							{% if isGroupRunningOutOfFutureEvents == 1 %}
+								We are about to run out of future events!
+							{% else %}
+								We don't know of any future events.
+							{% endif %}
+						</p>
+						<p>
+							You can <a href="/event/new?group={{ group.slug }}">create a new event</a> or look for an old event and select "recur".
+						</p>
+					</li>
+				{%  endif %}
+			{% else %}
+				<li class="nodata">
+					<p>
+						{%  if not eventListFilterParams.isDefaultFilters %}
+							{%  set eventsDefaultCount = group|futureeventscount %}
+							{%  if eventsDefaultCount == 1 %}
+								No events found with that filter. Do you want to see <a href="/group/{{  group.slugForURL }}">the one future event</a> instead?
+							{%  elseif eventsDefaultCount > 1 %}
+								No events found with that filter. Do you want to see <a href="/group/{{  group.slugForURL }}">the {{ eventsDefaultCount }} future events</a> instead?
+							{%  else %}
+								No events found.
+							{%  endif %}
+						{%  else  %}
+							No events found.
+						{%  endif %}
+					</p>
+
+					{%  if eventListFilterParams.isDefaultFilters %}
+						{%  set eventsPastCount = group|pasteventscount %}
+						{%  if eventsPastCount == 1 %}
+							<p>(Sorry, you've already missed 1 event.)</p>
+						{% elseif eventsPastCount > 1 %}
+							<p>(Sorry, you've already missed {{ eventsPastCount  }} events.)</p>
+						{%  endif %}
+					{%  endif %}
+				</li>
+			{% endif %}
+		</ul>
+
+{% endblock %}
+
+		
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="/theme/default/js/userAtEvents.site.js?v={{ config.assetsVersion }}"></script>
+{% endblock %}
+

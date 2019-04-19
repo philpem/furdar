@@ -1,0 +1,23 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<div class="currentUserAttendance" id="currentUserAttendanceForEvent{{ event.slug }}">
+	<a href="{{ config.getWebSiteDomainSecure(event.siteSlug) }}/event/{{ event.slug }}" onclick="showCurrentUserAttendanceForEvent({{ event.slug }}); return false;" class="activationLinkWrapper">
+		{% if event.userIsPlanAttending %}
+			<div class="iconUserAttendingSmall" title="You are attending"></div>
+		{% elseif event.userIsPlanMaybeAttending %}
+			<div class="iconUserMaybeAttendingSmall" title="You are maybe attending"></div>
+		{% else %}
+			<div class="iconUserNotAttendingSmall" title="You are not attending"></div>
+		{% endif %}
+	</a>
+	<div class="formWrapper"></div>
+	<div class="ticketWrapper" style="display: none;">
+		{%  if event.hasTicketUrl %}
+			<a href="{{  event.ticketUrl }}" target="_blank" rel="noopener" class="ticketIconPrompt"> Make sure you get a <span class="fa fa-ticket" title="See information about tickets"></span></a>
+		{% endif %}
+	</div>
+</div>	

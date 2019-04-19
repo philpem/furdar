@@ -1,0 +1,72 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Contact - {% endblock %} 
+
+{% block htmlHeader %}
+	<link rel="canonical" href="{{ config.getWebIndexDomainSecure }}/contact" />
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+			
+		{% if config.contactEmailHTML %}
+
+			<h2>Email Us</h2>
+
+			<p>Email us on {{ config.contactEmailHTML }}</p>
+
+		{% endif %}
+
+		<h2>Contact Us</h2>
+
+		{% if config.siteReadOnly %}
+
+			<p>Sorry, the contact form is not available at the moment.</p>
+
+		{%  else %}
+
+			<form action="#" method="post" class="styled">
+				{{ form_errors(form) }}
+
+				{{ form_row(form.subject) }}
+				{{ form_row(form.email) }}
+				{{ form_row(form.message) }}
+
+				{{ form_rest(form) }}
+
+				<div style="display: none;">
+					<label>URL<input type="text" name="url"></label>
+				</div>
+				<div class="bigSubmitActionWrapper"><input type="submit"  value="Send Message" class="bigSubmitAction"/></div>
+				<div class="afterBigSubmitActionWrapper"></div>
+			</form>
+
+		{%  endif %}
+
+		{% if config.contactTwitter or config.facebookPage or config.googlePlusPage %}
+			<h2>Social?</h2>
+		{% endif %}
+
+		{% if config.contactTwitter %}
+			<p>Follow us on <a target="_blank" href="http://twitter.com/{{  config.contactTwitter }}">Twitter @{{  config.contactTwitter }}</a>.</p>
+		{% endif %}
+
+		{% if config.facebookPage %}
+			<p>Follow us on <a target="_blank" href="{{ config.facebookPage }}">Facebook</a>.</p>
+		{% endif %}
+
+		{% if config.googlePlusPage %}
+			<p>Follow us on <a target="_blank" href="{{ config.googlePlusPage }}">Google+</a>.</p>
+		{% endif %}
+
+	</div>
+
+
+{% endblock %}

@@ -1,0 +1,182 @@
+/**
+ * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ * @link https://gitlab.com/opentechcalendar You will find it's source here!
+ * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+*/
+
+@import("reset.less");
+@import("mixins.less");
+@import("icons.less");
+@import "libSite/main.less";
+@import "libIndex/main.less";
+@import "libIndexAndSite/main.less";
+@import("libIndexAndSite/popup.less");
+@import("libIndexAndSite/calendar.less");
+
+#header {
+	background-image: url('/theme/default/img/home.jpg');
+	background-repeat: repeat;
+	#headerExplanationText {
+		clear: both;
+		padding: 20px;
+		font-size: 150%;
+		line-height: 1.4em;
+	}
+}
+
+.homePageShareBoxIcons {
+	text-align: center;
+	padding: 10px;
+	a {
+		text-align: center;
+		text-decoration: none;
+		color: #000000;
+		font-size: 200%;
+	}
+}
+
+.countryOnHomePage {
+	font-size: 160%;
+	font-weight: bold;
+}
+
+ul.listLegacyLocations {
+	padding: 10px 0;
+	li {
+		padding: 2px;
+		display: inline;
+		line-height: 2.0em;
+		span.contentWithEvents {
+			font-size: 130%;
+			background: url('/theme/default/img/locationMarkerForEvents.png') no-repeat #2d559d;
+		}
+		span.contentWithNoEvents {
+			font-size: 100%;
+			background: url('/theme/default/img/locationMarkerForNoEvents.png') no-repeat #676767;
+		}
+		span.contentWithEvents, span.contentWithNoEvents {
+			white-space: nowrap;
+			.rounded-corners(2px);
+			padding: 2px 5px 2px 20px;
+			color: white;
+			a {
+				color: white;
+				text-decoration: none;
+			}
+			a:hover, a:focus {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+#footer #footerLinks .footerLinksRow, #footer #footerCredits .footerLinksRow {
+    padding: 0px 0px 10px;
+}
+
+#footerSponsors {
+    background: white;
+	float: right;
+	border: 2px solid @colourDarker1;
+	.rounded-corners(2px);
+	padding: 10px 60px;
+	margin: 0 0 10px 10px;
+	color: black;
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	a:hover, a:focus {
+		text-decoration: underline;
+	}
+	.intro {
+		padding: 5px;
+	}
+	.image {
+		img {
+			padding: 10px;
+		}
+	}
+	.sponsor {
+		padding: 5px;
+	}
+}
+
+@media screen and (max-width: @narrowScreensMakeTwoColumnsIntoOneBoundary){
+	#footerSponsors {
+		float: none;
+	}
+}
+
+#afterFooter {
+	clear: both;
+}
+
+
+
+#header {
+	padding: 0 5px 5px 5px;
+	.siteTitle {
+		float: left;
+	}
+}
+
+#headerSponsorsWrapper {
+	float: right;
+	#headerSponsors {
+		background: white;
+		.rounded-corners-bottom(10px);
+		padding: 10px 20px;
+		margin: 0 0 5px 5px;
+		color: black;
+		a {
+			color: black;
+			text-decoration: none;
+		}
+		a:hover, a:focus {
+			text-decoration: underline;
+		}
+		#headerSponsorsContents {
+			text-align: center;
+			margin: 0 auto;
+			.intro {
+				display: block;
+				padding: 5px;
+			}
+			.image {
+				display: inline;
+				img {
+					padding: 5px 10px 0px 10px;
+					position: relative;
+					top: 2px;
+				}
+			}
+			.sponsor {
+				display: block;
+				padding: 5px;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: @narrowScreensMakeTwoColumnsIntoOneBoundary){
+	#headerSponsorsWrapper {
+		float: none;
+		#headerSponsors {
+			.rounded-corners(10px);
+			border: 2px solid @colourDarker1;
+		}
+	}
+	#header .siteTitle {
+		float: none;
+	}
+}
+
+.AfterCodeOfConductFieldDescription {
+	padding: 10px 0 10px 100px;
+	font-style: italic;
+	font-size: 80%;
+}
+
+

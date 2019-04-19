@@ -1,0 +1,20 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<li class="title" style="margin-top: 50px;">Open Tech Calendar lists tech events!</li>
+<li class="text">
+	<p>We are a <a href="/usereditable">user editable</a> calendar of your local tech meet ups.</p>
+	<p>We help people find great tech events and enable tech events to work together for everyone's benefit.</p>
+	{% if currentUserActions.has("org.openacalendar","eventNew") or ( currentUser is null and anyVerifiedUserActions.has("org.openacalendar","eventNew") ) %}
+		<p>Know of an event we are missing? <a href="/event/new">Please add it</a>!</p>
+	{% else %}
+		<p>Know of an event we are missing? Please add it!</p>
+	{% endif %}
+	<form action="/" method="get">
+		<div class="bigSubmitActionWrapper"><input type="submit"  value="Find more events" class="bigSubmitAction"/></div>
+		<div class="afterBigSubmitActionWrapper"></div>
+	</form>
+</li>

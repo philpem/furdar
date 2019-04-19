@@ -1,0 +1,145 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+<li class="event">
+	{% if historyItem.isdeleted %}
+		<div class="dateTimeIcon">
+			<div class="dateIcon">
+				<span class="deleted">Deleted!</span>
+			</div>
+		</div>
+	{% else %}
+		<div class="dateTimeIcon">
+			<time datetime="{{ historyItem.getStartAt|date('c', currentTimeZone) }}">
+				<a href="/event/{{ historyItem.eventSlug }}">
+					<div class="dateIcon">
+						<span class="startDay">{{ historyItem.getStartAt|date('D', currentTimeZone) }}</span>
+						<span class="startDate">{{ historyItem.getStartAt|date('jS', currentTimeZone) }}</span>
+						<span class="startMonthYear">{{ historyItem.getStartAt|date('M \'y', currentTimeZone) }}</span>
+					</div>
+					<div class="timeIcon">
+						<span class="startTime">{{ historyItem.getStartAt|date( currentUserClock12Hour ? 'g:ia' : 'H:i', currentTimeZone) }}</span>
+					</div>
+				</a>
+			</time>				
+		</div>
+	{% endif %}
+	<div class="title"><a href="/event/{{ historyItem.eventSlug }}">{{ historyItem.summaryDisplay }}</a></div>
+	{% if historyItem.getIsNew %}
+		<div class="new">New!</div>
+	{% endif %}
+	{% if historyItem.isAnyChangeFlagsUnknown %}
+		<div>{{ historyItem.description | nl2br  }}</div>
+	{% else %}
+		{% if historyItem.getSummaryChanged %}
+			<div class="fieldChanged">
+				<div class="field">Summary changed:</div>
+				<div class="value">{{ historyItem.summary }}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getDescriptionChanged %}
+			<div class="fieldChanged">
+				<div class="field">Description changed:</div>
+				<div class="value">{{ historyItem.description | nl2br }}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getUrlChanged %}
+			<div class="fieldChanged">
+				<div class="field">URL changed:</div>
+				<div class="value">{{ historyItem.url }}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getTicketUrlChanged %}
+			<div class="fieldChanged">
+				<div class="field">Ticket URL changed:</div>
+				<div class="value">{{ historyItem.ticketUrl }}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getStartAtChanged %}
+			<div class="fieldChanged">
+				<div class="field">Start changed:</div>
+				<div class="value">{{ historyItem.startAt|date( currentUserClock12Hour ? 'D jS M Y g:ia' : 'D jS M Y H:i', historyItem.timezone) }} ({{ historyItem.timezone }})</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getEndAtChanged %}
+			<div class="fieldChanged">
+				<div class="field">End changed:</div>
+				<div class="value">{{ historyItem.endAt |date( currentUserClock12Hour ? 'D jS M Y g:ia' : 'D jS M Y H:i', historyItem.timezone)}} ({{ historyItem.timezone }})</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getCountryIdChanged %}
+			<div class="fieldChanged">
+				<div class="field">Country changed:</div>
+				<div class="value">changed{# TODO #}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getTimezoneChanged %}
+			<div class="fieldChanged">
+				<div class="field">Timezone changed:</div>
+				<div class="value">{{ historyItem.timezone }}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getAreaIdChanged %}
+			<div class="fieldChanged">
+				<div class="field">Area changed:</div>
+				<div class="value">changed{# TODO #}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getVenueIdChanged %}
+			<div class="fieldChanged">
+				<div class="field">Venue changed:</div>
+				<div class="value">changed{# TODO #}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getIsVirtualChanged %}
+			<div class="fieldChanged">
+				<div class="field">Is Virtual changed:</div>
+				<div class="value">{% if historyItem.isVirtual %}Yes{% else %}No{% endif %}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getIsPhysicalChanged %}
+			<div class="fieldChanged">
+				<div class="field">Is Physical changed:</div>
+				<div class="value">{% if historyItem.isPhysical %}Yes{% else %}No{% endif %}</div>
+			</div>
+		{% endif %}
+		{% if historyItem.getIsDeletedChanged %}
+			<div class="fieldChanged">
+				<div class="field">Deleted Status changed:</div>
+				<div class="value">{% if historyItem.getIsDeleted %}Deleted!{% else %}Restored!{% endif %}</div>
+			</div>
+		{%endif %}
+		{% if historyItem.getIsCancelledChanged %}
+			<div class="fieldChanged">
+				<div class="field">Cancelled Status changed:</div>
+				<div class="value">{% if historyItem.getIsCancelled %}Cancelled!{% else %}Restored!{% endif %}</div>
+			</div>
+		{%endif %}
+		{%  for customField in currentSite.getCachedEventCustomFieldDefinitionsAsModels %}
+			{% if historyItem.getCustomFieldChanged(customField) %}
+				<div class="fieldChanged">
+					<div class="field">{{  customField.label }} changed:</div>
+					<div class="value">{{ historyItem.getCustomField(customField) | nl2br  }}</div>
+				</div>
+			{%  endif %}
+		{%  endfor %}
+	{% endif %}
+	<div class="created">
+		Edited at
+		<time datetime="{{ historyItem.getCreatedAt|date('c', currentTimeZone) }}">
+			{{ historyItem.getCreatedAt|date( currentUserClock12Hour ? 'D jS M Y g:ia' : 'D jS M Y H:i', currentTimeZone) }}
+			({{ historyItem.getCreatedAt | time_diff }})
+		</time>	
+		{% if historyItem.userAccountID %}by <a href="{{ config.getWebIndexDomainSecure() }}/person/{{  historyItem.userAccountUserName }}">{{  historyItem.userAccountDisplayName }}</a>{% endif %}
+		{%  if historyItem.editComment %} leaving comment: {{ historyItem.editComment }}{%  endif %}
+	</div>
+	{%  if eventRollbackLink is defined and eventRollbackLink and currentUserActions.has("org.openacalendar","eventEditDetailsRollback") %}
+		<form action="/event/{{  eventRollbackLinkEvent.slugForURL }}/rollback/{{ historyItem.createdAtTimeStamp }}" class="oneActionFormRight" method="get">
+			<input type="submit" value="Rollback to this">
+		</form>
+		<div class="afterOneActionFormRight"></div>
+	{% endif %}
+</li>

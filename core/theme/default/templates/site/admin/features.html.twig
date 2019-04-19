@@ -1,0 +1,47 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'site/page.html.twig' %}
+
+{% block pageTitle %}Features Admin - {% endblock %} 
+
+{% block breadcrumbs %}
+	{%  include 'site/breadcrumbs.html.twig' with { 'breadcrumbs': [  { 'url':'/admin', 'label':'admin' },  { 'url':'/admin/features', 'label':'features' } ]  } %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="contentMain">
+
+		<ul class="listFeatures">
+			{% for feature in currentSiteFeatures.asList %}
+
+				<li class="feature">
+					<h3>{{ feature.title }} {% if feature.on %}<span class="fa fa-check"></span>{% else %}<span class="fa fa-times"></span>{%  endif %}</h3>
+					<p>{{  feature.description }}</p>
+					<form action="#" method="post"  class="styled">
+						<input type="hidden" name="CSFRToken" value="{{ getCSFRToken() }}">
+						<input type="hidden" name="extension" value="{{ feature.extensionID | e('html_attr') }}">
+						<input type="hidden" name="feature" value="{{ feature.featureID | e('html_attr') }}">
+						{% if feature.on %}
+							<input type="hidden" name="action" value="off">
+							<div class="bigSubmitActionWrapper"><input type="submit" value="Turn Off {{ feature.title|e('html_attr') }}"></div>
+						{%  else %}
+							<input type="hidden" name="action" value="on">
+							<div class="bigSubmitActionWrapper"><input type="submit" value="Turn On {{ feature.title|e('html_attr') }}"></div>
+						{%  endif %}
+						<div class="afterBigSubmitActionWrapper"></div>
+					</form>
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+
+{% endblock %}
+
+
+	

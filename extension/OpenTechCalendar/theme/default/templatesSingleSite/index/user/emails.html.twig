@@ -1,0 +1,54 @@
+{#
+ # @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
+ # @link https://gitlab.com/opentechcalendar You will find it's source here!
+ # @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
+ # @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
+ #}
+{% extends 'index/page.html.twig' %}
+
+{% block pageTitle %}Emails - {% endblock %} 
+
+{% block content %}
+
+	<div class="contentMain">
+
+
+		<form action="#" method="post" class="styled">
+
+			<div class="rowWrapper">
+				<div class="labelWrapper">Email</div>
+				<div class="widgetWrapperPlacementOnly">{{ user.email }}</div>
+				<div class="after"></div>
+			</div>
+
+			<div class="flash-notice">
+				<p>We think we have always treated your email inbox with respect, but to be sure please confirm which emails you are happy to get from us.</p>
+
+				<p>Please consider selecting all the options - we have carefully balanced a small number of emails so that the site works at its best for you (and if you add/edit any events, for other people).</p>
+
+				<p>You can unsubscribe at any time if you feel we have got it wrong.</p>
+			</div>
+			
+			{{ form_errors(form) }}
+
+			<h3>Upcoming Events</h3>
+
+            {{ form_row(form.org_openacalendar_UpcomingEvents) }}
+
+            {{ form_row(form.email_upcoming_events) }}
+
+            {{ form_row(form.email_upcoming_events_days_notice) }}
+
+			<h3>Other Emails</h3>
+
+            {{ form_rest(form) }}
+
+			<div class="bigSubmitActionWrapper"><input type="submit"  value="Save" class="bigSubmitAction"/></div>
+			<div class="afterBigSubmitActionWrapper"></div>
+		</form>
+
+	</div>
+
+{% endblock %}
+
+
