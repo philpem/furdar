@@ -17,12 +17,15 @@ Sometimes when you start the box the apache server doesn't start properly. Just:
     vagrant ssh
     sudo /etc/init.d/apache2 restart
 
-If you have imported a data set that has been anonymised, all user passwords are "1234" - log in as anyone!
 
-    
 ### Browse App    
     
 App is available on https://localhost:8443/ - note SSL! Certificate is self-signed.
+
+A test data set is automatically imported. 
+To log in as a user with sysadmin privileges, use hello@opentechcalendar.co.uk and password.
+
+To see the sys admin UI, go to https://localhost:8443/sysadmin - the second password is 1234.
 
 ### Database
 

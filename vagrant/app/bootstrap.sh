@@ -63,18 +63,15 @@ a2enmod ssl
 /etc/init.d/apache2 restart
 
 #--------------------------------------------  Database, import, upgrade
+export PGPASSWORD=password
 if [ -f /vagrant/import.sql ]
 then
-  export PGPASSWORD=password
   psql -U opentechcalendar3  -hlocalhost opentechcalendar3 -f /vagrant/import.sql
-  php /vagrant/core/cli/upgradeDatabase.php
-  php /vagrant/core/cli/loadStaticData.php
 else
-  php /vagrant/core/cli/upgradeDatabase.php
-  php /vagrant/core/cli/loadStaticData.php
-  php /vagrant/core/cli/createUser.php jarofgreen james@jarofgreen.co.uk password sysadmin
-  php /vagrant/core/cli/createSite.php otc  james@jarofgreen.co.uk
+  psql -U opentechcalendar3  -hlocalhost opentechcalendar3 -f /vagrant/import-base.sql
 fi
+php /vagrant/core/cli/upgradeDatabase.php
+php /vagrant/core/cli/loadStaticData.php
 
 #-------------------------------------------- Bash Helpers
 echo "alias db='psql -U opentechcalendar3 opentechcalendar3 -hlocalhost'" >> /home/vagrant/.bashrc
