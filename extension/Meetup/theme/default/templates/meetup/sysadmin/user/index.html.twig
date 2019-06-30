@@ -63,7 +63,7 @@
 
 	<h2>Generate Access and Refresh Token</h2>
 
-	<a href="https://secure.meetup.com/oauth2/authorize?client_id={{ oauth_key }}&response_type=code&redirect_uri={{ config.getWebIndexDomainSecure() }}{{ '/meetupdotcomoauthcallback'|url_encode }}&state={{  state | url_encode }}">
+	<a href="https://secure.meetup.com/oauth2/authorize?client_id={{ oauth_key }}&response_type=code&redirect_uri={{ config.getWebIndexDomainSecure() }}{{ '/sysadmin/meetupdotcomoauthcallback'|url_encode }}&state={{  state | url_encode }}">
 		Generate Access and Refresh Token
 	</a>
 

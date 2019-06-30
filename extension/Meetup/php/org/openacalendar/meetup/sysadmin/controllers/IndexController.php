@@ -1,6 +1,6 @@
 <?php
 
-namespace org\openacalendar\meetup\index\controllers;
+namespace org\openacalendar\meetup\sysadmin\controllers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
@@ -33,7 +33,7 @@ class IndexController
             'client_id' => $app['appconfig']->getValue($extension->getAppConfigurationDefinition('oauth_key')),
             'client_secret' => $app['appconfig']->getValue($extension->getAppConfigurationDefinition('oauth_secret')) ,
             'grant_type' => 'authorization_code',
-            'redirect_uri' => $app['config']->getWebIndexDomainSecure().'/meetupdotcomoauthcallback',
+            'redirect_uri' => $app['config']->getWebIndexDomainSecure().'/sysadmin/meetupdotcomoauthcallback',
             'code' => $_GET['code'],
         ];
 

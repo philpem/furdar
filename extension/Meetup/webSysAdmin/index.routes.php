@@ -10,3 +10,4 @@
  */
 
 $app->match('/sysadmin/meetupuser', 'org\openacalendar\meetup\sysadmin\controllers\UserController::index');
+$app->match('/sysadmin/meetupdotcomoauthcallback', 'org\openacalendar\meetup\sysadmin\controllers\IndexController::index');
