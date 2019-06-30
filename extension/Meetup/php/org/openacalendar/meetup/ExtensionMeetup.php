@@ -3,6 +3,7 @@
 namespace org\openacalendar\meetup;
 
 use appconfiguration\AppConfigurationDefinition;
+use GuzzleHttp\Client;
 
 /**
  *
@@ -31,7 +32,10 @@ class ExtensionMeetup extends \BaseExtension
     public function getAppConfigurationDefinitions()
     {
         return array(
-            new AppConfigurationDefinition($this->getId(), 'app_key', 'password', true),
+            new AppConfigurationDefinition($this->getId(), 'oauth_key', 'password', true),
+            new AppConfigurationDefinition($this->getId(), 'oauth_secret', 'password', true),
+            new AppConfigurationDefinition($this->getId(), 'access_token', 'password', false),
+            new AppConfigurationDefinition($this->getId(), 'refresh_token', 'password', false),
         );
     }
     
@@ -59,4 +63,28 @@ class ExtensionMeetup extends \BaseExtension
             return array();
         }
     }
+
+    public function callV2($guzzle, $path) {
+
+        try {
+            $response = $guzzle->request('GET', 'https://api.meetup.com/2' . $path, [
+                'headers' => [
+                    'User-Agent'=> 'Prototype Software',
+                    'Authorization'=> 'Bearer '. $this->app['appconfig']->getValue($this->getAppConfigurationDefinition('access_token')),
+                ]
+            ]);
+
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+
+
+        ########### TODO https://www.meetup.com/meetup_api/auth/#oauth2-refresh
+
+        return $response;
+    }
+
+
+
+
 }

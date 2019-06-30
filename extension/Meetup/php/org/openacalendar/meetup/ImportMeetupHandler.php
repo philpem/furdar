@@ -33,13 +33,13 @@ class ImportMeetupHandler extends ImportHandlerBase
         global $app;
         
         $extension = $app['extensions']->getExtensionById('org.openacalendar.meetup');
-        $appKey = $app['appconfig']->getValue($extension->getAppConfigurationDefinition('app_key'));
-        
+        $accessToken =  $app['appconfig']->getValue($extension->getAppConfigurationDefinition('access_token'));
+
         $urlBits = parse_url($this->importRun->getRealURL());
 
         // If you are about to edit the code below stop right there!
         // TODO refactor it to use MeetupURLParser class instead and update that instead.
-        if (in_array(strtolower($urlBits['host']), array('meetup.com','www.meetup.com')) && $appKey) {
+        if (in_array(strtolower($urlBits['host']), array('meetup.com','www.meetup.com')) && $accessToken) {
             $bits = explode("/", $urlBits['path']);
             
             if (count($bits) <= 3) {
@@ -105,13 +105,12 @@ class ImportMeetupHandler extends ImportHandlerBase
         global $app;
         
         $extension = $app['extensions']->getExtensionById('org.openacalendar.meetup');
-        $appKey = $app['appconfig']->getValue($extension->getAppConfigurationDefinition('app_key'));
-        
+
         // Avoid Throttling
         sleep(1);
 
         try {
-            $response = $this->importRun->getGuzzle()->request("GET", "https://api.meetup.com/2/event/".$id."?sign=true&key=".$appKey."&fields=timezone&text_format=plain", array());
+            $response = $this->app['extensions']->getExtensionById('org.openacalendar.meetup')->callV2($this->importRun->getGuzzle(), "/event/".$id."?fields=timezone&text_format=plain");
 
             if ($response->getStatusCode() == 200) {
                 $data = json_decode($response->getBody(), true);
@@ -139,18 +138,16 @@ class ImportMeetupHandler extends ImportHandlerBase
         global $app;
         
         $extension = $app['extensions']->getExtensionById('org.openacalendar.meetup');
-        $appKey = $app['appconfig']->getValue($extension->getAppConfigurationDefinition('app_key'));
-        
+
         // Avoid Throttling
         sleep(1);
 
-        $url = "https://api.meetup.com/2/events/?sign=true&key=".$appKey.
-            "&fields=timezone&text_format=plain&group_urlname=".
+        $url = "/events/?fields=timezone&text_format=plain&group_urlname=".
             str_replace(array("&","?"), array("",""), $groupName);
 
 
         try {
-            $response = $this->importRun->getGuzzle()->request("GET", $url, array());
+            $response = $this->app['extensions']->getExtensionById('org.openacalendar.meetup')->callV2($this->importRun->getGuzzle(), $url);
 
             if ($response->getStatusCode() == 200) {
                 $data = json_decode($response->getBody(), true);

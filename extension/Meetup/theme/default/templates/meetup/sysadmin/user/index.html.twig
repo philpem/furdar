@@ -12,8 +12,20 @@
 
 	<table class="oneData">
 		<tr>
-			<th>App Key</th>
-			<td>{{ app_key }}</td>
+			<th>OAuth Key</th>
+			<td>{{ oauth_key }}</td>
+		</tr>
+		<tr>
+			<th>OAuth Secret</th>
+			<td>{{ oauth_secret }}</td>
+		</tr>
+		<tr>
+			<th>Access Token</th>
+			<td>{{ access_token }}</td>
+		</tr>
+		<tr>
+			<th>Refresh Token</th>
+			<td>{{ refresh_token }}</td>
 		</tr>
 	</table>
 
@@ -25,19 +37,35 @@
 		
 		<div class="rowWrapper">
 			<label>
-			<div class="labelWrapper">New App Key</div>
+			<div class="labelWrapper">New Oauth Key</div>
 			<div class="widgetWrapperPlacementOnly smallInputs">
-				<input type="text" name="app_key">
+				<input type="text" name="oauth_key">
 			</div>
 			</label>
 			<div class="after"></div>
 		</div>
-		
+
+		<div class="rowWrapper">
+			<label>
+			<div class="labelWrapper">New Oauth Secret</div>
+			<div class="widgetWrapperPlacementOnly smallInputs">
+				<input type="text" name="oauth_secret">
+			</div>
+			</label>
+			<div class="after"></div>
+		</div>
+
 		
 		<input type="submit"  value="Save" />	
 		
 		
 	</form>
+
+	<h2>Generate Access and Refresh Token</h2>
+
+	<a href="https://secure.meetup.com/oauth2/authorize?client_id={{ oauth_key }}&response_type=code&redirect_uri={{ config.getWebIndexDomainSecure() }}{{ '/meetupdotcomoauthcallback'|url_encode }}&state={{  state | url_encode }}">
+		Generate Access and Refresh Token
+	</a>
 
 {% endblock %}
 

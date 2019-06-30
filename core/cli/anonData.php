@@ -137,4 +137,9 @@ print "sysadmin_comment_information\n";
 $stat = $DB->prepare('UPDATE sysadmin_comment_information SET comment=\'REMOVED\'');
 $stat->execute();
 
+// Meetup API Keys
+print "meetup API keys\n";
+$stat = $DB->prepare('DELETE FROM app_configuration_information WHERE extension_id = \'org.openacalendar.meetup\'');
+$stat->execute();
+
 print "Done\n";
