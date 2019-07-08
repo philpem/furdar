@@ -9,6 +9,7 @@
 
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 $permissionCuratedListsChangeRequired = function (Request $request, Application $app) {
