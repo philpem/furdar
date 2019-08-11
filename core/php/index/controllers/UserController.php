@@ -93,9 +93,9 @@ class UserController
 
 
         // Any areas to add?
-        if ($request->query->has("area")) {
+        if (intval($request->query->has("area"))) {
             if ($app['config']->isSingleSiteMode) {
-                $area = $areaRepo->loadBySiteIDAndAreaSlug($app['config']->singleSiteID, $request->query->get("area"));
+                $area = $areaRepo->loadBySiteIDAndAreaSlug($app['config']->singleSiteID, intval($request->query->get("area")));
             } else {
                 $site = $siteRepo->loadBySlug($request->query->get("areaSite"));
                 if ($site) {

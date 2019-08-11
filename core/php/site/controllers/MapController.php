@@ -51,7 +51,7 @@ class MapController
     {
         $this->build(
             isset($_GET['country']) ? $_GET['country'] : null,
-            isset($_GET['area']) ? $_GET['area'] : null,
+            isset($_GET['area']) && intval($_GET['area'])  ? intval($_GET['area']) : null,
             isset($_GET['venue']) ? $_GET['venue'] : null,
             $request,
             $app
