@@ -64,10 +64,10 @@ class ExtensionMeetup extends \BaseExtension
         }
     }
 
-    public function callV2($guzzle, $path) {
+    public function callMeetupAPI($guzzle, $path) {
 
         try {
-            $response = $guzzle->request('GET', 'https://api.meetup.com/2' . $path, [
+            $response = $guzzle->request('GET', 'https://api.meetup.com/' . $path, [
                 'headers' => [
                     'User-Agent'=> 'Prototype Software',
                     'Authorization'=> 'Bearer '. $this->app['appconfig']->getValue($this->getAppConfigurationDefinition('access_token')),

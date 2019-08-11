@@ -25,28 +25,17 @@ class ImportMeetupHandler extends ImportHandlerBase
         return 2000;
     }
 
-    protected $eventId;
-    protected $groupName;
+    protected $meetupEventId;
+    protected $meetupGroupName;
 
     public function canHandle()
     {
-        global $app;
-        
-        $extension = $app['extensions']->getExtensionById('org.openacalendar.meetup');
-        $accessToken =  $app['appconfig']->getValue($extension->getAppConfigurationDefinition('access_token'));
-
-        $urlBits = parse_url($this->importRun->getRealURL());
-
-        // If you are about to edit the code below stop right there!
-        // TODO refactor it to use MeetupURLParser class instead and update that instead.
-        if (in_array(strtolower($urlBits['host']), array('meetup.com','www.meetup.com')) && $accessToken) {
-            $bits = explode("/", $urlBits['path']);
-            
-            if (count($bits) <= 3) {
-                $this->groupName = $bits[1];
-                return true;
-            } elseif (count($bits) > 3 && $bits[2] == 'events') {
-                $this->eventId = $bits[3];
+        $extension = $this->app['extensions']->getExtensionById('org.openacalendar.meetup');
+        if ($this->app['appconfig']->getValue($extension->getAppConfigurationDefinition('access_token'))) {
+            $meetupURLParser = new MeetupURLParser($this->importRun->getRealURL());
+            $this->meetupGroupName = $meetupURLParser->getGroupName();
+            $this->meetupEventId = $meetupURLParser->getEventId();
+            if ($this->meetupGroupName || $this->meetupEventId) {
                 return true;
             }
         }
@@ -76,13 +65,13 @@ class ImportMeetupHandler extends ImportHandlerBase
         $iurlr->setMessage("Meetup data found");
         
         try {
-            if ($this->eventId) {
-                $meetupData = $this->getMeetupDataForEventID($this->eventId);
+            if ($this->meetupEventId) {
+                $meetupData = $this->getMeetupDataForEventID($this->meetupGroupName, $this->meetupEventId);
                 if ($meetupData) {
                     $this->processMeetupData($meetupData);
                 }
-            } elseif ($this->groupName) {
-                foreach ($this->getMeetupDatasForGroupname($this->groupName) as $meetupData) {
+            } elseif ($this->meetupGroupName) {
+                foreach ($this->getMeetupDatasForGroupname($this->meetupGroupName) as $meetupData) {
                     $this->processMeetupData($meetupData);
                 }
             }
@@ -100,30 +89,18 @@ class ImportMeetupHandler extends ImportHandlerBase
         return $iurlr;
     }
     
-    protected function getMeetupDataForEventID($id)
+    protected function getMeetupDataForEventID($groupName, $id)
     {
-        global $app;
-        
-        $extension = $app['extensions']->getExtensionById('org.openacalendar.meetup');
-
         // Avoid Throttling
         sleep(1);
 
+        $url = "/".str_replace(array("&","?"), array("",""), $groupName) ."/events/". $id ."/?fields=plain_text_no_images_description";
+
         try {
-            $response = $this->app['extensions']->getExtensionById('org.openacalendar.meetup')->callV2($this->importRun->getGuzzle(), "/event/".$id."?fields=timezone&text_format=plain");
+            $response = $this->app['extensions']->getExtensionById('org.openacalendar.meetup')->callMeetupAPI($this->importRun->getGuzzle(), $url);
 
             if ($response->getStatusCode() == 200) {
                 $data = json_decode($response->getBody(), true);
-                if (isset($data['code']) && $data['code']) {
-                    if ($data['code'] == 'not_authorized') {
-                        throw new ImportURLMeetupHandlerAPIError("API Key is not working", 1);
-                    } elseif ($data['code'] == 'throttled') {
-                        sleep(15);
-                        throw new ImportURLMeetupHandlerAPIError("Our Access has been throttled", 1);
-                    } elseif ($data['code'] == 'blocked') {
-                        throw new ImportURLMeetupHandlerAPIError("Our Access has been blocked temporarily because throttling failed", 1);
-                    }
-                }
                 return $data;
             } else {
                 throw new ImportURLMeetupHandlerAPIError("Non 200 response - got ".$response->getStatusCode(), 1);
@@ -135,36 +112,20 @@ class ImportMeetupHandler extends ImportHandlerBase
     
     protected function getMeetupDatasForGroupname($groupName)
     {
-        global $app;
-        
-        $extension = $app['extensions']->getExtensionById('org.openacalendar.meetup');
-
         // Avoid Throttling
         sleep(1);
 
-        $url = "/events/?fields=timezone&text_format=plain&group_urlname=".
-            str_replace(array("&","?"), array("",""), $groupName);
-
+        $url = "/".str_replace(array("&","?"), array("",""), $groupName) ."/events/?fields=plain_text_no_images_description";
 
         try {
-            $response = $this->app['extensions']->getExtensionById('org.openacalendar.meetup')->callV2($this->importRun->getGuzzle(), $url);
+            $response = $this->app['extensions']->getExtensionById('org.openacalendar.meetup')->callMeetupAPI($this->importRun->getGuzzle(), $url);
 
             if ($response->getStatusCode() == 200) {
                 $data = json_decode($response->getBody(), true);
-                if (isset($data['code']) && $data['code']) {
-                    if ($data['code'] == 'not_authorized') {
-                        throw new ImportURLMeetupHandlerAPIError("API Key is not working", 1);
-                    } elseif ($data['code'] == 'throttled') {
-                        sleep(15);
-                        throw new ImportURLMeetupHandlerAPIError("Our Access has been throttled", 1);
-                    } elseif ($data['code'] == 'blocked') {
-                        throw new ImportURLMeetupHandlerAPIError("Our Access has been blocked temporarily because throttling failed", 1);
-                    }
-                }
-                if (isset($data['results']) && is_array($data['results'])) {
-                    return $data['results'];
+                if (is_array($data)) {
+                    return $data;
                 } else {
-                    throw new ImportURLMeetupHandlerAPIError("No Results where returned", 1);
+                    throw new ImportURLMeetupHandlerAPIError("No Results were returned", 1);
                 }
             } else {
                 throw new ImportURLMeetupHandlerAPIError("Non 200 response - got " . $response->getStatusCode(), 1);
@@ -237,8 +198,8 @@ class ImportMeetupHandler extends ImportHandlerBase
     protected function setImportedEventFromMeetupData(ImportedEventModel $importedEvent, $meetupData)
     {
         $changesToSave = false;
-        if (isset($meetupData['description'])) {
-            $description =  $meetupData['description'];
+        if (isset($meetupData['plain_text_no_images_description'])) {
+            $description =  $meetupData['plain_text_no_images_description'];
             if ($importedEvent->getDescription() != $description) {
                 $importedEvent->setDescription($description);
                 $changesToSave = true;
@@ -266,16 +227,16 @@ class ImportMeetupHandler extends ImportHandlerBase
             $importedEvent->setTitle($meetupData['name']);
             $changesToSave = true;
         }
-        if ($importedEvent->getUrl() != $meetupData['event_url']) {
-            $importedEvent->setUrl($meetupData['event_url']);
+        if ($importedEvent->getUrl() != $meetupData['link']) {
+            $importedEvent->setUrl($meetupData['link']);
             $changesToSave = true;
         }
-        if ($importedEvent->getTimezone() != $meetupData['timezone']) {
-            $importedEvent->setTimezone($meetupData['timezone']);
+        if ($importedEvent->getTimezone() != $meetupData['group']['timezone']) {
+            $importedEvent->setTimezone($meetupData['group']['timezone']);
             $changesToSave = true;
         }
-        if ($importedEvent->getTicketUrl() != $meetupData['event_url']) {
-            $importedEvent->setTicketUrl($meetupData['event_url']);
+        if ($importedEvent->getTicketUrl() != $meetupData['link']) {
+            $importedEvent->setTicketUrl($meetupData['link']);
             $changesToSave = true;
         }
         if (isset($meetupData['venue']) && isset($meetupData['venue']['lon']) && $meetupData['venue']['lon'] != $importedEvent->getLng()) {
