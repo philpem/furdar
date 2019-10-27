@@ -15,7 +15,7 @@ use models\EventCustomFieldDefinitionModel;
  */
 class IsKeyValidTest extends BaseAppTest
 {
-    public function testData()
+    public function dataForTestBooleanParam()
     {
         return array(
             array('cat',true),
@@ -35,7 +35,7 @@ class IsKeyValidTest extends BaseAppTest
     }
 
     /**
-     * @dataProvider testData
+     * @dataProvider dataForTestBooleanParam
      */
     public function testBooleanParam($in, $out)
     {

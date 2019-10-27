@@ -19,7 +19,7 @@ use repositories\builders\EventRepositoryBuilder;
  * @license https://gitlab.com/opentechcalendar/opentechcalendar/blob/master/LICENSE.txt 3-clause BSD
  * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
  */
-class BaseFrontEndTest extends \PHPUnit_Framework_TestCase
+class BaseFrontEndTest extends \PHPUnit\Framework\TestCase
 {
 
 

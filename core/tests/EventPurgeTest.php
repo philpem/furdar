@@ -22,12 +22,13 @@ use repositories\TagRepository;
  */
 class EventPurgeTest extends \BaseAppWithDBTest
 {
-    public function __construct()
+    public function setUp()
     {
         $this->extensions = array('CuratedLists');
+        parent::setUp();
     }
 
-    
+
     public function test1()
     {
         $this->app['timesource']->mock(2014, 5, 1, 7, 0, 0);

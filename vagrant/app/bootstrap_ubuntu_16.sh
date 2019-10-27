@@ -24,7 +24,7 @@ chown www-data:www-data  /logs
 cp /vagrant/vagrant/app/apache.conf /etc/apache2/sites-enabled/000-default.conf
 cp /vagrant/vagrant/app/config.php /vagrant/config.php
 cp /vagrant/vagrant/app/config.test.php /vagrant/config.test.php
-cp /vagrant/vagrant/app/99-custom.ini /etc/php/7.2/apache2/conf.d/
+cp /vagrant/vagrant/app/99-custom.ini /etc/php/7.0/apache2/conf.d/
 
 #--------------------------------------------  MailHog Service
 wget -O /bin/mailhog https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64

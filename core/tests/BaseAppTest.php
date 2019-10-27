@@ -10,6 +10,17 @@ use repositories\GroupRepository;
 use repositories\EventRepository;
 use repositories\builders\EventRepositoryBuilder;
 
+/** CURRENTLY WE WANT OUR TESTS TO RUN ON UBUNTU 16 (PHPunit 5) AND 18 (PHPunit 6)
+ * THIS IS A HACK TO MAKE THEM WORK ON BOTH
+ * WHEN WE DON'T CARE ABOUT UBUNTU 16 ANY MORE WE CAN REMOVE IT AND JUST MAKE OUR CLASS EXTEND \PHPUnit\Framework\TestCase DIRECTLY
+ **/
+if (!class_exists('\PHPUnit_Framework_TestCase'))
+{
+    class PHPUnit_Framework_TestCase extends \PHPUnit\Framework\TestCase {
+    }
+}
+
+
 /**
  *
  * @link https://opentechcalendar.co.uk/ This is the software for Open Tech Calendar!
