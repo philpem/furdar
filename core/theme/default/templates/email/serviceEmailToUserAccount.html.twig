@@ -1,0 +1,13 @@
+
+{% extends 'email/email.html.twig' %}
+
+{% block content %}
+
+    <p>Hello {{ user.displayname }}</p>
+
+    <p>This is a test of the service email system.</p>
+
+    <p>Thanks,<br>
+    {{ config.installTitle }}</p>
+
+{% endblock %}
