@@ -220,4 +220,8 @@ abstract class BaseExtension
     {
         return true;
     }
+
+    public function purgeUser(UserAccountModel $userAccountModel)
+    {
+    }
 }

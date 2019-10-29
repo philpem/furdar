@@ -33,19 +33,11 @@ class ExtensionContact extends \BaseExtension
         return array(array('title'=>'Contact Support','url'=>'/sysadmin/contactsupport'));
     }
 
-    public function canPurgeUser(UserAccountModel $userAccountModel)
+    public function purgeUser(UserAccountModel $userAccountModel)
     {
-
-        // Have they ever used contact?
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM contact_support ".
+        $stat = $this->app['db']->prepare("DELETE FROM contact_support ".
             "WHERE contact_support.user_account_id =:id");
         $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-
-        // Ok, we are happy.
-        return true;
     }
+
 }

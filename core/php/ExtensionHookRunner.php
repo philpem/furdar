@@ -59,4 +59,11 @@ class ExtensionHookRunner
             $this->app['extensions']->getExtensionByDir($extensionDir)->afterUserAccountCreate($user);
         }
     }
+
+    public function purgeUser(UserAccountModel $user)
+    {
+        foreach ($this->app['config']->extensions as $extensionDir) {
+            $this->app['extensions']->getExtensionByDir($extensionDir)->purgeUser($user);
+        }
+    }
 }

@@ -312,6 +312,8 @@ class UserAccountRepository
         try {
             $this->app['db']->beginTransaction();
 
+            $this->app['extensionhookrunner']->purgeUser($userAccountModel);
+
             $stat = $this->app['db']->prepare("DELETE FROM user_notification WHERE user_id=:id");
             $stat->execute(array('id'=>$userAccountModel->getId()));
 
