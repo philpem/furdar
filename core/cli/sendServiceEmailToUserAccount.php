@@ -22,6 +22,9 @@ if (!$fromID || !$toID || !$sleep) {
 
 configureAppForThemeVariables(null);
 
+# As well as monolog, we make sure we write our own log
+# This is because by default monolog is not configured to log data at this level and we want to make sure we have a log
+$file = fopen("sendServiceEmailToUserAccount.log", "a");
 $stat = $app['db']->prepare("SELECT * FROM user_account_information WHERE id >= :from AND id <= :to AND is_closed_by_sys_admin='f' ORDER BY id ASC");
 $stat->execute(array(
     'from'=>$fromID,
@@ -31,6 +34,8 @@ while($data = $stat->fetch()) {
     $user = new \models\UserAccountModel();
     $user->setFromDataBaseRow($data);
     print "User ". $user->getId()."\n";
+    $app['monolog']->addWarning("Sending Service Email To User ".$user->getId());
+    fwrite($file, date("c"). " ".$user->getId().PHP_EOL);
 
     $messageText = $app['twig']->render('email/serviceEmailToUserAccount.txt.twig', array(
         'user'=>$user,
