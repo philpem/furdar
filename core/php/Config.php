@@ -228,6 +228,11 @@ class Config
 
     public $warnWhenEventsLastLongerThanSeconds = 24*60*60*7; // 1 week.
 
+    public $siteWideMessageHTML = '';
+    public $siteWideMessageHTMLForEmail = '';
+    public $siteWideMessageTextForEmail = '';
+
+
     /** DEPRECATED */
     public $canCreateSitesVerifiedEditorUsers = true;
 
