@@ -50,12 +50,12 @@ class ContactForm extends AbstractType
 
         
         if ($options['config']->contactFormAntiSpam && !$options['user']) {
-            $builder->add('antispam', TextType::class, array('label'=>'What is 2 + 2?','required'=>true));
+            $builder->add('antispam', TextType::class, array('label'=>'What is 1 + 1?','required'=>true));
             
             $myExtraFieldValidatorSpam = function (FormEvent $event) {
                 $form = $event->getForm();
                 $myExtraField = $form->get('antispam')->getData();
-                if ($myExtraField != '4' &&  $myExtraField != 'four') {
+                if ($myExtraField != '2' &&  $myExtraField != 'two') {
                     $form['antispam']->addError(new FormError("Please prove you are human"));
                 }
             };
