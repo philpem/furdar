@@ -314,6 +314,30 @@ class UserAccountRepository
 
             $this->app['extensionhookrunner']->purgeUser($userAccountModel);
 
+            $stat = $this->app['db']->prepare("UPDATE event_history SET user_account_id=:to_id WHERE user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE group_history SET user_account_id=:to_id WHERE user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE area_history SET user_account_id=:to_id WHERE user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE venue_history SET user_account_id=:to_id WHERE user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE tag_history SET user_account_id=:to_id WHERE user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE import_url_history SET user_account_id=:to_id WHERE user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE event_in_group SET added_by_user_account_id=:to_id WHERE added_by_user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
+            $stat = $this->app['db']->prepare("UPDATE event_in_group SET removed_by_user_account_id=:to_id WHERE removed_by_user_account_id=:from_id");
+            $stat->execute(array('from_id'=>$userAccountModel->getId(), 'to_id'=>$this->app['config']->purgeUserEditsGivenToUserId));
+
             $stat = $this->app['db']->prepare("DELETE FROM user_notification WHERE user_id=:id");
             $stat->execute(array('id'=>$userAccountModel->getId()));
 

@@ -284,51 +284,6 @@ class ExtensionCore extends BaseExtension
             return false;
         }
 
-        // Have they edited any thing on site? In which case they can't be purged.
-
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM event_history ".
-            "WHERE event_history.user_account_id =:id");
-        $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM group_history ".
-            "WHERE group_history.user_account_id =:id");
-        $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM area_history ".
-            "WHERE area_history.user_account_id =:id");
-        $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM venue_history ".
-            "WHERE venue_history.user_account_id =:id");
-        $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM tag_history ".
-            "WHERE tag_history.user_account_id =:id");
-        $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-        $stat = $this->app['db']->prepare("SELECT COUNT(*) AS c FROM import_url_history ".
-            "WHERE import_url_history.user_account_id =:id");
-        $stat->execute(array( 'id'=>$userAccountModel->getId() ));
-        if ($stat->fetch()['c'] > 0) {
-            return false;
-        }
-
-
         // Ok, we are happy.
         return true;
     }

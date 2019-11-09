@@ -110,6 +110,8 @@ class Config
     public $sysAdminExtraPurgeCuratedListPassword = null;
     public $sysAdminExtraPurgeUserPassword = null;
 
+    // We assume the first user on site is sysadmin, and so this is a sensible default
+    public $purgeUserEditsGivenToUserId = 1;
 
     public $sessionLastsInSeconds = 14400; // 4 hours, 4 * 60 * 60
     
