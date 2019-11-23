@@ -14,6 +14,12 @@ require_once APP_ROOT_DIR.'/core/php/autoloadCLI.php';
 
 $verbosePrint = true;
 
+if ($app['config']->siteReadOnly) {
+    if ($verbosePrint) {
+        print "Site is in READ ONLY mode; nothing will be done\n";
+    }
+    exit(1);
+}
 if ($verbosePrint) {
     print "Starting all tasks check ". $app['timesource']->getDateTime()->format("c")."\n";
 }

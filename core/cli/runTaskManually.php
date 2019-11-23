@@ -12,6 +12,12 @@ require_once APP_ROOT_DIR.'/core/php/autoloadCLI.php';
  * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
  */
 
+
+if ($app['config']->siteReadOnly) {
+    print "Site is in READ ONLY mode; nothing will be done\n";
+    exit(1);
+}
+
 $verbosePrint = true;
 $extensionID = isset($argv[1]) ? trim($argv[1]) : null;
 $taskID = isset($argv[2]) ? trim($argv[2]) : null;

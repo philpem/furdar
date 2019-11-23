@@ -12,6 +12,11 @@ require_once APP_ROOT_DIR.'/core/php/autoloadCLI.php';
  * @copyright (c) JMB Technology Limited, https://www.jmbtechnology.co.uk/
  */
 
+if ($app['config']->siteReadOnly) {
+    print "Site is in READ ONLY mode; nothing will be done\n";
+    exit(1);
+}
+
 $helper = new MessageQueConsumerHelper($app);
 $helper->runWorkers();
 
