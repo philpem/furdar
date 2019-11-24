@@ -7,5 +7,7 @@
 {% extends 'site/page.html.twig' %}
 
 {% block content %}
-	Sorry, the site is currently read only. {{ config.siteReadOnlyReason }}
+	<div class="contentMain">
+		Sorry, the site is currently read only. {{ config.siteReadOnlyReason }}
+	</div>
 {% endblock %}
