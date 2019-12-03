@@ -29,10 +29,13 @@ class SiteRepository
     /** @var  \dbaccess\SiteDBAccess */
     protected $siteDBAccess;
 
+    protected $singleSiteCache;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
         $this->siteDBAccess = new SiteDBAccess($app);
+        $this->singleSiteCache = APP_ROOT_DIR.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'webwritable'.DIRECTORY_SEPARATOR.'singleSiteCache.php';
     }
 
 
@@ -242,11 +245,29 @@ class SiteRepository
     
     public function loadById(int $id)
     {
+        // If getting single site and cache exists, load it and use it.
+        if ($this->app['config']->isSingleSiteMode && $this->app['config']->singleSiteID == $id && file_exists($this->singleSiteCache)) {
+            require_once $this->singleSiteCache;
+            global $SINGLE_SITE_CACHE;
+            $site = new SiteModel();
+            $site->setFromDataBaseRow($SINGLE_SITE_CACHE);
+            return $site;
+
+        }
+
         $stat = $this->app['db']->prepare("SELECT site_information.* FROM site_information WHERE id =:id");
         $stat->execute(array( 'id'=>$id ));
         if ($stat->rowCount() > 0) {
+            $data = $stat->fetch();
+
             $site = new SiteModel();
-            $site->setFromDataBaseRow($stat->fetch());
+            $site->setFromDataBaseRow($data);
+
+            // If Getting Single Site, Cache it.
+            if ($this->app['config']->isSingleSiteMode && $this->app['config']->singleSiteID == $id) {
+                file_put_contents($this->singleSiteCache, '<?php '. PHP_EOL. 'global $SINGLE_SITE_CACHE;'.PHP_EOL.'$SINGLE_SITE_CACHE = '.var_export($data, true).';');
+            }
+
             return $site;
         }
     }
@@ -268,6 +289,11 @@ class SiteRepository
         } catch (Exception $e) {
             $this->app['db']->rollBack();
         }
+
+        // If saving single site, clear cache so next request will load it
+        if ($this->app['config']->isSingleSiteMode && $this->app['config']->singleSiteID == $site->getId() && file_exists($this->singleSiteCache)) {
+            unlink($this->singleSiteCache);
+        }
     }
     
     
@@ -283,6 +309,11 @@ class SiteRepository
                 'cached_timezones'=>$site->getCachedTimezones(),
                 'id'=>$site->getId(),
             ));
+
+        // If saving single site, clear cache so next request will load it
+        if ($this->app['config']->isSingleSiteMode && $this->app['config']->singleSiteID == $site->getId() && file_exists($this->singleSiteCache)) {
+            unlink($this->singleSiteCache);
+        }
     }
     
     

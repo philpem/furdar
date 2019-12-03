@@ -1,6 +1,7 @@
 /cache/templates/*
 /cache/templates.cli/*
 /cache/templates.web/*
+/cache/webwritable/*
 /config.php
 /config.test.php
 .DS_Store
