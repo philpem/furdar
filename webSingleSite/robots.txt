@@ -6,7 +6,7 @@ Disallow: /demo
 Disallow: /displayboard/run/
 Disallow: /leaflet-0-7-1/
 
-User-Agent: MJ12bot
+User-agent: MJ12bot
 Disallow: /
 
 User-agent: dotbot
