@@ -46,7 +46,7 @@ while($data = $stat->fetch()) {
     ));
 
     $message = new \Swift_Message();
-    $message->setSubject("News: Open Tech Calendar will in the future be run by Sheffield Digital");
+    $message->setSubject("Transfer to Sheffield Digital now complete");
     $message->setFrom(array($app['config']->emailFrom => $app['config']->emailFromName));
     $message->setTo($user->getEmail());
     $message->setBody($messageText);
