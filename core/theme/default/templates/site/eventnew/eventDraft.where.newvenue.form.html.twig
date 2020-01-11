@@ -51,7 +51,7 @@
 					<a href="#" onclick="clearArea(); return false;">Clear</a>
 					<input type="hidden" name="fieldAreaSlug" value="{{ fieldAreaObject.slug  }}">
 				{%  endif %}
-				{% if areaSearchRequired and childAreas %}
+				{% if areaSearchRequired and childAreas and not areas %}
 					<ul class="formErrors">
 						<li>Can you be more exact? This helps people find events.</li>
 					</ul>
