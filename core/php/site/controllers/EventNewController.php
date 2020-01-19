@@ -76,9 +76,9 @@ class EventNewController
         }
 
         // check for incoming area
-        if (isset($_GET['area']) && trim($_GET['area'])) {
+        if (isset($_GET['area']) && intval($request->query->get('area'))) {
             $ar = new AreaRepository($app);
-            $area = $ar->loadBySlug($app['currentSite'], $request->query->get('area'));
+            $area = $ar->loadBySlug($app['currentSite'], intval($request->query->get('area')));
             if ($area) {
                 $incomingData['area.id'] = $area->getId();
                 $incomingData['area.title'] = $area->getTitle();
@@ -86,9 +86,9 @@ class EventNewController
         }
 
         // check for incoming group
-        if (isset($_GET['group']) && trim($_GET['group'])) {
+        if (isset($_GET['group']) && intval($request->query->get('group'))) {
             $gr = new GroupRepository($app);
-            $group = $gr->loadBySlug($app['currentSite'], $request->query->get('group'));
+            $group = $gr->loadBySlug($app['currentSite'], intval($request->query->get('group')));
             if ($group) {
                 $incomingData['group.id'] = $group->getId();
                 $incomingData['group.title'] = $group->getTitle();
