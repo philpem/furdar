@@ -123,7 +123,7 @@ class NewEventWhereDetails extends BaseNewEvent
                 $out['areas'] = $areaRepoBuilder->fetchAll();
                 if (count($out['areas']) == 1) {
                     $area =  $out['areas'][0];
-                } elseif (count($out['areas'] > 0)) {
+                } elseif (count($out['areas']) > 1) {
                     $out['areaSearchRequired'] = true;
                 }
             }
