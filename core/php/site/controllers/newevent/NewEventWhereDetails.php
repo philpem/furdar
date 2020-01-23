@@ -135,7 +135,8 @@ class NewEventWhereDetails extends BaseNewEvent
             }
 
             // We don't want user to be prompted to fill out form first go round, so check for this flag
-            if ($this->draftEvent->getDetailsValue('where.setthisnewvenue.submitted')) {
+            // Also if the user has already searched for something, don't show a second search results list.
+            if ($this->draftEvent->getDetailsValue('where.setthisnewvenue.submitted') && !$out['areaSearchRequired']) {
                 $out['childAreas'] = $this->getChildAreasForArea($area, 100);
                 if (count($out['childAreas']) > 0) {
                     $out['areaSearchRequired'] = true;
@@ -559,6 +560,12 @@ class NewEventWhereDetails extends BaseNewEvent
         if ($areaModel) {
             $arb->setParentArea($areaModel);
         } else {
+            // Prompt the user to select a area by presenting all root areas in the country
+            if ($this->draftEvent->getDetailsValue('event.country_id')) {
+                $countryRepository = new CountryRepository($this->application);
+                $country = $countryRepository->loadById($this->draftEvent->getDetailsValue('event.country_id'));
+                $arb->setCountry($country);
+            }
             $arb->setNoParentArea(true);
         }
         $arb->setLimit($limit);
