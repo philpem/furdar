@@ -137,6 +137,12 @@ class ImportMeetupHandler extends ImportHandlerBase
 
     protected function processMeetupData($meetupData)
     {
+        ############# Data Sanity Check
+        # We have seen a weird case where one event did not have status set. In that case, set to blank to avoid errors below.
+        if (!array_key_exists('status', $meetupData)) {
+            $meetupData['status'] = '';
+        }
+
         $start = new \DateTime('', new \DateTimeZone('UTC'));
         $start->setTimestamp($meetupData['time'] / 1000);
         if (isset($meetupData['duration']) && $meetupData['duration']) {
