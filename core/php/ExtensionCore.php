@@ -155,9 +155,14 @@ class ExtensionCore extends BaseExtension
             new \tasks\UpdateSiteHistoryChangeFlagsTask($this->app),
             new \tasks\UpdateTagHistoryChangeFlagsTask($this->app),
             new \tasks\UpdateVenueHistoryChangeFlagsTask($this->app),
-            new \tasks\SendUserWatchesSitePromptEmailsTask($this->app),
-            new \tasks\SendUserWatchesSiteGroupPromptEmailsTask($this->app),
-            new \tasks\SendUserWatchesGroupPromptEmailsTask($this->app),
+            // CORONAVIRUS
+            // TEMP DISABLE
+            // We don't want to send emails to people saying "Do you know of more events?"
+            // Cos they won't :-(
+            // BEFORE WE REENABLE - we need to double check how these will behave, will they flood people with emails?
+            //new \tasks\SendUserWatchesSitePromptEmailsTask($this->app),
+            //new \tasks\SendUserWatchesSiteGroupPromptEmailsTask($this->app),
+            //new \tasks\SendUserWatchesGroupPromptEmailsTask($this->app),
             new \tasks\SendUpcomingEventsForUsersTask($this->app),
             new \tasks\RunImportsTask($this->app),
             new \tasks\DeleteOldTaskLogsTask($this->app),
