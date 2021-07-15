@@ -25,8 +25,8 @@
 
 		{%  if onFrontPage is defined and onFrontPage %}
 			<div id="headerExplanationText">
-				<p>We are a user editable calendar of your local tech meet ups.</p>
-				<p>We help people find great tech events and enable tech events to work together for everyone's benefit.</p>
+				<p>We are a user editable calendar of your local furmeets and larger furry events.</p>
+				<p>We help people find great furry events and enable events to work together for everyone's benefit.</p>
 				{% if currentUserActions.has("org.openacalendar","eventNew") or ( currentUser is null and anyVerifiedUserActions.has("org.openacalendar","eventNew") ) %}
 					<p>Know of an event we are missing? <a href="/event/new">Please add it</a>!</p>
 				{% else %}
