@@ -41,7 +41,10 @@ $arb->setCountry($uk);
 $arb->setNoParentArea(true);
 $arb->setIncludeDeleted(false);
 foreach ($arb->fetchAll() as $parentUKArea) {
-    if ($parentUKArea->getCachedFutureEvents() > 0 && in_array($parentUKArea->getTitle(), $parentAreasAllowedUK)) {
+	if ($parentUKArea->getCachedFutureEvents() > 0 /*&& in_array($parentUKArea->getTitle(), $parentAreasAllowedUK)*/) {
+	echo $parentUKArea->getTitle();
+	echo $parentUKArea->getCachedFutureEvents();
+       echo	"\n";
         $parentData = array(
             'children'=>array(),
             'type'=>'area',
@@ -50,7 +53,7 @@ foreach ($arb->fetchAll() as $parentUKArea) {
             'count'=>$parentUKArea->getCachedFutureEvents(),
             );
         $carb = new \repositories\builders\AreaRepositoryBuilder($app);
-        $carb->setCountry($uk);
+ #       $carb->setCountry($uk);
         $carb->setParentArea($parentUKArea);
         $carb->setIncludeDeleted(false);
         foreach ($carb->fetchAll() as $childUKArea) {
@@ -64,7 +67,7 @@ foreach ($arb->fetchAll() as $parentUKArea) {
             }
         }
         $data[] = $parentData;
-    } elseif ($parentUKArea->getCachedFutureEvents() > 0 && in_array($parentUKArea->getTitle(), $parentAreasAllowedUKOther)) {
+	} elseif ($parentUKArea->getCachedFutureEvents() > 0 /*&& in_array($parentUKArea->getTitle(), $parentAreasAllowedUKOther)*/) {
         $parentData = array(
             'type'=>'area',
             'title'=> $parentUKArea->getTitle(),
