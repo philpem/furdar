@@ -28,6 +28,7 @@ $countryRepository = new CountryRepository($app);
 $data = array();
 $dataOther = array();
 
+# Country list for the front page. This will need extending when more are added...
 $countries = ['GB', 'IE', 'IM', 'BE', 'CA', 'DK', 'FR', 'DE', 'NL', 'NO', 'PL', 'SE', 'CH', 'US'];
 
 #$parentAreasAllowedUK = array('England','Scotland','Wales','Northern Ireland');
